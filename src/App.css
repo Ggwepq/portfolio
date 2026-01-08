@@ -165,6 +165,11 @@ a:hover {
   opacity: 1;
 }
 
+.profile-img-wrapper:hover .profile-img.hover-img {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
 @keyframes bop {
   0% {
     transform: scale(1) rotate(0deg);
@@ -207,6 +212,10 @@ a:hover {
 }
 
 .profile-img-wrapper.playing .music-badge {
+  opacity: 1;
+}
+
+.profile-img-wrapper:hover .music-badge {
   opacity: 1;
 }
 

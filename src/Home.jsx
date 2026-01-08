@@ -73,9 +73,27 @@ function Home() {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      audioRef.current.volume = 0.35;
+      audioRef.current.volume = 0.3;
       audioRef.current.play();
       setIsPlaying(true);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    if (audioRef.current && audioUrl) {
+      if (!isPlaying) {
+
+        audioRef.current.volume = 0.1;
+      }
+      audioRef.current.play().catch(e => console.log("Play blocked", e));
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (isPlaying) return;
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
     }
   };
 
@@ -125,7 +143,7 @@ function Home() {
   return (
     <div className="container">
 
-      {/* <CursorGradient /> */}
+      <CursorGradient />
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
@@ -133,6 +151,8 @@ function Home() {
 
         <div
           className={`profile-img-wrapper ${isPlaying ? 'playing' : ''}`}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
           onClick={toggleAudio}
         >
           <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
