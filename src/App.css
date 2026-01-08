@@ -105,6 +105,14 @@ a:hover {
     position: relative;
   }
 
+  .nav-list {
+    display: none;
+  }
+
+  .btn-resume {
+    margin: 1rem 0 5rem 0;
+  }
+
   .right-section {
     padding-bottom: 4rem;
   }
@@ -364,5 +372,208 @@ section {
 
   100% {
     background-position: 100% 100%;
+  }
+}
+
+
+
+/* --- ARCHIVE PAGE STYLES --- */
+.archive-container {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+  max-width: 1000px;
+  display: block !important;
+}
+
+/* 2. HEADER ALIGNMENT */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  padding-bottom: 20px;
+}
+
+.archive-title {
+  font-size: 3rem;
+  color: var(--text-main);
+  margin: 0;
+}
+
+/* 3. BUTTONS */
+.view-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.view-btn {
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-btn:hover,
+.view-btn.active {
+  background: rgba(94, 234, 212, 0.1);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* --- LIST VIEW STYLES --- */
+.project-display.list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.project-display.list .archive-card {
+  display: grid;
+  grid-template-columns: 120px 2fr 1fr auto;
+  gap: 30px;
+  align-items: flex-start;
+  padding: 30px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  transition: background-color 0.2s;
+}
+
+
+/* COL 1: Image Wrapper */
+.col-image {
+  display: flex;
+  align-items: flex-start;
+}
+
+/* COL 2  */
+.col-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.archive-project-title {
+  font-family: 'Rubik', sans-serif;
+  /* Bold Font */
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  margin: 0;
+}
+
+.archive-desc {
+  font-family: 'Karla', sans-serif;
+  /* Body Font */
+  color: var(--text-muted);
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 100%;
+  margin: 0;
+}
+
+/* COL 3 & 4 */
+.col-label {
+  display: block;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.85rem;
+  color: #64748b;
+  /* Lighter/Muted color */
+  margin-bottom: 8px;
+}
+
+/* Tech Text */
+.col-tech {
+  font-family: 'Karla', sans-serif;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* COL 4: Links */
+.col-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 60px;
+}
+
+.link-icons {
+  display: flex;
+  gap: 15px;
+}
+
+.link-icons a {
+  color: var(--text-main);
+  transition: color 0.2s;
+}
+
+.link-icons a:hover {
+  color: var(--accent);
+}
+
+/* --- GRID VIEW  --- */
+
+.project-display.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.project-display.grid .archive-card {
+  display: flex;
+  flex-direction: column;
+  background-color: #1e293b;
+  padding: 20px;
+  border-radius: 8px;
+  gap: 15px;
+}
+
+.project-display.grid .col-image div {
+  width: 100% !important;
+  height: 150px !important;
+}
+
+.project-display.grid .col-label {
+  display: none;
+}
+
+/* MOBILE FIXES */
+@media (max-width: 768px) {
+  .project-display.list .archive-card {
+    grid-template-columns: 1fr;
+    /* Stack */
+    gap: 10px;
+  }
+
+  .list-header,
+  .archive-img-wrapper {
+    display: none;
+  }
+
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .col-image {
+    display: none;
   }
 }
