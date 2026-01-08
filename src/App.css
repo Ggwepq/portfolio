@@ -155,7 +155,7 @@ section {
 /* Navigation Links */
 .nav-list {
   list-style: none;
-  margin-top: 4rem;
+  margin-top: 2rem;
   width: max-content;
 }
 
@@ -546,8 +546,10 @@ section {
 }
 
 .project-display.grid .col-image div {
-  width: 100% !important;
-  height: 150px !important;
+  width: 109.8% !important;
+  height: 170px !important;
+  margin-left: -20px;
+  margin-top: -20px;
 }
 
 .project-display.grid .col-label {
@@ -574,6 +576,10 @@ section {
   }
 
   .col-image {
+    display: none;
+  }
+
+  .view-controls {
     display: none;
   }
 }

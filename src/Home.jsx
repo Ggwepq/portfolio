@@ -72,10 +72,10 @@ function Home() {
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
+        <div >
+          <img style={{ width: '280px', height: '250px', borderRadius: '10px' }} src="/cedjuani.jpg" alt="Profile" />
+        </div>
         <div>
-          <div style={{ width: '300px', height: '200px', background: 'rgba(0,0,0,.5)', marginBottom: '20px', borderRadius: '10px' }}>
-            {/* <img src="your-photo.jpg" alt="Profile" /> */}
-          </div>
           <h1 className="name">John Cedric Abaloyan</h1>
           <h2 className="title">IT Student</h2>
 
