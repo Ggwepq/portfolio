@@ -11,7 +11,7 @@ const CursorGradient = () => {
     let cursorX = 0;
     let cursorY = 0;
 
-    const speed = 0.15;
+    const speed = 0.8;
 
     const animate = () => {
       let distX = mouseX - cursorX;

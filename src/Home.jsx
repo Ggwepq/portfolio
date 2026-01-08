@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { FaGithub, FaLinkedin, FaFacebookF } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
 import './App.css';
 
 function Home() {
+  const audioRef = useRef(null);
   const [activeSelection, setActiveSelection] = useState('about');
+  const [songData, setSongData] = useState('null');
+  const [audioUrl, setAudioUrl] = useState('null');
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +30,59 @@ function Home() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   });
+
+  useEffect(() => {
+    const fetchMusic = async () => {
+      const API_KEY = import.meta.env.VITE_LASTFM_API_KEY;
+      const USER = import.meta.env.VITE_LASTFM_USERNAME;
+
+      try {
+        const lastFmRes = await fetch(
+          `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USER}&api_key=${API_KEY}&format=json&limit=1`
+        );
+        const lastFmJson = await lastFmRes.json();
+        const track = lastFmJson.recenttracks.track[0];
+
+        const artist = track.artist['#text'];
+        const title = track.name;
+
+        setSongData({ artist, title });
+
+        const searchTerm = encodeURIComponent(`${title} ${artist}`);
+        const itunesRes = await fetch(
+          `https://itunes.apple.com/search?term=${searchTerm}&media=music&limit=1`
+        );
+        const itunesJson = await itunesRes.json();
+
+        if (itunesJson.results.length > 0) {
+          setAudioUrl(itunesJson.results[0].previewUrl);
+        }
+
+      } catch (error) {
+        console.error("Error fetching music:", error);
+      }
+    };
+
+    fetchMusic();
+  }, []);
+
+  const toggleAudio = () => {
+    if (!audioRef.current || !audioUrl) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.volume = 0.35;
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleAudioEnded = () => {
+    setIsPlaying(false);
+  };
+
 
   const experiences = [
     {
@@ -68,13 +125,34 @@ function Home() {
   return (
     <div className="container">
 
-      <CursorGradient />
+      {/* <CursorGradient /> */}
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
-        <div >
-          <img style={{ width: '280px', height: '250px', borderRadius: '10px' }} src="/cedjuani.jpg" alt="Profile" />
+
+
+        <div
+          className={`profile-img-wrapper ${isPlaying ? 'playing' : ''}`}
+          onClick={toggleAudio}
+        >
+          <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
+          <img src="/cedjuani-singing.png" alt="Singing" className="profile-img hover-img" />
+
+          {audioUrl && (
+            <audio
+              ref={audioRef}
+              src={audioUrl}
+              onEnded={handleAudioEnded}
+            />
+          )}
+
+          {songData && isPlaying && (
+            <div className="music-badge">
+              <span>♫ {songData.title}</span>
+            </div>
+          )}
         </div>
+
         <div>
           <h1 className="name">John Cedric Abaloyan</h1>
           <h2 className="title">IT Student</h2>

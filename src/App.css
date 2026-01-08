@@ -118,6 +118,98 @@ a:hover {
   }
 }
 
+/* --- PROFILE IMAGE --- */
+.profile-img-wrapper {
+  width: 260px;
+  height: 250px;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: #334155;
+  border-radius: 15%;
+
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+
+  mask-image: -webkit-radial-gradient(white, black);
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+
+.profile-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+  display: block;
+}
+
+.profile-img.hover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+
+/* Music Playing */
+
+.profile-img-wrapper.playing {
+  animation: bop 0.5s infinite ease-in-out;
+
+  box-shadow: 0 0 30px rgba(94, 234, 212, 0.5);
+  border-color: var(--accent);
+}
+
+.profile-img-wrapper.playing .profile-img.hover-img {
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+@keyframes bop {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1.05) rotate(2deg);
+  }
+
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.profile-img-wrapper:hover {
+  animation: bop 0.5s infinite ease-in-out;
+  box-shadow: 0 0 100px rgba(94, 234, 212, 0.4);
+  border-color: var(--accent);
+}
+
+.music-badge {
+  position: absolute;
+  bottom: 25px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--accent);
+  padding: 4px 12px;
+  border-radius: 20px;
+
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-family: var(--font-heading);
+  white-space: nowrap;
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.profile-img-wrapper.playing .music-badge {
+  opacity: 1;
+}
+
 /* --- TYPOGRAPHY --- */
 h1 {
   font-size: 3rem;
@@ -349,7 +441,7 @@ section {
   width: 800px;
   background-image: linear-gradient(90deg, #eb3434, #eb5e34, #eb8334, #eba434, #ebcc34, #ebeb34, #c3eb34, #89eb34, #58eb34, #34eb52, #34ebcc, #34d5eb, #34a8eb, #346beb, #3734eb, #7734eb, #a834eb, #eb34c3, #eb3489, #eb3461);
 
-  filter: blur(200px);
+  filter: blur(150px);
   border-radius: 100%;
   background-size: 1000% 100%;
 
@@ -362,7 +454,7 @@ section {
 
   z-index: -1;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.25;
 }
 
 @keyframes gradient-move {
@@ -372,6 +464,20 @@ section {
 
   100% {
     background-position: 100% 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .bg-gradient {
+    top: 20% !important;
+    left: 80% !important;
+    filter: blur(50px);
+
+    transform: translate(-50%, -50%) !important;
+
+    width: 400px;
+    height: 400px;
+    opacity: 0.2;
   }
 }
 
