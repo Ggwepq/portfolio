@@ -263,7 +263,7 @@ function Home() {
                 {/*     style={{ width: '120px', borderRadius: '4px', border: '1px solid #334155' }} */}
                 {/*   /> */}
                 {/* </div> */}
-                <div style={{ width: '120px', height: '80px', background: 'rgba(0,0,0,.5)', flexShrink: 0, borderRadius: '5px' }}></div>
+                <div className="project-image" ></div>
                 <div className="card-content">
                   <h3 className='view-all-link'> <span>{project.title}</span> <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 -960 960 960" width="22px" fill="#e3e3e3"><path d="m256-240-56-56 384-384H240v-80h480v480h-80v-344L256-240Z" /></svg></h3>
                   <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#94a3b8' }}>{project.description}</p>

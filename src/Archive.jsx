@@ -86,6 +86,13 @@ const Archive = () => {
       github: "#"
     },
     {
+      title: "Forest Escape",
+      description: "Simple 2D platformer game with good movements, vfx, sfx, and game juices",
+      tech: ["Unity", "C#"],
+      link: "https://drive.google.com/file/d/16IpOigbWLx5NeVTNuCncRE63T8vItPlk/view?usp=drive_link",
+      github: "#"
+    },
+    {
       title: "Java Tetris",
       description: "A simple tetris game made in Java.",
       tech: ["Java"],

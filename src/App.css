@@ -313,8 +313,16 @@ section {
   border: 1px solid transparent;
 }
 
+.project-image {
+  width: 120px;
+  height: 80px;
+  background-color: rgba(0, 0, 0, .5);
+  flex-shrink: 0;
+  border-radius: 5px;
+}
+
 /* Desktop  */
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .card {
     flex-direction: row;
   }
@@ -327,7 +335,7 @@ section {
     font-family: var(--font-heading);
     text-transform: uppercase;
     margin-top: 4px;
-    opacity: 0.7;
+    opacity: 0.3;
   }
 }
 
@@ -695,6 +703,10 @@ section {
   }
 
   .view-controls {
+    display: none;
+  }
+
+  .project-image {
     display: none;
   }
 }
