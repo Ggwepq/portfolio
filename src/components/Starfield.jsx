@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-const Starfield = ({ isPlaying, isHovering }) => {
+const Starfield = ({ isPlaying, isHovering, isContactActive }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Starfield = ({ isPlaying, isHovering }) => {
   // 2. DETERMINE CLASS NAME
   let className = "";
   if (isPlaying) className = "playing";
-  else if (isHovering) className = "hovering";
+  else if (isHovering || isContactActive) className = "hovering";
 
   return (
     <div

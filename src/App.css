@@ -93,7 +93,7 @@ a:hover {
   .right-section {
     width: 52%;
     padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-bottom: 12rem;
   }
 }
 
@@ -776,4 +776,180 @@ section {
   .project-image {
     display: none;
   }
+}
+
+/* --- CONTACT FORM --- */
+.contact-section {
+  margin-bottom: 4rem;
+  scroll-margin-top: 100px;
+}
+
+.section-title {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+}
+
+.contact-text {
+  max-width: 500px;
+  margin-bottom: 2rem;
+  color: var(--text-muted);
+}
+
+.contact-form {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  gap: 20px;
+}
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+label {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* INPUT STYLES - Matches Project Cards */
+input,
+textarea {
+  background-color: rgba(30, 41, 59, 0.5);
+  /* Semi-transparent slate */
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  border-radius: 4px;
+  padding: 12px;
+  font-family: var(--font-body);
+  color: var(--text-main);
+  font-size: 1rem;
+  transition: all 0.2s;
+  outline: none;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--accent);
+  /* Teal border on focus */
+  background-color: rgba(30, 41, 59, 0.8);
+  box-shadow: 0 0 0 2px rgba(94, 234, 212, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #475569;
+}
+
+/* SUBMIT BUTTON */
+.submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: max-content;
+  margin-top: 10px;
+
+  background-color: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+
+  padding: 12px 28px;
+  border-radius: 4px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: rgba(94, 234, 212, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .form-group {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+
+.success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  justify-content: left;
+  text-align: left;
+  border-radius: 8px;
+
+  animation: fade-in-up 0.5s ease-out forwards;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background-color: rgba(94, 234, 212, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+/* .success-message h3 { */
+/*   font-family: var(--font-heading); */
+/*   font-size: 1.5rem; */
+/*   color: var(--text-main); */
+/*   margin-bottom: 10px; */
+/* } */
+/**/
+/* .success-message p { */
+/*   color: var(--text-muted); */
+/*   margin-bottom: 30px; */
+/* } */
+
+/* Simple Fade In Animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* Spotlight Effect for Contact */
+
+.right-section.focus-mode>section,
+.right-section.focus-mode>footer {
+  transition: opacity 1s ease-in-out, filter 0.5s ease-in-out;
+}
+
+.right-section.focus-mode>section,
+.right-section.focus-mode>footer {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.right-section.focus-mode>#contact {
+  opacity: 1 !important;
+  filter: none !important;
+  pointer-events: auto;
 }

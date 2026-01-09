@@ -3,11 +3,13 @@ import { FaGithub, FaLinkedin, FaFacebookF } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
+import Contact from './components/Contact';
 import './App.css';
 
 function Home() {
   const audioRef = useRef(null);
   const [activeSelection, setActiveSelection] = useState('about');
+  const [isContactActive, setIsContactActive] = useState(false);
   const [songData, setSongData] = useState('null');
   const [audioUrl, setAudioUrl] = useState('null');
   const [audioVolume, setAudioVolume] = useState('null');
@@ -33,6 +35,24 @@ function Home() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsContactActive(entry.isIntersecting);
+      },
+      { threshold: 0.5 }
+    );
+
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      observer.observe(contactSection);
+    }
+
+    return () => {
+      if (contactSection) observer.unobserve(contactSection);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchMusic = async () => {
@@ -62,6 +82,8 @@ function Home() {
         if (itunesJson.results.length > 0) {
           setAudioUrl(itunesJson.results[0].previewUrl);
         }
+
+        console.log(audioUrl);
 
       } catch (error) {
         console.error("Error fetching music:", error);
@@ -149,9 +171,20 @@ function Home() {
   };
 
   const handleAudioEnded = () => {
-    fadeOut(audioRef.current, 300)
-    setIsPlaying(false);
+    // fadeOut(audioRef.current, 300)
+    // setIsPlaying(false);
+    // fadeOut(audioRef.current, 300)
+    replayAudio();
   };
+
+  const replayAudio = () => {
+    audioRef.current.pause();
+    audioRef.current.time = 0;
+    audioRef.current.play();
+    setAudioVolume(0.3)
+    fadeIn(audioRef.current, 0.3, 300)
+    setIsPlaying(true);
+  }
 
 
   const experiences = [
@@ -197,7 +230,7 @@ function Home() {
 
       <CursorGradient />
 
-      <Starfield isPlaying={isPlaying} isHovering={isHovering} />
+      <Starfield isPlaying={isPlaying} isHovering={isHovering} isContactActive={isContactActive} />
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
@@ -254,14 +287,14 @@ function Home() {
           <a href="https://www.linkedin.com/in/johnabaloyan28/" target="_blank"><FaLinkedin /></a>
           <a href="https://www.facebook.com/johnabaloyan28" target="_blank"><FaFacebookF /></a>
 
-          <a href="mailto:johncedricabaloyan28@example.com" target="_blank" className="btn-contact">
+          <a href="#contact" className="btn-contact">
             Contact Me
           </a>
         </div>
       </header>
 
       {/* --- RIGHT SIDE --- */}
-      <main className="right-section">
+      <main className={`right-section ${isContactActive ? 'focus-mode' : ''}`}>
 
         {/* ABOUT */}
         <section id="about" style={{ marginBottom: '6rem' }}>
@@ -349,6 +382,8 @@ function Home() {
           </Link>
 
         </section>
+
+        <Contact />
 
         {/* <footer style={{ fontSize: '0.8rem', color: '#64748b' }}> */}
         {/*   <p> */}
