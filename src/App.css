@@ -123,14 +123,19 @@ a:hover {
   width: 260px;
   height: 250px;
   position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  background-color: #334155;
   border-radius: 15%;
+  background-color: #334155;
 
-  transition: box-shadow 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
   cursor: pointer;
+}
 
+.profile-img-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 15%;
+  overflow: hidden;
+  position: relative;
   mask-image: -webkit-radial-gradient(white, black);
   -webkit-mask-image: -webkit-radial-gradient(white, black);
 }
@@ -139,7 +144,7 @@ a:hover {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease;
   display: block;
 }
 
@@ -150,24 +155,47 @@ a:hover {
   opacity: 0;
 }
 
+@property --glow-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
-/* Music Playing */
+.profile-img-wrapper.playing::before,
+.profile-img-wrapper.playing::after {
+  position: absolute;
+  inset: -6px;
+  border-radius: 15%;
+  background: conic-gradient(from var(--glow-angle),
+      #f94144, #f3722c, #f8961e, #f9844a, #f9c74f,
+      #90be6d, #43aa8b, #4d908e, #277da1, #577590, #f94144);
+  pointer-events: none;
+  animation: glow-rotate 4s linear infinite;
+  content: '';
+  z-index: -1;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.profile-img-wrapper.playing::after {
+  filter: blur(2em);
+  opacity: 0.8;
+}
 
 .profile-img-wrapper.playing {
   animation: bop 0.5s infinite ease-in-out;
-
-  box-shadow: 0 0 30px rgba(94, 234, 212, 0.5);
-  border-color: var(--accent);
 }
 
 .profile-img-wrapper.playing .profile-img.hover-img {
-  border-color: var(--accent);
   opacity: 1;
 }
 
 .profile-img-wrapper:hover .profile-img.hover-img {
-  border-color: var(--accent);
   opacity: 1;
+}
+
+.profile-img-wrapper:hover {
+  animation: bop 0.5s infinite ease-in-out;
+  box-shadow: 0 0 100px rgba(94, 234, 212, 0.4);
 }
 
 @keyframes bop {
@@ -184,10 +212,10 @@ a:hover {
   }
 }
 
-.profile-img-wrapper:hover {
-  animation: bop 0.5s infinite ease-in-out;
-  box-shadow: 0 0 100px rgba(94, 234, 212, 0.4);
-  border-color: var(--accent);
+@keyframes glow-rotate {
+  to {
+    --glow-angle: 360deg;
+  }
 }
 
 .music-badge {
@@ -209,6 +237,7 @@ a:hover {
   opacity: 0;
   transition: opacity 0.3s ease;
   pointer-events: none;
+  z-index: 1;
 }
 
 .profile-img-wrapper.playing .music-badge {
@@ -514,11 +543,15 @@ section {
     linear-gradient(to bottom, #0a0f1e 0%, #0b1224 30%, #08101f 60%, #050b16 100%);
 
   opacity: 0;
-  transition: opacity 1s ease-in-out;
+  transition: opacity .3s ease-in-out;
 }
 
-#sky.visible {
+#sky.playing {
   opacity: 1;
+}
+
+#sky.hovering {
+  opacity: 0.3;
 }
 
 .star {

@@ -12,57 +12,57 @@ const Archive = () => {
       title: "TrackWise",
       description: "A personal expense tracking system that helps manage and track expenses, budgets, and savings.",
       tech: ["Laravel", "Livewire", "AlpineJS", "TailwindCSS", "PostgreSQL", "Vercel", "Supabase"],
-      link: "#",
-      github: "#"
+      link: "https://endama-ets.vercel.app",
+      github: "https://github.com/Ggwepq/exts"
     },
     {
       title: "Barangay Information System",
       description: "A system made for the residents of Barangay 73 Caloocan to reduce manual errors and improve queueing time.",
-      tech: ["Laravel", "Bootstrap", "MySQL"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "BrewsNBites",
-      description: "An e-commerce platform about coffee, drinks, snacks, and foods.",
-      tech: ["Laravel", "VueJS", "Tailwind CSS", "MySQL"],
-      link: "#",
-      github: "#"
-    },
-    {
-      title: "Caveman Poetry",
-      description: "A game inspired by Poetry for Neanderthals",
-      tech: ["HTML", "CSS", "Javascript"],
-      link: "#",
-      github: "#"
+      tech: ["Laravel", "Bootstrap", "JQuery", "MySQL"],
+      link: "",
+      github: "https://github.com/Ggwepq/Barangay-Information-System"
     },
     {
       title: "Preplus GMS",
       description: "A Gym Management System with member management, inventory management, forecast and recommendation based on trends and gym's sales.",
       tech: ["PHP", "HTML", "CSS", "Javascript", "MySQL"],
       link: "#",
-      github: "#"
+      github: "https://github.com/Ggwepq/Preplus-Gym-Information-System"
+    },
+    {
+      title: "BrewsNBites",
+      description: "An e-commerce platform about coffee, drinks, snacks, and foods.",
+      tech: ["Laravel", "VueJS", "Tailwind CSS", "MySQL"],
+      link: "",
+      github: "https://github.com/Ggwepq/BrewsNBites"
     },
     {
       title: "Watchlist API & UI",
       description: "An API with UI for managing movie watchlists and streaming movies from those watchlists",
       tech: ["Laravel", "Tailwind CSS", "MySQL", "TMDB API"],
       link: "#",
-      github: "#"
+      github: "https://github.com/Ggwepq/SIA-Restful-Api/tree/movie-api"
     },
     {
       title: "FlixToChill",
       description: "Very simple movie streaming website.",
       tech: ["PHP", "HTML", "CSS", "TMDB API"],
       link: "#",
-      github: "#"
+      github: "https://github.com/Ggwepq/FlixtoChill"
+    },
+    {
+      title: "Caveman Poetry",
+      description: "A game inspired by Poetry for Neanderthals",
+      tech: ["HTML", "CSS", "Javascript"],
+      link: "https://ggwepq.github.io/CavemanPoetry/",
+      github: "https://github.com/Ggwepq/CavemanPoetry"
     },
     {
       title: "MoneySense",
       description: "A voice-guided mobile application for identifying and verifying Philippine Peso for visually-impaired users.",
       tech: ["Flutter", "Dart", "Python"],
       link: "#",
-      github: "#"
+      github: "https://github.com/PinkyBun/MoneySensei"
     },
     {
       title: "Hand2Voice",
@@ -103,8 +103,8 @@ const Archive = () => {
       title: "One Piece Website",
       description: "Cool website about one piece.",
       tech: ["HTML", "CSS"],
-      link: "#",
-      github: "#"
+      link: "https://ggwepq.github.io/One-Piece-website/Onepiecered.html",
+      github: "https://github.com/Ggwepq/One-Piece-website"
     },
   ];
 
@@ -171,8 +171,8 @@ const Archive = () => {
             <div className="col-links">
               <span className="col-label">Links</span>
               <div className="link-icons">
-                <a href={project.github} target="_blank" rel="noreferrer"><FaGithub size={20} /></a>
-                <a href={project.link} target="_blank" rel="noreferrer"><FaExternalLinkAlt size={18} /></a>
+                {project.github && project.github !== "#" && (<a href={project.github} target="_blank" rel="noreferrer"><FaGithub size={20} /></a>)}
+                {project.link && project.link !== "#" && (<a href={project.link} target="_blank" rel="noreferrer"><FaExternalLinkAlt size={18} /></a>)}
               </div>
             </div>
 

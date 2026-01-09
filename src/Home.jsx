@@ -10,6 +10,7 @@ function Home() {
   const [activeSelection, setActiveSelection] = useState('about');
   const [songData, setSongData] = useState('null');
   const [audioUrl, setAudioUrl] = useState('null');
+  const [audioVolume, setAudioVolume] = useState('null');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
 
@@ -42,13 +43,15 @@ function Home() {
         const lastFmRes = await fetch(
           `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${USER}&api_key=${API_KEY}&format=json&limit=1`
         );
+
         const lastFmJson = await lastFmRes.json();
         const track = lastFmJson.recenttracks.track[0];
 
         const artist = track.artist['#text'];
         const title = track.name;
+        const link = track.url;
 
-        setSongData({ artist, title });
+        setSongData({ artist, title, link });
 
         const searchTerm = encodeURIComponent(`${title} ${artist}`);
         const itunesRes = await fetch(
@@ -68,15 +71,58 @@ function Home() {
     fetchMusic();
   }, []);
 
+  const fadeIn = (audio, targetVolume = 0.3, duration = 500) => {
+    audio.volume = audioVolume;
+    const steps = 20;
+    const increment = targetVolume / steps;
+    const stepDuration = duration / steps;
+
+    let currentStep = 0;
+    const fadeInterval = setInterval(() => {
+      if (currentStep >= steps) {
+        clearInterval(fadeInterval);
+        audio.volume = targetVolume;
+        return;
+      }
+      audio.volume = Math.min(audio.volume + increment, targetVolume);
+      currentStep++;
+    }, stepDuration);
+
+    return fadeInterval;
+  };
+
+  const fadeOut = (audio, duration = 300) => {
+    const startVolume = audio.volume;
+    const steps = 20;
+    const decrement = startVolume / steps;
+    const stepDuration = duration / steps;
+
+    let currentStep = 0;
+    const fadeInterval = setInterval(() => {
+      if (currentStep >= steps) {
+        clearInterval(fadeInterval);
+        audio.pause();
+        audio.volume = 0;
+        return;
+      }
+      audio.volume = Math.max(audio.volume - decrement, 0);
+      currentStep++;
+    }, stepDuration);
+
+    return fadeInterval;
+  };
+
   const toggleAudio = () => {
     if (!audioRef.current || !audioUrl) return;
 
     if (isPlaying) {
-      audioRef.current.pause();
+      setAudioVolume(0)
+      fadeOut(audioRef.current, 300)
       setIsPlaying(false);
     } else {
-      audioRef.current.volume = 0.3;
+      setAudioVolume(0.3)
       audioRef.current.play();
+      fadeIn(audioRef.current, 0.3, 300)
       setIsPlaying(true);
     }
   };
@@ -85,8 +131,8 @@ function Home() {
     setIsHovering(true);
     if (audioRef.current && audioUrl) {
       if (!isPlaying) {
-
-        audioRef.current.volume = 0.1;
+        setAudioVolume(0.15);
+        fadeIn(audioRef.current, 0.15, 400);
       }
       audioRef.current.play().catch(e => console.log("Play blocked", e));
     }
@@ -96,12 +142,14 @@ function Home() {
     setIsHovering(false);
     if (isPlaying) return;
     if (audioRef.current) {
+      setAudioVolume(0);
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
     }
   };
 
   const handleAudioEnded = () => {
+    fadeOut(audioRef.current, 300)
     setIsPlaying(false);
   };
 
@@ -149,7 +197,7 @@ function Home() {
 
       <CursorGradient />
 
-      <Starfield isPlaying={isPlaying} />
+      <Starfield isPlaying={isPlaying} isHovering={isHovering} />
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
@@ -161,8 +209,11 @@ function Home() {
           onMouseLeave={handleMouseLeave}
           onClick={toggleAudio}
         >
-          <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
-          <img src="/cedjuani-singing.png" alt="Singing" className="profile-img hover-img" />
+          <div className="profile-img-container">
+
+            <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
+            <img src="/cedjuani-singing.png" alt="Singing" className="profile-img hover-img" />
+          </div>
 
           {audioUrl && (
             <audio
@@ -174,7 +225,9 @@ function Home() {
 
           {songData && isPlaying && (
             <div className="music-badge">
-              <span>♫ {songData.title}</span>
+              <a href={songData.link}>
+                <span>
+                  ♫ {songData.title}</span></a>
             </div>
           )}
         </div>
@@ -201,7 +254,7 @@ function Home() {
           <a href="https://www.linkedin.com/in/johnabaloyan28/" target="_blank"><FaLinkedin /></a>
           <a href="https://www.facebook.com/johnabaloyan28" target="_blank"><FaFacebookF /></a>
 
-          <a href="mailto:ggwepq@example.com" className="btn-contact">
+          <a href="mailto:johncedricabaloyan28@example.com" target="_blank" className="btn-contact">
             Contact Me
           </a>
         </div>

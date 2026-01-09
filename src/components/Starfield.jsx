@@ -5,13 +5,11 @@ const Starfield = ({ isPlaying, isHovering }) => {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!isPlaying) return;
-
     const sky = containerRef.current;
 
     let starCount = 60;
     if (window.matchMedia("(max-width: 600px)").matches) {
-      starCount = 25;
+      starCount = 20;
     }
 
     let ctx = gsap.context(() => {
@@ -21,21 +19,15 @@ const Starfield = ({ isPlaying, isHovering }) => {
         const el = document.createElement("div");
         el.className = "star";
         el.textContent = starChar;
-
         el.style.left = Math.random() * 100 + "%";
         el.style.top = Math.random() * 100 + "%";
-
         const size = gsap.utils.random(8, 20);
         el.style.fontSize = size + "px";
-
         sky.appendChild(el);
 
         const sparkle = () => {
           if (!sky) return;
-
-          gsap.timeline({
-            onComplete: sparkle
-          })
+          gsap.timeline({ onComplete: sparkle })
             .set(el, { opacity: 0, scale: 0.2 })
             .to(el, {
               opacity: gsap.utils.random(0.5, 1),
@@ -51,7 +43,6 @@ const Starfield = ({ isPlaying, isHovering }) => {
               delay: gsap.utils.random(0.2, 1)
             });
         };
-
         gsap.delayedCall(Math.random() * 3, sparkle);
       }
     }, containerRef);
@@ -60,15 +51,19 @@ const Starfield = ({ isPlaying, isHovering }) => {
       ctx.revert();
       if (sky) sky.innerHTML = '';
     };
-  }, [isPlaying]);
+  }, []);
+
+  // 2. DETERMINE CLASS NAME
+  let className = "";
+  if (isPlaying) className = "playing";
+  else if (isHovering) className = "hovering";
 
   return (
     <div
       ref={containerRef}
       id="sky"
-      className={isPlaying ? "visible" : ""}
+      className={className}
     />
   );
 };
-
 export default Starfield;
