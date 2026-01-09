@@ -121,22 +121,22 @@ const Archive = () => {
       <div className="header-row">
         <h1 className="archive-title">All Projects</h1>
 
-        <div className="view-controls">
-          <button
-            className={`view-btn ${view === 'list' ? 'active' : ''}`}
-            onClick={() => setView('list')}
-            aria-label="List View"
-          >
-            <FaList />
-          </button>
-          <button
-            className={`view-btn ${view === 'grid' ? 'active' : ''}`}
-            onClick={() => setView('grid')}
-            aria-label="Grid View"
-          >
-            <FaThLarge />
-          </button>
-        </div>
+        {/* <div className="view-controls"> */}
+        {/*   <button */}
+        {/*     className={`view-btn ${view === 'list' ? 'active' : ''}`} */}
+        {/*     onClick={() => setView('list')} */}
+        {/*     aria-label="List View" */}
+        {/*   > */}
+        {/*     <FaList /> */}
+        {/*   </button> */}
+        {/*   <button */}
+        {/*     className={`view-btn ${view === 'grid' ? 'active' : ''}`} */}
+        {/*     onClick={() => setView('grid')} */}
+        {/*     aria-label="Grid View" */}
+        {/*   > */}
+        {/*     <FaThLarge /> */}
+        {/*   </button> */}
+        {/* </div> */}
       </div>
 
       {/* PROJECTS DISPLAY */}

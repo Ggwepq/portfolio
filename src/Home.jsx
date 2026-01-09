@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { FaGithub, FaLinkedin, FaFacebookF } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
+import Starfield from './components/Starfield';
 import './App.css';
 
 function Home() {
@@ -10,6 +11,7 @@ function Home() {
   const [songData, setSongData] = useState('null');
   const [audioUrl, setAudioUrl] = useState('null');
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,6 +82,7 @@ function Home() {
   };
 
   const handleMouseEnter = () => {
+    setIsHovering(true);
     if (audioRef.current && audioUrl) {
       if (!isPlaying) {
 
@@ -90,6 +93,7 @@ function Home() {
   };
 
   const handleMouseLeave = () => {
+    setIsHovering(false);
     if (isPlaying) return;
     if (audioRef.current) {
       audioRef.current.pause();
@@ -144,6 +148,8 @@ function Home() {
     <div className="container">
 
       <CursorGradient />
+
+      <Starfield isPlaying={isPlaying} />
 
       {/* --- LEFT SIDE  --- */}
       <header className="left-section">
@@ -215,7 +221,7 @@ function Home() {
 
           </p>
           <p>
-            In my spare time, i'm usually reading books or manga, absorbing self-help contents, going for a jog, and customizing my setup.
+            In my spare time, i'm usually reading books or manga, absorbing self-help contents, going for a walk, and customizing my setup.
           </p>
         </section>
 
