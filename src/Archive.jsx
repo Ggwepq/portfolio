@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
+import ProjectThumbnail from './components/ProjectThumbnail';
 import './App.css';
 import { projects } from './data/projects';
 
@@ -70,36 +71,8 @@ const Archive = () => {
 
               {/* IMAGE */}
               <div className="col-image">
-                {(() => {
-                  const thumbnail = project.gallery?.find(item => item.type === 'image') || project.gallery?.[0];
-
-                  return (
-                    <div className="project-image">
-                      {thumbnail ? (
-                        thumbnail.type === 'video' ? (
-                          <video
-                            src={`${thumbnail.url}#t=1`}
-                            preload="metadata"
-                            muted
-                            playsInline
-                            loop
-                            onMouseOver={event => event.target.play()}
-                            onMouseOut={event => { event.target.pause(); event.target.currentTime = 1; }}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                          />
-                        ) : (
-                          <img
-                            src={thumbnail.url}
-                            alt={project.title}
-                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
-                          />
-                        )
-                      ) : (
-                        <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}></div>
-                      )}
-                    </div>
-                  );
-                })()}</div>
+                <ProjectThumbnail gallery={project.gallery} title={project.title} />
+              </div>
 
               {/* TITLE & DESC */}
               <div className="col-info">
