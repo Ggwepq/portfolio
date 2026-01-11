@@ -6,6 +6,9 @@ import '../App.css';
 import CursorGradient from './CursorGradient';
 import Starfield from './Starfield';
 
+import { MediaPlayer, MediaProvider } from '@vidstack/react';
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
+
 const ProjectDetail = () => {
   const { id } = useParams();
   const project = projects.find(p => p.id === id);
@@ -50,15 +53,33 @@ const ProjectDetail = () => {
 
 
       <div className="detail-header" ref={headerRef}>
-        <Link to="/" className="back-link">
+        <Link to={-1} className="back-link">
           <FaArrowLeft /> Back to Projects
         </Link>
       </div>
 
-      <div className="carousel-wrapper" onMouseEnter={hoverMedia} onMouseLeave={hoverMedia}>
+      <div className="carousel-wrapper" >
         <div className="carousel-content" >
           {project.gallery[currentSlide].type === 'video' ? (
-            <video src={project.gallery[currentSlide].url} controls className="carousel-media" />
+
+            <div style={{ width: '100%', height: '100%' }}>
+              <MediaPlayer
+                src={project.gallery[currentSlide].url}
+                viewType="video"
+                streamType="on-demand"
+                logLevel="warn"
+                crossOrigin
+                playsInline
+                title={project.title}
+                aspectRatio="16/9"
+              >
+                <MediaProvider>
+                </MediaProvider>
+
+                <DefaultVideoLayout icons={defaultLayoutIcons} />
+              </MediaPlayer>
+            </div>
+
           ) : (
             <img src={project.gallery[currentSlide].url} alt="Project Screenshot" className="carousel-media" />
           )}
@@ -106,7 +127,7 @@ const ProjectDetail = () => {
             <div className="project-links-col">
               {project.links.demo && (
                 <a href={project.links.demo} target="_blank" rel="noreferrer" className="link-btn">
-                  <FaExternalLinkAlt /> Live Demo
+                  <FaExternalLinkAlt /> {project.demoButton}
                 </a>
               )}
               {project.links.repo && (

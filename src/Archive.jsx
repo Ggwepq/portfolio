@@ -31,11 +31,11 @@ const Archive = () => {
   return (
     <div className="container archive-container">
 
-      <CursorGradient />
       <Starfield isHovering={isOnTop} />
+      <CursorGradient />
 
       {/* HEADER ROW */}
-      <Link to="/" className="back-link" ref={headerRef}>
+      <Link to={-1} className="back-link" ref={headerRef}>
         <FaArrowLeft /> John Cedric Abaloyan
       </Link>
 
@@ -68,10 +68,38 @@ const Archive = () => {
             <div key={index} className="archive-card">
 
 
-              {/* IMAGE (Placeholder) */}
+              {/* IMAGE */}
               <div className="col-image">
-                <div style={{ width: '120px', height: '80px', background: 'rgba(255,255,255,0.1)', flexShrink: 0, borderRadius: '5px' }}></div>
-              </div>
+                {(() => {
+                  const thumbnail = project.gallery?.find(item => item.type === 'image') || project.gallery?.[0];
+
+                  return (
+                    <div className="project-image">
+                      {thumbnail ? (
+                        thumbnail.type === 'video' ? (
+                          <video
+                            src={`${thumbnail.url}#t=1`}
+                            preload="metadata"
+                            muted
+                            playsInline
+                            loop
+                            onMouseOver={event => event.target.play()}
+                            onMouseOut={event => { event.target.pause(); event.target.currentTime = 1; }}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                          />
+                        ) : (
+                          <img
+                            src={thumbnail.url}
+                            alt={project.title}
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                          />
+                        )
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}></div>
+                      )}
+                    </div>
+                  );
+                })()}</div>
 
               {/* TITLE & DESC */}
               <div className="col-info">

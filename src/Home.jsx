@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { FaGithub, FaLinkedin, FaFacebookF } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaFacebookF, FaLastfm } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
@@ -69,16 +69,14 @@ function Home() {
         const lastFmJson = await lastFmRes.json();
         const track = lastFmJson.recenttracks.track[0];
 
-        const lastFmArtist = track.artist['#text'];
-        const lastFmTitle = track.name;
+        const artist = track.artist['#text'];
+        const title = track.name;
         const link = track.url;
-
-        const title = lastFmTitle.replace(/\s*\(.*?\)\s*/g, '').replace(/\s*\[.*?\]\s*/g, '');
-        const artist = lastFmArtist.replace(/\s*\(.*?\)\s*/g, '');
 
         setSongData({ artist, title, link });
 
-        const searchTerm = encodeURIComponent(`${artist}${artist}`);
+
+        const searchTerm = encodeURIComponent(`${artist} ${title}`);
         console.log(searchTerm);
         const itunesRes = await fetch(
           `https://itunes.apple.com/search?term=${searchTerm}&media=music&limit=1`
@@ -294,6 +292,7 @@ function Home() {
           <a href="https://github.com/Ggwepq" target="_blank"><FaGithub /></a>
           <a href="https://www.linkedin.com/in/johnabaloyan28/" target="_blank"><FaLinkedin /></a>
           <a href="https://www.facebook.com/johnabaloyan28" target="_blank"><FaFacebookF /></a>
+          <a style={{ display: isPlaying ? '' : 'none', transition: "display .3s ease-in-out" }} href="https://last.fm/user/Ggwepq" target="_blank"><FaLastfm /></a>
 
           <a href="#contact" className="btn-contact">
             Get in Touch
@@ -355,15 +354,39 @@ function Home() {
             {featuredProject.map((project, index) => (
               <Link to={`/project/${project.id}`}>
                 <div key={index} className="card">
-                  {/* <div className="card-date"> */}
-                  {/*   <img */}
-                  {/*     src={project.image} */}
-                  {/*     alt="Project Thumbnail" */}
-                  {/*     style={{ width: '120px', borderRadius: '4px', border: '1px solid #334155' }} */}
-                  {/*   /> */}
-                  {/* </div> */}
+                  <div className="col-image">
+                    {(() => {
+                      const thumbnail = project.gallery?.find(item => item.type === 'image') || project.gallery?.[0];
 
-                  <div className="project-image" ></div>
+                      return (
+                        <div className="project-image">
+                          {thumbnail ? (
+                            thumbnail.type === 'video' ? (
+                              <video
+                                src={`${thumbnail.url}#t=1`}
+                                preload="metadata"
+                                muted
+                                playsInline
+                                loop
+                                onMouseOver={event => event.target.play()}
+                                onMouseOut={event => { event.target.pause(); event.target.currentTime = 1; }}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                              />
+                            ) : (
+                              <img
+                                src={thumbnail.url}
+                                alt={project.title}
+                                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
+                              />
+                            )
+                          ) : (
+                            <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}></div>
+                          )}
+                        </div>
+                      );
+                    })()}
+                  </div>
+
                   <div className="card-content">
                     <h3 className='view-all-link'> {project.title}</h3>
                     <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#94a3b8' }}>{project.tagline}</p>
