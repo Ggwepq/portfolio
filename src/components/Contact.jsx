@@ -12,7 +12,7 @@ const Contact = () => {
     const formData = new FormData(e.target);
 
     try {
-      const response = await fetch("https://formspree.io/f/xojjavgz", {
+      const response = await fetch(`https://formspree.io/f/${import.meta.env.VITE_FORMSPREE}`, {
         method: "POST",
         body: formData,
         headers: {
@@ -85,7 +85,7 @@ const Contact = () => {
           <h3 className="section-title">Message Sent!</h3>
           <p className="contact-text">Thank you for reaching out. I'll get back to you as soon as possible.</p>
 
-          <button onClick={handleReset} className="submit-btn">
+          <button onClick={handleReset} className="submit-btn" disabled={isSending}>
             Send Another Message
           </button>
         </div>
