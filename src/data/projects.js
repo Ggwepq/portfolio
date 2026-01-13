@@ -7,16 +7,40 @@ export const projects = [
 
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp5",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319254/portfolio/exts/Sort_yonfix.png",
       },
       {
         type: "image",
-        url: "https://www.spartasystems.com/wp-content/uploads/2021/03/trackwise-digital-video-still-1.jpg.webp",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319253/portfolio/exts/Screenshot_2026-01-13_232802_kxy575.png",
       },
       {
         type: "image",
-        url: "https://comparecamp.com/media/uploads/2020/06/TrackWise-Digital-Dashboard.png",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319254/portfolio/exts/Screenshot_2026-01-13_232821_vm4oiu.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319253/portfolio/exts/Screenshot_2026-01-13_232935_bhfef8.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319254/portfolio/exts/Screenshot_2026-01-13_233516_xhl0pu.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319253/portfolio/exts/Screenshot_2026-01-13_234128_dwu7z9.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319253/portfolio/exts/Screenshot_2026-01-13_234157_unw3oi.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319254/portfolio/exts/Screenshot_2026-01-13_234230_qfqrmn.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768319254/portfolio/exts/Screenshot_2026-01-13_234221_h2vgit.png",
       },
     ],
 
@@ -47,16 +71,22 @@ export const projects = [
         heading: "Key Features",
         type: "list",
         items: [
-          "Real-time expense categorization using AlpineJS.",
-          "Monthly forecasting algorithms based on previous spending.",
-          "Dark mode support fully integrated with Tailwind.",
-          "Export data to CSV/PDF for tax purposes.",
+          "Adding and Editing Expense and Income Transactions",
+          "Deleting Transactions",
+          "Categorizing Transaction",
+          "Searching, Filtering, Sorting Transaction",
+          "Image Support and Tagging Transaction",
+          "Adding and Editing Wallet (Adding, Editing, Deleting, Pinning, Grouping)",
+          "Deleting Wallets",
+          "Pinning and Categorizing Wallets",
+          "Budget Setting for Wallets",
+          "Adding and Deleting Category for Transactions",
+          "Grouping Categories and Wallets",
+          "Reports and Charts for Transactions",
+          "Recurring Transactions Support",
+          "Multi-theme Support",
+          "Login and Register with Email Support",
         ],
-      },
-      {
-        heading: "Technical Challenges",
-        content:
-          "One of the hardest parts was handling the real-time updates for the budget bars. Using Livewire allowed me to update the UI without full page reloads, but managing the state between the modal inputs and the dashboard chart required careful synchronization.",
       },
     ],
   },
@@ -68,30 +98,105 @@ export const projects = [
     year: "2024",
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp4",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156477/portfolio/bis/Screenshot_2026-01-12_021652_pdusuv.png",
       },
       {
         type: "image",
-        url: "https://www.spartasystems.com/wp-content/uploads/2021/03/trackwise-digital-video-still-1.jpg.webp",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156480/portfolio/bis/Screenshot_2026-01-12_021734_k6kkm6.png",
       },
       {
         type: "image",
-        url: "https://comparecamp.com/media/uploads/2020/06/TrackWise-Digital-Dashboard.png",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156479/portfolio/bis/Screenshot_2026-01-12_021827_sptfmz.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156478/portfolio/bis/Screenshot_2026-01-12_021908_hjgr4f.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156483/portfolio/bis/Screenshot_2026-01-12_022040_e1z37m.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156482/portfolio/bis/Screenshot_2026-01-12_021936_ojyet5.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156484/portfolio/bis/Screenshot_2026-01-12_022154_ftfwma.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156487/portfolio/bis/Screenshot_2026-01-12_022506_k2hbtr.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156486/portfolio/bis/Screenshot_2026-01-12_022515_lyiupm.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156488/portfolio/bis/Screenshot_2026-01-12_022533_grgk2p.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156490/portfolio/bis/Screenshot_2026-01-12_022833_twacgh.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156491/portfolio/bis/Screenshot_2026-01-12_022901_csmv3g.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156493/portfolio/bis/Screenshot_2026-01-12_022926_l2oxgd.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156494/portfolio/bis/Screenshot_2026-01-12_022940_g9ppgy.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156495/portfolio/bis/Screenshot_20241205-065232_atti4b.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156501/portfolio/bis/Screenshot_20241209-053715_higbb3.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768156478/portfolio/bis/image_i5fqr4.png",
       },
     ],
     tech: ["Laravel", "Bootstrap", "JQuery", "MySQL"],
     role: ["Full-stack Developer"],
     links: { repo: "https://github.com/Ggwepq/Barangay-Information-System" },
     demoButton: "Live Demo",
-    sections: [],
+    sections: [
+      {
+        heading: "Overview",
+        content:
+          "A full-stack information system for Barangay 73 Caloocan to reduce manual processing errors and improve queueing efficiency. Implemented resident, officer, and account management, court schedule handling, certificate request and printing, and announcement delivery via email and SMS with separate admin and resident portals.",
+      },
+      {
+        heading: "Key Features",
+        type: "list",
+        items: [
+          "Resident Management and Filtering",
+          "Certificate Request and Request Management",
+          "Email and SMS Announcements",
+          "Barangay Project Management",
+          "Court Schedule Tracking",
+          "Residents and Blotter Reports",
+          "Officer Management",
+          "System Settings and Backup",
+        ],
+      },
+    ],
   },
 
   {
     id: "preplus",
     title: "Preplus GMS",
-    tagline:
-      "A Gym Management System with member management, inventory management, forecast and recommendation based on trends and gym's sales.",
+    tagline: "A Gym Management System for Fitness Academy. (Freelanced)",
     year: "2024",
 
     gallery: [
@@ -145,7 +250,26 @@ export const projects = [
     },
     demoButton: "Live Demo",
 
-    sections: [],
+    sections: [
+      {
+        heading: "Overview",
+        content:
+          "Preplus GMS is a Gym Management System made for Fitness Academy Gym.",
+      },
+      {
+        heading: "Key Features",
+        type: "list",
+        items: [
+          "Member and Membership Management",
+          "Account Management",
+          "Product and Stock Management",
+          "BMI Calculator",
+          "Gym Sales Forecasting",
+          "Recommendation based on Trends and Sales",
+          "Charts and Visualization for Sales and Forecasting",
+        ],
+      },
+    ],
   },
   {
     id: "bnb",
@@ -155,8 +279,24 @@ export const projects = [
 
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp4",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322179/portfolio/BrewsNBites/Screenshot_2026-01-14_003246_pi4bhv.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322179/portfolio/BrewsNBites/Screenshot_2026-01-14_003305_ud7scc.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322178/portfolio/BrewsNBites/Screenshot_2026-01-14_003331_yh3wkr.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322178/portfolio/BrewsNBites/Screenshot_2026-01-14_003107_hjwyfk.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322178/portfolio/BrewsNBites/Screenshot_2026-01-14_003036_ki9anh.png",
       },
     ],
 
@@ -178,8 +318,16 @@ export const projects = [
 
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp4",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768323896/portfolio/flixtochill/Screenshot_2026-01-14_010111_fpaho9.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768323887/portfolio/flixtochill/Screenshot_2026-01-14_010141_mlatjy.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768323901/portfolio/flixtochill/Screenshot_2026-01-14_010429_orpjbm.png",
       },
     ],
 
@@ -187,12 +335,49 @@ export const projects = [
     role: ["Full-stack Developer"],
 
     links: {
-      demo: "https://demo.com",
       repo: "https://github.com/Ggwepq/FlixtoChill",
     },
     demoButton: "Live Demo",
 
     sections: [],
+  },
+
+  {
+    id: "watchlist",
+    title: "Watchlist API and UI",
+    tagline: "Movie watchlist and streaming platform.",
+    year: "2024",
+
+    gallery: [
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768323241/portfolio/Screenshot_2026-01-14_005335_uni8ql.png",
+      },
+      {
+        type: "video",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768323226/portfolio/flixtochill-preview_eeei0r.mp4",
+      },
+    ],
+
+    tech: ["Laravel", "TailwindCSS", "MySQL", "TMDB API"],
+    role: ["Full-Stack Developer"],
+
+    links: {
+      repo: "https://github.com/Ggwepq/SIA-Restful-Api/tree/movie-api",
+    },
+    demoButton: "Live Demo",
+
+    sections: [
+      {
+        heading: "Key Features",
+        type: "list",
+        items: [
+          "Create, Edit, Delete Watchlists",
+          "Add, Edit, Delete Movies",
+          "Movie Streaming",
+        ],
+      },
+    ],
   },
   {
     id: "caveman",
@@ -261,8 +446,12 @@ export const projects = [
 
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp4",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322463/portfolio/potfolio/Portfolio_c49q8m.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768322461/portfolio/potfolio/Portfolio_2_sa2mou.png",
       },
     ],
 
@@ -287,8 +476,16 @@ export const projects = [
 
     gallery: [
       {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768152159/portfolio/portfolio_jltuxp.mp4",
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768324123/portfolio/MoneySense/Moneysense_dibidk.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768324120/portfolio/MoneySense/Screenshot_2026-01-14_010713_vkhegg.png",
+      },
+      {
+        type: "image",
+        url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1768324121/portfolio/MoneySense/asdfadf_ubapme.png",
       },
     ],
 

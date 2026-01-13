@@ -11,10 +11,10 @@ const ProjectThumbnail = ({ gallery, title }) => {
   useEffect(() => {
     let interval;
 
-    if (isHovering && images.length > 1 && primaryAsset.type !== 'video') {
+    if (isHovering && images.length > 1) {
       interval = setInterval(() => {
         setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-      }, 1200);
+      }, 800);
     } else {
       setCurrentImageIndex(0);
     }

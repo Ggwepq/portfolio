@@ -204,34 +204,6 @@ function Home() {
     },
   ];
 
-  // const projects = [
-  //   {
-  //     image: "https://via.placeholder.com/150",
-  //     title: "TrackWise",
-  //     description: "A personal expense tracking system that helps manage and tracks expense, budget, and savings made with Laravel, Livewire, and PostgreSQL.",
-  //     tags: ["Laravel", "Livewire", "TailwindCSS", "AlpineJS", "PostgreSQL", "Vercel", "Supabase"]
-  //   },
-  //   {
-  //     image: "https://via.placeholder.com/150",
-  //     title: "Barangay Information System",
-  //     description: "A Barangay Information System made for the residents of Barangay 73 Caloocan to reduce manual errors and improve queueing time made with Laravel, Boostrap, and MySQL.",
-  //     tags: ["Laravel", "Bootstrap", "MySQL"]
-  //   },
-  //   {
-  //     image: "",
-  //     title: "Watchlist API & UI",
-  //     description: "An API for managing movie playlists and a UI for streaming movies from those playlists made with Laravel, TailwindCSS, MySQL, TMDB API, and Embed.su API",
-  //     tags: ["Laravel", "TailwindCSS", "MySQL", "TMDB API"]
-  //   },
-  //   {
-  //     image: "https://via.placeholder.com/150",
-  //     title: "MoneySense",
-  //     description: "A voice-guided mobile application for identifying and verifying Philippine denominations for visually-impaired Filipinos made with Flutter, and YOLOv8.",
-  //     tags: ["Flutter", "Dart", "Python"]
-  //   },
-  //
-  // ];
-
   return (
     <div className="container">
 

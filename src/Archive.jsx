@@ -70,7 +70,7 @@ const Archive = () => {
 
 
               {/* IMAGE */}
-              <div className="col-image">
+              <div className="project-image">
                 <ProjectThumbnail gallery={project.gallery} title={project.title} />
               </div>
 
