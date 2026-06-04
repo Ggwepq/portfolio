@@ -468,6 +468,54 @@ export const projects = [
   },
 
   {
+    id: "alams",
+    title: "ALAMS",
+    tagline:
+      "Automated logbook attendance monitoring system for employee attendance management system using face detection and verification",
+    year: "2026",
+
+    gallery: [
+      {
+        type: "video",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1780552860/portfolio/alams-media_o5mown.mp4",
+      },
+    ],
+
+    tech: ["Flutter", "Dart"],
+    role: ["Mobile Developer"],
+
+    links: {
+      repo: "https://github.com/Ggwepq/alams",
+    },
+    demoButton: "Repo Link",
+
+    sections: [
+      {
+        heading: "Overview",
+        content:
+          "ALAMS is a mobile attendance monitoring application built with Flutter for Android. It replaces traditional punch cards and PIN-based systems with a fully automated, camera-driven workflow that verifies employee identity through real-time face recognition, liveness detection, and neural-network anti-spoofing before recording any attendance event.",
+      },
+      {
+        heading: "Key Features",
+        type: "list",
+        items: [
+          "Face Recognition",
+          "Multi-Layer Anti-Spoofing",
+          "Guided Employee Registration",
+          "Attendance Logging",
+          "Admin Dashboard",
+          "Department Filtering",
+          "Supabase Cloud Sync",
+          "Hashed Admin Credentials",
+          "Login Rate Limiting",
+          "Configurable Settings",
+          "Soft-Delete Data Preservation"
+        ],
+      },
+    ],
+  },
+
+  {
     id: "moneysense",
     title: "MoneySense",
     tagline:
