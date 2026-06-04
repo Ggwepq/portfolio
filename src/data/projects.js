@@ -509,7 +509,7 @@ export const projects = [
     gallery: [
       {
         type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768142267/hand2voice-preview_pus5hx.mp4",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768142267/portfolio/hand2voice-preview_pus5hx.mp4",
       },
     ],
 
@@ -550,7 +550,7 @@ export const projects = [
     gallery: [
       {
         type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150481/kings-knight-preview_b0oho8.mp4",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150481/portfolio/kings-knight-preview_b0oho8.mp4",
       },
     ],
 
@@ -571,15 +571,15 @@ export const projects = [
     gallery: [
       {
         type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150471/forest-escape-preview-3_cqeqjg.mp4",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150471/portfolio/forest-escape-preview-3_cqeqjg.mp4",
+      },
+      {
+        type: "video",
+        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150471/portfolio/forest-escape-preview-2_rofncz.mp4",
       },
       {
         type: "video",
         url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768137006/portfolio/forest-escape-preview_a3xkiv.mp4",
-      },
-      {
-        type: "video",
-        url: "https://res.cloudinary.com/dxau89gcg/video/upload/v1768150471/forest-escape-preview-2_rofncz.mp4",
       },
     ],
 
