@@ -1,0 +1,83 @@
+.rainbow-input-wrapper {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px; /* Match input border radius */
+  z-index: 1;
+}
+
+.rainbow-input-wrapper::before,
+.rainbow-input-wrapper::after {
+  position: absolute;
+  inset: -3px; /* Slightly thinner than the profile picture's -6px */
+  border-radius: 8px;
+  background: conic-gradient(from var(--glow-angle),
+      #f94144, #f3722c, #f8961e, #f9844a, #f9c74f,
+      #90be6d, #43aa8b, #4d908e, #277da1, #577590, #f94144);
+  pointer-events: none;
+  animation: glow-rotate 4s linear infinite;
+  content: '';
+  z-index: -1;
+}
+
+.rainbow-input-wrapper::after {
+  filter: blur(1em); /* Slightly less blur than profile picture */
+  opacity: 0.8;
+}
+
+.secret-input {
+  background-color: #1e293b;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-body);
+  font-size: 1.2rem;
+  outline: none;
+  width: 300px;
+  text-align: center;
+}
+
+.secret-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  z-index: 10;
+  position: relative;
+}
+
+.dashboard-container {
+  padding: 6rem 24px;
+  max-width: 1000px;
+  margin: 0 auto;
+  z-index: 10;
+  position: relative;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 2rem;
+  background: rgba(30, 41, 59, 0.7);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+  color: var(--text-main);
+}
+
+.dashboard-table th {
+  background: rgba(15, 23, 42, 0.8);
+  font-family: var(--font-heading);
+  color: var(--accent);
+}
+
+.dashboard-table tr:last-child td {
+  border-bottom: none;
+}
