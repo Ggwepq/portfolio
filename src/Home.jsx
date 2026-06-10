@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from './firebase';
 import { FaGithub, FaLinkedin, FaFacebookF, FaLastfm } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
@@ -18,6 +20,46 @@ function Home() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const featuredProject = projects.filter(p => ['trackwise', 'bis', 'preplus', 'moneysense'].includes(p.id));
+
+  // --- VISITOR TRACKING ---
+  useEffect(() => {
+    const trackVisitor = async () => {
+      if (!db) return;
+      
+      // Prevent duplicate tracking by using sessionStorage
+      if (sessionStorage.getItem('hasVisited')) return;
+      sessionStorage.setItem('hasVisited', 'true');
+
+      let ipData = { ip: 'Unknown IP', city: 'Unknown City', country_name: 'Unknown Country', latitude: '', longitude: '', org: 'Unknown ISP' };
+      
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        if (res.ok) {
+           ipData = await res.json();
+        }
+      } catch (e) {
+        // IP fetch failed (likely blocked by adblocker)
+      }
+
+      try {
+        await addDoc(collection(db, 'visitors'), {
+          ip: ipData.ip || 'Unknown IP',
+          location: `${ipData.city || 'Unknown City'}, ${ipData.country_name || 'Unknown Country'}`,
+          lat: ipData.latitude || '',
+          lng: ipData.longitude || '',
+          isp: ipData.org || 'Unknown ISP',
+          device: /Mobile|Android|iP(ad|hone)/.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+          timestamp: serverTimestamp(),
+          userAgent: navigator.userAgent
+        });
+      } catch (error) {
+        console.error("Error saving visit to Firebase:", error);
+      }
+    };
+
+    trackVisitor();
+  }, []);
+  // ------------------------
 
   useEffect(() => {
     const handleScroll = () => {
