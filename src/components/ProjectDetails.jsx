@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { trackProjectView } from '../utils/analytics';
 import { projects } from '../data/projects';
 import '../App.css';
 import CursorGradient from './CursorGradient';
@@ -19,7 +20,10 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    if (id) {
+      trackProjectView(id);
+    }
+  }, [id]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {

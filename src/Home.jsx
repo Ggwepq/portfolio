@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase';
+import { trackVisitorInit, updateVisitorActivity } from './utils/analytics';
 import { FaGithub, FaLinkedin, FaFacebookF, FaLastfm } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
@@ -23,41 +24,7 @@ function Home() {
 
   // --- VISITOR TRACKING ---
   useEffect(() => {
-    const trackVisitor = async () => {
-      if (!db) return;
-      
-      // Prevent duplicate tracking by using sessionStorage
-      if (sessionStorage.getItem('hasVisited')) return;
-      sessionStorage.setItem('hasVisited', 'true');
-
-      let ipData = { ip: 'Unknown IP', city: 'Unknown City', country_name: 'Unknown Country', latitude: '', longitude: '', org: 'Unknown ISP' };
-      
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        if (res.ok) {
-           ipData = await res.json();
-        }
-      } catch (e) {
-        // IP fetch failed (likely blocked by adblocker)
-      }
-
-      try {
-        await addDoc(collection(db, 'visitors'), {
-          ip: ipData.ip || 'Unknown IP',
-          location: `${ipData.city || 'Unknown City'}, ${ipData.country_name || 'Unknown Country'}`,
-          lat: ipData.latitude || '',
-          lng: ipData.longitude || '',
-          isp: ipData.org || 'Unknown ISP',
-          device: /Mobile|Android|iP(ad|hone)/.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
-          timestamp: serverTimestamp(),
-          userAgent: navigator.userAgent
-        });
-      } catch (error) {
-        console.error("Error saving visit to Firebase:", error);
-      }
-    };
-
-    trackVisitor();
+    trackVisitorInit();
   }, []);
   // ------------------------
 
@@ -290,7 +257,13 @@ function Home() {
           <h1 className="name">John Cedric Abaloyan</h1>
           <h2 className="title">IT Student</h2>
 
-          <a href="https://tinyurl.com/mpwzt545" target="_blank" rel="noopener noreferrer" className="btn-resume">
+          <a 
+            href="https://tinyurl.com/mpwzt545" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="btn-resume"
+            onClick={() => updateVisitorActivity({ clickedResume: true })}
+          >
             View Resume
           </a>
 
@@ -304,8 +277,8 @@ function Home() {
         </div>
 
         <div className="socials" >
-          <a href="https://github.com/Ggwepq" target="_blank"><FaGithub /></a>
-          <a href="https://www.linkedin.com/in/johnabaloyan28/" target="_blank"><FaLinkedin /></a>
+          <a href="https://github.com/Ggwepq" target="_blank" onClick={() => updateVisitorActivity({ clickedGithub: true })}><FaGithub /></a>
+          <a href="https://www.linkedin.com/in/johnabaloyan28/" target="_blank" onClick={() => updateVisitorActivity({ clickedLinkedIn: true })}><FaLinkedin /></a>
           <a href="https://www.facebook.com/johnabaloyan28" target="_blank"><FaFacebookF /></a>
           <a style={{ display: isPlaying ? '' : 'none', transition: "display .3s ease-in-out" }} href="https://last.fm/user/Ggwepq" target="_blank"><FaLastfm /></a>
 
