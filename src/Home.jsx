@@ -258,7 +258,7 @@ function Home() {
           <h2 className="title">IT Student</h2>
 
           <a 
-            href="https://tinyurl.com/mpwzt545" 
+            href="/resume.pdf" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="btn-resume"
