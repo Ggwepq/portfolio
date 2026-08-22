@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { updateVisitorActivity } from '../utils/analytics';
 import '../App.css';
 
 const Contact = () => {
@@ -24,7 +23,6 @@ const Contact = () => {
       if (response.ok) {
         setIsSubmitted(true);
         e.target.reset();
-        updateVisitorActivity({ sentMessage: true });
       } else {
         alert("Oops! There was a problem submitting your form");
       }

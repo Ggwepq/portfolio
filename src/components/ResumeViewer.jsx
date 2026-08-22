@@ -1,17 +1,49 @@
-import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaDownload } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { FaArrowLeft, FaDownload, FaCode, FaHeadset, FaExternalLinkAlt } from 'react-icons/fa';
 import CursorGradient from './CursorGradient';
 import Starfield from './Starfield';
-import { updateVisitorActivity } from '../utils/analytics';
+import { resumes, getResumeEmbedUrl, getResumeDownloadUrl } from '../data/resumes';
 import './ResumeViewer.css';
 
 function ResumeViewer() {
-  // Automatically track resume view when they visit this page
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedRole = searchParams.get('role');
+
+  // Find matching resume or default to first
+  const initialResume = resumes.find(r => r.id === requestedRole) || resumes[0];
+  const [selectedId, setSelectedId] = useState(initialResume.id);
+
+  // Sync if URL search param changes
   useEffect(() => {
-    updateVisitorActivity({ clickedResume: true });
+    if (requestedRole && resumes.some(r => r.id === requestedRole)) {
+      setSelectedId(requestedRole);
+    }
+  }, [requestedRole]);
+
+  useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [selectedId]);
+
+  const activeResume = resumes.find(r => r.id === selectedId) || resumes[0];
+  const embedUrl = getResumeEmbedUrl(activeResume.url);
+  const downloadUrl = getResumeDownloadUrl(activeResume.url);
+  const isGoogleEmbed = embedUrl.includes('google.com');
+
+  const handleTabChange = (id) => {
+    setSelectedId(id);
+    setSearchParams({ role: id });
+  };
+
+  const getTabIcon = (id) => {
+    switch (id) {
+      case 'it-support':
+        return <FaHeadset />;
+      case 'developer':
+      default:
+        return <FaCode />;
+    }
+  };
 
   return (
     <div className="container" style={{ display: 'block', minHeight: '100vh' }}>
@@ -23,41 +55,86 @@ function ResumeViewer() {
         <header className="resume-header">
           <div className="resume-title-section">
             <h1 className="resume-main-title">John Cedric Abaloyan</h1>
-            <p className="resume-subtitle">Curriculum Vitae / Resume</p>
+            <p className="resume-subtitle">{activeResume.role}</p>
+          </div>
+
+          {/* Role Switcher Tabs */}
+          <div className="resume-tabs-wrapper">
+            {resumes.map((resume) => (
+              <button
+                key={resume.id}
+                type="button"
+                className={`resume-tab-btn ${selectedId === resume.id ? 'active' : ''}`}
+                onClick={() => handleTabChange(resume.id)}
+              >
+                {getTabIcon(resume.id)}
+                <span>{resume.id === 'developer' ? 'Developer' : 'IT Support'}</span>
+              </button>
+            ))}
           </div>
 
           <div className="resume-actions-group">
             <Link to="/" className="btn-resume-back">
               <FaArrowLeft /> Back to Portfolio
             </Link>
-            
+
             <a 
-              href="/resume.pdf" 
-              download="John_Cedric_Abaloyan_Resume.pdf" 
+              href={downloadUrl} 
+              download={activeResume.downloadFilename || `${activeResume.id}-resume.pdf`} 
               className="btn-resume-download"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <FaDownload /> Download PDF
             </a>
           </div>
         </header>
 
-        {/* PDF Frame Viewer */}
+        {/* Frame Viewer */}
         <div className="pdf-viewer-wrapper">
-          <object
-            data="/resume.pdf"
-            type="application/pdf"
-            className="pdf-iframe"
-          >
+          {isGoogleEmbed ? (
             <iframe
-              src="/resume.pdf"
-              title="Resume PDF"
+              key={embedUrl}
+              src={embedUrl}
+              title={`${activeResume.title} Preview`}
+              className="pdf-iframe"
+              allow="autoplay"
+            />
+          ) : (
+            <object
+              key={embedUrl}
+              data={embedUrl}
+              type="application/pdf"
               className="pdf-iframe"
             >
-              <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>
-                This browser does not support inline PDFs. Please use the download button above to view the resume.
-              </div>
-            </iframe>
-          </object>
+              <iframe
+                src={embedUrl}
+                title={`${activeResume.title} PDF`}
+                className="pdf-iframe"
+              >
+                <div className="pdf-fallback-container">
+                  <p>This browser does not support inline PDF previewing.</p>
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    <a 
+                      href={activeResume.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="btn-resume-back"
+                    >
+                      <FaExternalLinkAlt /> Open in New Tab
+                    </a>
+                    <a 
+                      href={downloadUrl} 
+                      download={activeResume.downloadFilename}
+                      className="btn-resume-download"
+                    >
+                      <FaDownload /> Download PDF
+                    </a>
+                  </div>
+                </div>
+              </iframe>
+            </object>
+          )}
         </div>
       </div>
     </div>

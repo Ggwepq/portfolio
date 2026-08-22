@@ -3,26 +3,27 @@
   display: flex;
   flex-direction: column;
   color: var(--text-main);
-  padding: 2rem 24px;
-  max-width: 1000px;
+  padding: 1.5rem 24px 2rem 24px;
+  max-width: 1100px;
   margin: 0 auto;
   z-index: 10;
   position: relative;
-  animation: fadeIn 0.4s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .resume-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
-  background: rgba(30, 41, 59, 0.4);
+  margin-bottom: 1.5rem;
+  background: rgba(30, 41, 59, 0.5);
   border: 1px solid rgba(148, 163, 184, 0.15);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  padding: 1rem 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 1.25rem 1.75rem;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  gap: 1rem;
 }
 
 .resume-title-section {
@@ -32,7 +33,7 @@
 }
 
 .resume-main-title {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 0;
@@ -41,8 +42,46 @@
 
 .resume-subtitle {
   font-size: 0.85rem;
-  color: var(--text-muted);
+  color: var(--accent, #5eead4);
   margin: 0;
+  font-weight: 500;
+}
+
+/* Tabs switcher */
+.resume-tabs-wrapper {
+  display: flex;
+  background: rgba(15, 23, 42, 0.6);
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  gap: 4px;
+}
+
+.resume-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.resume-tab-btn:hover {
+  color: var(--text-main, #f8fafc);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.resume-tab-btn.active {
+  background: var(--accent, #5eead4);
+  color: #0f172a;
+  box-shadow: 0 2px 8px rgba(94, 234, 212, 0.3);
 }
 
 .resume-actions-group {
@@ -65,6 +104,7 @@
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn-resume-back:hover {
@@ -77,33 +117,34 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: var(--bg-body);
-  background-color: var(--accent);
+  color: #0f172a;
+  background-color: var(--accent, #5eead4);
   font-weight: 600;
   font-size: 0.85rem;
   font-family: var(--font-heading);
   transition: all 0.2s ease;
-  border: 1px solid var(--accent);
+  border: 1px solid var(--accent, #5eead4);
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .btn-resume-download:hover {
   background-color: transparent;
-  color: var(--accent);
+  color: var(--accent, #5eead4);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(94, 234, 212, 0.3);
 }
 
 .pdf-viewer-wrapper {
   flex-grow: 1;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.7);
   border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 12px;
   overflow: hidden;
-  height: calc(100vh - 180px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  height: calc(100vh - 200px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-direction: column;
 }
@@ -115,8 +156,20 @@
   background-color: #1e293b;
 }
 
-/* Custom layout for mobile */
-@media (max-width: 640px) {
+.pdf-fallback-container {
+  padding: 3rem 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 1.25rem;
+}
+
+/* Custom layout for mobile / smaller screens */
+@media (max-width: 900px) {
   .resume-header {
     flex-direction: column;
     align-items: stretch;
@@ -128,11 +181,15 @@
     align-items: center;
   }
 
+  .resume-tabs-wrapper {
+    justify-content: center;
+  }
+
   .resume-actions-group {
     justify-content: center;
   }
 
   .pdf-viewer-wrapper {
-    height: calc(100vh - 240px);
+    height: calc(100vh - 280px);
   }
 }

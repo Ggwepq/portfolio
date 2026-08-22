@@ -49,6 +49,16 @@ a:hover {
   color: var(--accent);
 }
 
+.highlight-accent {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.highlight-text {
+  color: var(--text-main);
+  font-weight: 500;
+}
+
 /* --- MAIN LAYOUT --- */
 .container {
   max-width: 1200px;
