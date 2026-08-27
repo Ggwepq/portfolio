@@ -305,7 +305,7 @@ function Home() {
                         My experience includes developing <span className="highlight-text">Laravel</span> web applications, <span className="highlight-text">Flutter</span> mobile apps, <span className="highlight-text">Unity</span> games, and <span className="highlight-text">machine learning</span>-powered applications, both independently and through freelance and academic projects. I’m adaptable, curious, and always looking to learn new technologies and improve my skills.
                     </p>
                     <p>
-                        Outside of programming, I enjoy video editing, 3D animation, reading books and manga, going for walks, and customizing my <a className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a> .
+                        Outside of programming, I enjoy video editing, 3D animation, reading books and manga, going for walks, and customizing my <a style={{ textDecoration: 'underline' }} className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a>🏵️.
                     </p>
                 </section>
 
