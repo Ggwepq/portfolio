@@ -13,6 +13,7 @@ const ProjectDetail = () => {
   const { id } = useParams();
   const project = projects.find(p => p.id === id);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slideDirection, setSlideDirection] = useState('next');
 
   const headerRef = useRef(null);
   const [isOnTop, setIsOnTop] = useState("true");
@@ -20,6 +21,18 @@ const ProjectDetail = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
+
+  // Preload all gallery images for instant, smooth slide transitions
+  useEffect(() => {
+    if (project?.gallery) {
+      project.gallery.forEach((item) => {
+        if (item.type === 'image' && item.url) {
+          const img = new Image();
+          img.src = item.url;
+        }
+      });
+    }
+  }, [project]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -40,10 +53,16 @@ const ProjectDetail = () => {
   if (!project) return <div className="container"><h2>Project not found</h2></div>;
 
   const nextSlide = () => {
+    setSlideDirection('next');
     setCurrentSlide((prev) => (prev === project.gallery.length - 1 ? 0 : prev + 1));
   };
   const prevSlide = () => {
+    setSlideDirection('prev');
     setCurrentSlide((prev) => (prev === 0 ? project.gallery.length - 1 : prev - 1));
+  };
+  const goToSlide = (idx) => {
+    setSlideDirection(idx > currentSlide ? 'next' : 'prev');
+    setCurrentSlide(idx);
   };
   return (
     <div className="container project-detail-container">
@@ -58,8 +77,8 @@ const ProjectDetail = () => {
         </Link>
       </div>
 
-      <div className="carousel-wrapper" >
-        <div className="carousel-content" >
+      <div className="carousel-wrapper">
+        <div key={currentSlide} className={`carousel-content slide-${slideDirection}`}>
           {project.gallery[currentSlide].type === 'video' ? (
 
             <div style={{ width: '100%', height: '100%' }}>
@@ -81,17 +100,22 @@ const ProjectDetail = () => {
             </div>
 
           ) : (
-            <img src={project.gallery[currentSlide].url} alt="Project Screenshot" className="carousel-media" />
+            <img 
+              src={project.gallery[currentSlide].url} 
+              alt={`${project.title} slide ${currentSlide + 1}`} 
+              className="carousel-media" 
+              loading="eager"
+            />
           )}
         </div>
 
         {project.gallery.length > 1 && (
           <>
-            <button className="carousel-btn prev" onClick={prevSlide}><FaChevronLeft /></button>
-            <button className="carousel-btn next" onClick={nextSlide}><FaChevronRight /></button>
+            <button className="carousel-btn prev" onClick={prevSlide} aria-label="Previous slide"><FaChevronLeft /></button>
+            <button className="carousel-btn next" onClick={nextSlide} aria-label="Next slide"><FaChevronRight /></button>
             <div className="carousel-dots">
               {project.gallery.map((_, idx) => (
-                <span key={idx} className={`dot ${idx === currentSlide ? 'active' : ''}`} onClick={() => setCurrentSlide(idx)}></span>
+                <span key={idx} className={`dot ${idx === currentSlide ? 'active' : ''}`} onClick={() => goToSlide(idx)}></span>
               ))}
             </div>
           </>

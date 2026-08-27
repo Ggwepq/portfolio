@@ -1003,9 +1003,50 @@ textarea::placeholder {
   position: relative;
 }
 
+.carousel-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-content.slide-next {
+  animation: carouselSlideNext 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.carousel-content.slide-prev {
+  animation: carouselSlidePrev 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes carouselSlideNext {
+  from {
+    transform: translateX(45px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes carouselSlidePrev {
+  from {
+    transform: translateX(-45px);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 .carousel-media {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
+  user-select: none;
 }
 
 .media-player {

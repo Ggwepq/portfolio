@@ -9,6 +9,16 @@ const ProjectThumbnail = ({ gallery, title }) => {
   const primaryAsset = gallery && gallery.length > 0 ? gallery[0] : null;
 
   useEffect(() => {
+    // Preload images for instant hover switching
+    images.forEach((item) => {
+      if (item.url) {
+        const img = new Image();
+        img.src = item.url;
+      }
+    });
+  }, [images]);
+
+  useEffect(() => {
     let interval;
 
     if (isHovering && images.length > 1) {
