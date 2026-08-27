@@ -261,7 +261,7 @@ function Home() {
                 </div>
 
                 <div>
-                    <h1 className="name">John Cedric Abaloyan</h1>
+                    <h1 className="name">John Cedric<br />Abaloyan</h1>
                     <h2 className="title">IT Student</h2>
 
                     <button

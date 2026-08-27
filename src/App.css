@@ -79,9 +79,10 @@ a:hover {
     width: 40%;
     position: sticky;
     top: 0;
+    height: 100vh;
     max-height: 100vh;
-    padding-top: 6rem;
-    padding-bottom: 6rem;
+    padding-top: clamp(2.5rem, 5vh, 4rem);
+    padding-bottom: clamp(2.5rem, 5vh, 4rem);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -89,7 +90,7 @@ a:hover {
 
   .right-section {
     width: 52%;
-    padding-top: 6rem;
+    padding-top: clamp(2.5rem, 5vh, 5rem);
     padding-bottom: 12rem;
   }
 }
@@ -107,7 +108,7 @@ a:hover {
   }
 
   .btn-resume {
-    margin: 1rem 0 5rem 0;
+    margin: 1rem 0 3.5rem 0;
   }
 
   .right-section {
@@ -119,6 +120,9 @@ a:hover {
 .profile-img-wrapper {
   width: 260px;
   height: 250px;
+  max-height: 28vh;
+  max-width: 29vh;
+  aspect-ratio: 260 / 250;
   position: relative;
   border-radius: 15%;
   background-color: #334155;
@@ -248,16 +252,18 @@ a:hover {
 /* --- TYPOGRAPHY --- */
 h1 {
   font-size: 3rem;
+  line-height: 1.08;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
 }
 
 h2 {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 500;
   color: var(--text-main);
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 }
 
 h3 {
@@ -275,22 +281,22 @@ p {
 /* --- COMPONENTS --- */
 
 section {
-  scroll-margin-top: 100px;
-  margin-bottom: 6rem;
+  scroll-margin-top: 80px;
+  margin-bottom: 5rem;
 }
 
 /* Navigation Links */
 .nav-list {
   list-style: none;
-  margin-top: 2rem;
+  margin-top: 1rem;
   width: max-content;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 10px 0;
-  font-size: 0.75rem;
+  padding: 8px 0;
+  font-size: 0.725rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -327,11 +333,11 @@ section {
 
 /* Cards */
 .card {
-  padding: 1.5rem;
+  padding: 1.25rem;
   border-radius: 0.5rem;
   transition: background-color 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   display: flex;
   gap: 1rem;
   flex-direction: column;
@@ -415,14 +421,17 @@ section {
 
 .btn-resume {
   display: inline-block;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border: 1px solid var(--accent);
   border-radius: 4px;
   color: var(--accent);
   font-family: var(--font-heading);
   font-weight: 500;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   transition: all 0.2s ease-in-out;
+  margin: 0.5rem 0 1.25rem 0;
+  background: transparent;
+  cursor: pointer;
 }
 
 .btn-resume:hover {
@@ -433,8 +442,8 @@ section {
 .socials {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 1.5rem;
+  gap: 18px;
+  font-size: 1.35rem;
 }
 
 .btn-contact {
