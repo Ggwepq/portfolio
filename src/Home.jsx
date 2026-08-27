@@ -237,6 +237,15 @@ function Home() {
                     onMouseLeave={handleMouseLeave}
                     onClick={toggleAudio}
                 >
+                    {/* Cute hover / now playing speech bubble */}
+                    <div className={`click-me-bubble ${isPlaying ? 'playing' : ''}`}>
+                        <span>
+                            {isPlaying && songData?.title
+                                ? `♫ ${songData.title}`
+                                : 'Click me! 🎵'}
+                        </span>
+                    </div>
+
                     <div className="profile-img-container">
 
                         <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
@@ -249,14 +258,6 @@ function Home() {
                             src={audioUrl}
                             onEnded={handleAudioEnded}
                         />
-                    )}
-
-                    {songData && isPlaying && (
-                        <div className="music-badge">
-                            <a href={songData.link}>
-                                <span>
-                                    Last played - ♫ {songData.title}</span></a>
-                        </div>
                     )}
                 </div>
 

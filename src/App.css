@@ -249,6 +249,79 @@ a:hover {
   opacity: 1;
 }
 
+/* --- CUTE CLICK ME / NOW PLAYING SPEECH BUBBLE --- */
+.click-me-bubble {
+  position: absolute;
+  top: -14px;
+  right: -8px;
+  background: rgba(15, 23, 42, 0.94);
+  border: 1.5px solid var(--accent);
+  color: var(--accent);
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  max-width: 250px;
+  box-shadow: 0 4px 15px rgba(94, 234, 212, 0.3), 0 2px 6px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 12;
+  opacity: 0;
+  transform: translateY(6px) scale(0.85);
+  transition: opacity 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.click-me-bubble span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+/* Speech bubble pointer arrow */
+.click-me-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 16px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--accent);
+}
+
+/* Visible on hover when idle */
+.profile-img-wrapper:hover .click-me-bubble {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: cuteBounce 2s ease-in-out infinite;
+}
+
+/* ALWAYS visible when music is playing (even without hover!) */
+.profile-img-wrapper.playing .click-me-bubble,
+.click-me-bubble.playing {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: cuteBounce 2.5s ease-in-out infinite;
+}
+
+@keyframes cuteBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.04);
+  }
+}
+
 /* --- TYPOGRAPHY --- */
 h1 {
   font-size: 3rem;
