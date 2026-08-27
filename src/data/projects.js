@@ -541,7 +541,7 @@ export const projects = [
         role: ["Machine Learning", "Backend Developer"],
 
         links: {
-            repo: "https://github.com/PinkyBun/MoneySensei",
+            repo: "https://github.com/Ggwepq/moneysensev2",
         },
         demoButton: "Live Demo",
 
