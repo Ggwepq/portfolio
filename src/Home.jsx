@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { FaGithub, FaLinkedin, FaFacebookF, FaLastfm } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
 import Contact from './components/Contact';
@@ -8,9 +8,11 @@ import ProjectThumbnail from './components/ProjectThumbnail';
 import ResumeModal from './components/ResumeModal';
 import './App.css';
 import { projects } from './data/projects';
+import { toolCategories } from './data/tools';
 
 function Home() {
     const audioRef = useRef(null);
+    const navigate = useNavigate();
     const [activeSelection, setActiveSelection] = useState('about');
     const [isContactActive, setIsContactActive] = useState(false);
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
@@ -19,7 +21,12 @@ function Home() {
     const [audioVolume, setAudioVolume] = useState('null');
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+
     const featuredProject = projects.filter(p => ['trackwise', 'bis', 'preplus', 'moneysense'].includes(p.id));
+
+    const handleToolClick = (toolName) => {
+        navigate(`/archive?tech=${encodeURIComponent(toolName)}`);
+    };
 
     useEffect(() => {
         const handleScroll = () => {
@@ -300,26 +307,45 @@ function Home() {
                 {/* ABOUT */}
                 <section id="about" style={{ marginBottom: '6rem' }}>
                     <p>
-                        I’m a <span className="highlight-accent">BS Information Technology graduate</span> and <span className="highlight-accent">software developer</span> with experience across web, mobile, game, database, and machine learning projects. I enjoy exploring different areas of technology and challenging myself to build things I haven’t worked on before.
+                        Hi👋, I'm Cedric — a <span className="highlight-accent">BS Information Technology graduate</span> and <span className="highlight-accent">software developer</span> who genuinely loves building things. I'm the type who gets more excited the more unfamiliar a project sounds — it usually means I'll learn something new.
                     </p>
                     <p>
-                        My experience includes developing <span className="highlight-text">Laravel</span> web applications, <span className="highlight-text">Flutter</span> mobile apps, <span className="highlight-text">Unity</span> games, and <span className="highlight-text">machine learning</span>-powered applications, both independently and through freelance and academic projects. I’m adaptable, curious, and always looking to learn new technologies and improve my skills.
+                        I've built <span className="highlight-text">Laravel</span> web apps, <span className="highlight-text">Flutter</span> mobile apps, <span className="highlight-text">Unity</span> games, and <span className="highlight-text">machine learning</span>-powered projects — some through freelance work, some through school, and a few just because I was curious if I could. I care a lot about making things that actually work for the people using them, not just things that look good in a demo.
                     </p>
                     <p>
-                        Outside of programming, I enjoy video editing, 3D animation, reading books and manga, going for walks, and customizing my <a style={{ textDecoration: 'underline' }} className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a>🏵️.
+                        When I'm not coding, you'll probably find me editing videos, messing around with 3D animation, reading books and manga, taking long walks to clear my head, or tinkering endlessly with my <a style={{ textDecoration: 'underline' }} className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a>🏵️ (fedora btw).
                     </p>
                 </section>
 
 
-                <section id="tools" style={{ marginBottom: '6rem' }}>
-                    <h3 style={{ marginBottom: '1rem' }}>Programming Languages</h3>
-                    <p style={{ marginBottom: '2rem' }}>PHP, HTML, CSS, Javascript, Python, Flutter, Dart, C#</p>
-
-                    <h3 style={{ marginBottom: '1rem' }}>Frameworks</h3>
-                    <p style={{ marginBottom: '2rem' }}>Laravel, Livewire, AlpineJS, Tailwind CSS, CodeIgniter, Flutter, Bootstrap</p>
-
-                    <h3 style={{ marginBottom: '1rem' }}>Tools Used</h3>
-                    <p style={{ marginBottom: '2rem' }}>Git, GitHub, Figma, Jira, Vercel, Supabase, Linux, Powershell, Unity</p>
+                <section id="tools" className="tools-section">
+                    {toolCategories.map((cat, idx) => (
+                        <div key={idx} className="tool-category-group">
+                            <h3 className="tool-category-title">
+                                <span className="category-emoji">{cat.emoji}</span> {cat.title}
+                            </h3>
+                            <div className="tool-badges-grid">
+                                {cat.items.map((tool, tIdx) => {
+                                    const IconComponent = tool.icon;
+                                    return (
+                                        <button
+                                            type="button"
+                                            key={tIdx}
+                                            className="tool-sticker"
+                                            style={{ '--tool-color': tool.color }}
+                                            onClick={() => handleToolClick(tool.name)}
+                                            aria-label={`View projects using ${tool.name}`}
+                                        >
+                                            <span className="tool-icon-wrapper" style={{ color: tool.color }}>
+                                                <IconComponent />
+                                            </span>
+                                            <span className="tool-name">{tool.name}</span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
                 </section>
 
                 {/* EXPERIENCE */}
@@ -334,7 +360,21 @@ function Home() {
                                     <p style={{ marginTop: '10px', fontSize: '0.9rem' }} className="highlight-text">{job.company}</p>
                                     <p style={{ marginTop: '-10px', fontSize: '0.9rem', color: '#94a3b8' }}>{job.description}</p>
                                     <div className="tags">
-                                        {job.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
+                                        {job.tags.map(tag => (
+                                            <span
+                                                key={tag}
+                                                className="tag"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    e.stopPropagation();
+                                                    handleToolClick(tag);
+                                                }}
+                                                style={{ cursor: 'pointer' }}
+                                                title={`Filter archive by ${tag}`}
+                                            >
+                                                {tag}
+                                            </span>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -348,8 +388,8 @@ function Home() {
                 <section id="projects" style={{ marginBottom: '6rem' }}>
                     <div className="group">
                         {featuredProject.map((project, index) => (
-                            <Link to={`/project/${project.id}`}>
-                                <div key={index} className="card">
+                            <Link to={`/project/${project.id}`} key={project.id || index}>
+                                <div className="card">
                                     <div className="project-image">
                                         <ProjectThumbnail gallery={project.gallery} title={project.title} />
                                     </div>
@@ -358,7 +398,20 @@ function Home() {
                                         <h3 className='view-all-link'> {project.title}</h3>
                                         <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#94a3b8' }}>{project.tagline}</p>
                                         <div className="tags">
-                                            {project.tech.map(tag => <span key={tag} className="tag">{tag}</span>)}
+                                            {project.tech.map(tag => (
+                                                <span
+                                                    key={tag}
+                                                    className="tag"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        handleToolClick(tag);
+                                                    }}
+                                                    title={`Filter archive by ${tag}`}
+                                                >
+                                                    {tag}
+                                                </span>
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
@@ -366,7 +419,7 @@ function Home() {
                         ))}
                     </div>
 
-                    <Link to="/archive" className="view-all-link">
+                    <Link to="/archive" className="view-all-link" style={{ marginTop: '1.5rem' }}>
                         <span>View All Projects</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -379,7 +432,6 @@ function Home() {
                             <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
                         </svg>
                     </Link>
-
                 </section>
 
                 <Contact />
