@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft } from 'react-icons/fa';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
@@ -9,6 +9,7 @@ import { projects } from './data/projects';
 
 const Archive = () => {
   const [view, setView] = useState('list');
+  const navigate = useNavigate();
 
   const headerRef = useRef(null);
   const [isOnTop, setIsOnTop] = useState("true");
@@ -29,6 +30,15 @@ const Archive = () => {
     return () => observer.disconnect();
   }, []);
 
+  const handleBack = (e) => {
+    e.preventDefault();
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
+  };
+
   return (
     <div className="container archive-container">
 
@@ -36,9 +46,9 @@ const Archive = () => {
       <CursorGradient />
 
       {/* HEADER ROW */}
-      <Link to={-1} className="back-link" ref={headerRef}>
+      <a href="/" onClick={handleBack} className="back-link" ref={headerRef}>
         <FaArrowLeft /> John Cedric Abaloyan
-      </Link>
+      </a>
 
       <div className="header-row">
         <h1 className="archive-title">All Projects</h1>

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaExternalLinkAlt, FaArrowLeft, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { projects } from '../data/projects';
 import '../App.css';
@@ -11,6 +11,7 @@ import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/l
 
 const ProjectDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const project = projects.find(p => p.id === id);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [slideDirection, setSlideDirection] = useState('next');
@@ -64,6 +65,18 @@ const ProjectDetail = () => {
     setSlideDirection(idx > currentSlide ? 'next' : 'prev');
     setCurrentSlide(idx);
   };
+
+  const handleBack = (e) => {
+    e.preventDefault();
+    // Check if the user navigated from within our portfolio
+    if (window.history.state && window.history.state.idx > 0) {
+      navigate(-1);
+    } else {
+      // Direct access or from external site -> redirect to projects section on Home
+      navigate('/#projects');
+    }
+  };
+
   return (
     <div className="container project-detail-container">
 
@@ -72,9 +85,9 @@ const ProjectDetail = () => {
 
 
       <div className="detail-header" ref={headerRef}>
-        <Link to={-1} className="back-link">
+        <a href="/#projects" onClick={handleBack} className="back-link">
           <FaArrowLeft /> Back to Projects
-        </Link>
+        </a>
       </div>
 
       <div className="carousel-wrapper">
