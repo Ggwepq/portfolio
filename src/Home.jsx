@@ -198,11 +198,25 @@ function Home() {
 
     const experiences = [
         {
-            date: "2023 — PRESENT",
+            date: "May 2026 - July 2026",
+            title: "Database Developer",
+            company: "Liberty Investigation and Security Agency Inc.",
+            description: "Optimized database architecture by converting Access queries into MySQL Views, restructuring linked tables, and configuring primary keys, auto-increment fields, and relational constraints improving speed to 200%",
+            tags: ["MySQL Workbench", "DBeaver", "MS Access"]
+        },
+        {
+            date: "Jan 2026 - April 2026",
+            title: "IT Intern",
+            company: "Liberty Investigation and Security Agency Inc.",
+            description: "Modernized network infrastructure by overhauling network cabling and maintained corporate hardware, including high-level troubleshooting of workstations and the installation of critical hardware components.",
+            tags: ["Networking", "Web Development", "Database Admin"]
+        },
+        {
+            date: "2023 — 2026",
             title: "Freelancing",
             company: "",
             description: "Delivered paid project-based work for multiple clients such as 2D games, web systems, and real-estate video edits.",
-            tags: ["Web Development", "Game Development", "Video Editing"]
+            tags: ["System Development", "Web Development"]
         },
     ];
 
@@ -314,8 +328,10 @@ function Home() {
                             <div key={index} className="card">
                                 <div className="card-date">{job.date}</div>
                                 <div className="card-content">
-                                    <h3>{job.title} {job.company !== '' ? '·' : ''} {job.company}</h3>
-                                    <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#94a3b8' }}>{job.description}</p>
+                                    <h3 className="highlight-text">{job.title}</h3>
+
+                                    <p style={{ marginTop: '10px', fontSize: '0.9rem' }} className="highlight-text">{job.company}</p>
+                                    <p style={{ marginTop: '-10px', fontSize: '0.9rem', color: '#94a3b8' }}>{job.description}</p>
                                     <div className="tags">
                                         {job.tags.map(tag => <span key={tag} className="tag">{tag}</span>)}
                                     </div>
