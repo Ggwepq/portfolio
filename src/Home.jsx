@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { FaGithub, FaLinkedin, FaFacebookF, FaLastfm } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
@@ -21,6 +21,31 @@ function Home() {
     const [audioVolume, setAudioVolume] = useState('null');
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+
+    // Create lookup for tool brand icons and colors
+    const toolIconMap = useMemo(() => {
+        const map = {};
+        toolCategories.forEach(cat => {
+            cat.items.forEach(tool => {
+                const key = tool.name.toLowerCase().replace(/[\s\-_.]/g, '');
+                map[key] = tool;
+            });
+        });
+        return map;
+    }, []);
+
+    const getToolInfo = (techName) => {
+        const key = (techName || '').toLowerCase().replace(/[\s\-_.]/g, '');
+        if (toolIconMap[key]) return toolIconMap[key];
+        if (key.startsWith('html')) return toolIconMap['html5'] || toolIconMap['html'];
+        if (key.startsWith('css')) return toolIconMap['css3'] || toolIconMap['css'];
+        if (key.includes('alpine')) return toolIconMap['alpinejs'];
+        if (key.includes('tailwind')) return toolIconMap['tailwindcss'];
+        if (key.includes('mysql')) return toolIconMap['mysql'];
+        if (key.includes('postgres')) return toolIconMap['postgresql'];
+        if (key.includes('dbeaver')) return toolIconMap['dbeaver'];
+        return null;
+    };
 
     const featuredProject = projects.filter(p => ['trackwise', 'bis', 'preplus', 'moneysense'].includes(p.id));
 
@@ -352,29 +377,46 @@ function Home() {
                 <section id="experience" style={{ marginBottom: '6rem' }}>
                     <div className="group">
                         {experiences.map((job, index) => (
-                            <div key={index} className="card">
-                                <div className="card-date">{job.date}</div>
+                            <div key={index} className="card cute-home-card experience-card">
+                                <div className="card-date-clean">{job.date}</div>
                                 <div className="card-content">
-                                    <h3 className="highlight-text">{job.title}</h3>
+                                    <h3 className="card-title-cute">
+                                        {job.title} <span className="card-sparkle">✦</span>
+                                    </h3>
 
-                                    <p style={{ marginTop: '10px', fontSize: '0.9rem' }} className="highlight-text">{job.company}</p>
-                                    <p style={{ marginTop: '-10px', fontSize: '0.9rem', color: '#94a3b8' }}>{job.description}</p>
-                                    <div className="tags">
-                                        {job.tags.map(tag => (
-                                            <span
-                                                key={tag}
-                                                className="tag"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    e.stopPropagation();
-                                                    handleToolClick(tag);
-                                                }}
-                                                style={{ cursor: 'pointer' }}
-                                                title={`Filter archive by ${tag}`}
-                                            >
-                                                {tag}
-                                            </span>
-                                        ))}
+                                    {job.company && (
+                                        <p className="card-company-cute">
+                                            {job.company}
+                                        </p>
+                                    )}
+                                    <p className="card-description-cute">{job.description}</p>
+                                    <div className="cute-tags-grid">
+                                        {job.tags.map(tag => {
+                                            const toolInfo = getToolInfo(tag);
+                                            const IconComponent = toolInfo?.icon;
+                                            const toolColor = toolInfo?.color || 'var(--accent)';
+
+                                            return (
+                                                <span
+                                                    key={tag}
+                                                    className="cute-tag-pill"
+                                                    style={{ '--tool-color': toolColor }}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        e.stopPropagation();
+                                                        handleToolClick(tag);
+                                                    }}
+                                                    title={`Filter archive by ${tag}`}
+                                                >
+                                                    {IconComponent && (
+                                                        <span className="tag-icon" style={{ color: toolColor }}>
+                                                            <IconComponent />
+                                                        </span>
+                                                    )}
+                                                    <span>{tag}</span>
+                                                </span>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
@@ -388,30 +430,49 @@ function Home() {
                 <section id="projects" style={{ marginBottom: '6rem' }}>
                     <div className="group">
                         {featuredProject.map((project, index) => (
-                            <Link to={`/project/${project.id}`} key={project.id || index}>
-                                <div className="card">
-                                    <div className="project-image">
+                            <Link to={`/project/${project.id}`} key={project.id || index} className="project-card-link">
+                                <div className="card cute-home-card project-card">
+                                    <div className="project-image cute-project-thumbnail">
                                         <ProjectThumbnail gallery={project.gallery} title={project.title} />
                                     </div>
 
                                     <div className="card-content">
-                                        <h3 className='view-all-link'> {project.title}</h3>
-                                        <p style={{ marginTop: '10px', fontSize: '0.9rem', color: '#94a3b8' }}>{project.tagline}</p>
-                                        <div className="tags">
-                                            {project.tech.map(tag => (
-                                                <span
-                                                    key={tag}
-                                                    className="tag"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        handleToolClick(tag);
-                                                    }}
-                                                    title={`Filter archive by ${tag}`}
-                                                >
-                                                    {tag}
-                                                </span>
-                                            ))}
+                                        <div className="card-header-row">
+                                            <h3 className="card-title-cute">
+                                                <span>{project.title}</span>
+                                                <span className="card-arrow-icon">↗</span>
+                                            </h3>
+                                        </div>
+
+                                        <p className="card-description-cute project-tagline-text">{project.tagline}</p>
+                                        
+                                        <div className="cute-tags-grid">
+                                            {project.tech.map(tag => {
+                                                const toolInfo = getToolInfo(tag);
+                                                const IconComponent = toolInfo?.icon;
+                                                const toolColor = toolInfo?.color || 'var(--accent)';
+
+                                                return (
+                                                    <span
+                                                        key={tag}
+                                                        className="cute-tag-pill"
+                                                        style={{ '--tool-color': toolColor }}
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            e.stopPropagation();
+                                                            handleToolClick(tag);
+                                                        }}
+                                                        title={`Filter archive by ${tag}`}
+                                                    >
+                                                        {IconComponent && (
+                                                            <span className="tag-icon" style={{ color: toolColor }}>
+                                                                <IconComponent />
+                                                            </span>
+                                                        )}
+                                                        <span>{tag}</span>
+                                                    </span>
+                                                );
+                                            })}
                                         </div>
                                     </div>
                                 </div>
@@ -419,13 +480,14 @@ function Home() {
                         ))}
                     </div>
 
-                    <Link to="/archive" className="view-all-link" style={{ marginTop: '1.5rem' }}>
+                    <Link to="/archive" className="cute-view-all-btn">
                         <span>View All Projects</span>
+                        <span className="view-all-sparkle">🌸</span>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            height="24px"
+                            height="20px"
                             viewBox="0 -960 960 960"
-                            width="24px"
+                            width="20px"
                             fill="currentColor"
                             className="arrow-icon"
                         >
