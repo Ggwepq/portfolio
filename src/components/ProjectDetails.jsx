@@ -141,9 +141,9 @@ const ProjectDetail = () => {
 
       {/* --- TOP HEADER & BREADCRUMBS --- */}
       <div className="detail-header" ref={headerRef}>
-        <a href="/#projects" onClick={handleBack} className="cute-back-pill">
+        <Link to="/#projects" onClick={handleBack} className="cute-back-pill">
           <FaArrowLeft className="back-arrow-icon" /> <span>Back to Projects</span> <span className="back-sparkle">✨</span>
-        </a>
+        </Link>
 
         <div className="detail-meta-chips">
           <span className="meta-chip category">

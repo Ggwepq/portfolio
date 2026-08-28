@@ -70,6 +70,31 @@ const Archive = () => {
         return list;
     }, []);
 
+    // Create lookup for tool brand icons and colors
+    const toolIconMap = useMemo(() => {
+        const map = {};
+        toolCategories.forEach(cat => {
+            cat.items.forEach(tool => {
+                const key = tool.name.toLowerCase().replace(/[\s\-_.]/g, '');
+                map[key] = tool;
+            });
+        });
+        return map;
+    }, []);
+
+    const getToolInfo = (techName) => {
+        const key = (techName || '').toLowerCase().replace(/[\s\-_.]/g, '');
+        if (toolIconMap[key]) return toolIconMap[key];
+        if (key.startsWith('html')) return toolIconMap['html5'] || toolIconMap['html'];
+        if (key.startsWith('css')) return toolIconMap['css3'] || toolIconMap['css'];
+        if (key.includes('alpine')) return toolIconMap['alpinejs'];
+        if (key.includes('tailwind')) return toolIconMap['tailwindcss'];
+        if (key.includes('mysql')) return toolIconMap['mysql'];
+        if (key.includes('postgres')) return toolIconMap['postgresql'];
+        if (key.includes('dbeaver')) return toolIconMap['dbeaver'];
+        return null;
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -159,9 +184,9 @@ const Archive = () => {
             <CursorGradient />
 
             {/* HEADER ROW */}
-            <a href="/" className="back-link" ref={headerRef}>
+            <Link to="/" onClick={handleBack} className="back-link" ref={headerRef}>
                 <FaArrowLeft /> John Cedric Abaloyan
-            </a>
+            </Link>
 
             <div className="header-row">
                 <div>
@@ -349,11 +374,16 @@ const Archive = () => {
                                     <div className="tech-list">
                                         <div className="tags">
                                             {project.tech.map(tag => {
+                                                const toolInfo = getToolInfo(tag);
+                                                const IconComponent = toolInfo?.icon;
+                                                const toolColor = toolInfo?.color || 'var(--accent)';
                                                 const isMatch = activeTech && matchesTech([tag], activeTech);
+
                                                 return (
                                                     <span
                                                         key={tag}
                                                         className={`tag ${isMatch ? 'active-tag' : ''}`}
+                                                        style={{ '--tool-color': toolColor }}
                                                         onClick={(e) => {
                                                             e.preventDefault();
                                                             e.stopPropagation();
@@ -361,7 +391,12 @@ const Archive = () => {
                                                         }}
                                                         title={`Filter by ${tag}`}
                                                     >
-                                                        {tag}
+                                                        {IconComponent && (
+                                                            <span className="tag-icon" style={{ color: isMatch ? '#0f172a' : toolColor }}>
+                                                                <IconComponent />
+                                                            </span>
+                                                        )}
+                                                        <span>{tag}</span>
                                                     </span>
                                                 );
                                             })}
