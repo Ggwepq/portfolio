@@ -40,7 +40,9 @@ function ResumeModal({ isOpen, onClose }) {
             <div className="resume-modal-card" onClick={(e) => e.stopPropagation()}>
                 <div className="resume-modal-header">
                     <div>
-                        <h3 className="resume-modal-title">Select Resume</h3>
+                        <h3 className="resume-modal-title">
+                            Select Resume <span style={{ fontSize: '1rem' }}>🌸</span>
+                        </h3>
                         <p className="resume-modal-subtitle">
                             Choose the version tailored to the role you are hiring for
                         </p>
@@ -65,9 +67,9 @@ function ResumeModal({ isOpen, onClose }) {
                                     </div>
                                     <div className="resume-option-info">
                                         <h4 className="resume-option-title">{resume.title}</h4>
+                                        <p className="resume-option-role">{resume.role}</p>
                                     </div>
                                 </div>
-
 
                                 <div className="resume-option-actions">
                                     <Link

@@ -54,7 +54,9 @@ function ResumeViewer() {
         {/* Header Bar */}
         <header className="resume-header">
           <div className="resume-title-section">
-            <h1 className="resume-main-title">John Cedric Abaloyan</h1>
+            <h1 className="resume-main-title">
+              John Cedric Abaloyan <span className="resume-title-sparkle">🌸</span>
+            </h1>
             <p className="resume-subtitle">{activeResume.role}</p>
           </div>
 
@@ -75,8 +77,18 @@ function ResumeViewer() {
 
           <div className="resume-actions-group">
             <Link to="/" className="btn-resume-back">
-              <FaArrowLeft /> Back to Portfolio
+              <FaArrowLeft /> Back to Portfolio ✨
             </Link>
+
+            <a 
+              href={activeResume.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="btn-resume-drive"
+              title="Open full document in Google Drive"
+            >
+              <FaExternalLinkAlt /> Open in Drive ↗
+            </a>
 
             <a 
               href={downloadUrl} 
@@ -114,14 +126,14 @@ function ResumeViewer() {
               >
                 <div className="pdf-fallback-container">
                   <p>This browser does not support inline PDF previewing.</p>
-                  <div style={{ display: 'flex', gap: '1rem' }}>
+                  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                     <a 
                       href={activeResume.url} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="btn-resume-back"
+                      className="btn-resume-drive"
                     >
-                      <FaExternalLinkAlt /> Open in New Tab
+                      <FaExternalLinkAlt /> Open in Google Drive ↗
                     </a>
                     <a 
                       href={downloadUrl} 
@@ -142,3 +154,4 @@ function ResumeViewer() {
 }
 
 export default ResumeViewer;
+

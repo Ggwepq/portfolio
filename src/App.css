@@ -65,6 +65,13 @@ a:hover {
   min-height: 100vh;
   margin: 0 auto;
   padding: 0 24px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 12px;
+  }
 }
 
 /* DESKTOP SPLIT */
