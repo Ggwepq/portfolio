@@ -118,7 +118,7 @@ const Archive = () => {
         } else {
             params.set('category', catId);
         }
-        setSearchParams(params);
+        setSearchParams(params, { replace: true });
     };
 
     const handleTechClick = (techName) => {
@@ -128,7 +128,7 @@ const Archive = () => {
         } else {
             params.set('tech', techName);
         }
-        setSearchParams(params);
+        setSearchParams(params, { replace: true });
     };
 
     const handleFreelanceClick = () => {
@@ -138,21 +138,12 @@ const Archive = () => {
         } else {
             params.set('freelance', 'true');
         }
-        setSearchParams(params);
+        setSearchParams(params, { replace: true });
     };
 
     const handleResetFilters = () => {
-        setSearchParams(new URLSearchParams());
+        setSearchParams(new URLSearchParams(), { replace: true });
         setIsLanguagesOpen(false);
-    };
-
-    const handleBack = (e) => {
-        e.preventDefault();
-        if (window.history.state && window.history.state.idx > 0) {
-            navigate(-1);
-        } else {
-            navigate('/');
-        }
     };
 
     // Filtered projects
@@ -184,7 +175,7 @@ const Archive = () => {
             <CursorGradient />
 
             {/* HEADER ROW */}
-            <Link to="/" onClick={handleBack} className="back-link" ref={headerRef}>
+            <Link to="/" className="back-link" ref={headerRef}>
                 <FaArrowLeft /> John Cedric Abaloyan
             </Link>
 
