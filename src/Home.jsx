@@ -47,7 +47,9 @@ function Home() {
         return null;
     };
 
-    const featuredProject = projects.filter(p => ['trackwise', 'bis', 'preplus', 'moneysense'].includes(p.id));
+    const featuredProject = ['moneysense', 'alams', 'trackwise', 'samurai-revenge']
+        .map(id => projects.find(p => p.id === id))
+        .filter(Boolean);
 
     const handleToolClick = (toolName) => {
         navigate(`/archive?tech=${encodeURIComponent(toolName)}`);
