@@ -56,24 +56,31 @@ function Home() {
     };
 
     useEffect(() => {
+        let ticking = false;
         const handleScroll = () => {
-            const sections = ['about', 'experience', 'projects'];
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    const sections = ['about', 'experience', 'projects'];
 
-            for (const sectionId of sections) {
-                const element = document.getElementById(sectionId);
+                    for (const sectionId of sections) {
+                        const element = document.getElementById(sectionId);
 
-                if (element) {
-                    const rect = element.getBoundingClientRect();
-                    if (rect.top >= 0 && rect.top < 300) {
-                        setActiveSelection(sectionId);
+                        if (element) {
+                            const rect = element.getBoundingClientRect();
+                            if (rect.top >= 0 && rect.top < 300) {
+                                setActiveSelection(prev => (prev !== sectionId ? sectionId : prev));
+                            }
+                        }
                     }
-                }
+                    ticking = false;
+                });
+                ticking = true;
             }
         };
 
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    });
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     useEffect(() => {
         const observer = new IntersectionObserver(

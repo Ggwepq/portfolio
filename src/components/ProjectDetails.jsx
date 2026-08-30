@@ -73,17 +73,20 @@ const ProjectDetail = () => {
     setCurrentSlide(0);
   }, [id]);
 
-  // Preload all gallery images for instant, smooth slide transitions
+  // Preload adjacent gallery images lazily
   useEffect(() => {
-    if (project?.gallery) {
-      project.gallery.forEach((item) => {
-        if (item.type === 'image' && item.url) {
+    if (project?.gallery && project.gallery.length > 1) {
+      const nextIdx = (currentSlide + 1) % project.gallery.length;
+      const prevIdx = (currentSlide - 1 + project.gallery.length) % project.gallery.length;
+      [nextIdx, prevIdx].forEach((idx) => {
+        const item = project.gallery[idx];
+        if (item && item.type === 'image' && item.url) {
           const img = new Image();
           img.src = item.url;
         }
       });
     }
-  }, [project]);
+  }, [project, currentSlide]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -193,6 +196,7 @@ const ProjectDetail = () => {
               alt={`${project.title} slide ${currentSlide + 1}`} 
               className="carousel-media" 
               loading="eager"
+              decoding="async"
             />
           )}
         </div>

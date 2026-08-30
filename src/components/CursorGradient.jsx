@@ -4,45 +4,66 @@ const CursorGradient = () => {
   const cursorRef = useRef(null);
 
   useEffect(() => {
+    // Disable tracking on touch / mobile devices for zero overhead
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+
     const cursor = cursorRef.current;
+    if (!cursor) return;
 
-    let mouseX = 0;
-    let mouseY = 0;
-    let cursorX = 0;
-    let cursorY = 0;
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let cursorX = mouseX;
+    let cursorY = mouseY;
+    let isRunning = false;
+    let animationFrameId = null;
 
-    const speed = 0.8;
+    let firstMove = true;
+    const speed = 0.65; // Fast, snappy, and responsive tracking
 
     const animate = () => {
-      let distX = mouseX - cursorX;
-      let distY = mouseY - cursorY;
+      const distX = mouseX - cursorX;
+      const distY = mouseY - cursorY;
 
-      cursorX = cursorX + distX * speed;
-      cursorY = cursorY + distY * speed;
+      cursorX += distX * speed;
+      cursorY += distY * speed;
 
-      if (cursor) {
-        cursor.style.left = cursorX + "px";
-        cursor.style.top = cursorY + "px";
+      // Use GPU hardware-accelerated transform
+      cursor.style.transform = `translate3d(${cursorX.toFixed(1)}px, ${cursorY.toFixed(1)}px, 0) translate(-50%, -50%)`;
+
+      // Sleep loop when cursor has caught up closely
+      if (Math.abs(distX) > 0.2 || Math.abs(distY) > 0.2) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        isRunning = false;
       }
-
-      requestAnimationFrame(animate);
     };
 
     const handleMouseMove = (event) => {
       mouseX = event.clientX;
       mouseY = event.clientY;
+      if (firstMove) {
+        cursorX = mouseX;
+        cursorY = mouseY;
+        cursor.style.transform = `translate3d(${cursorX.toFixed(1)}px, ${cursorY.toFixed(1)}px, 0) translate(-50%, -50%)`;
+        firstMove = false;
+      }
+      if (!isRunning) {
+        isRunning = true;
+        animationFrameId = requestAnimationFrame(animate);
+      }
     };
 
-    animate();
-
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
     };
   }, []);
 
-  return <div ref={cursorRef} className="bg-gradient"></div>;
+  return <div ref={cursorRef} className="bg-gradient" aria-hidden="true" />;
 };
 
 export default CursorGradient;
