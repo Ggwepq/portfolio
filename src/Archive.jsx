@@ -56,6 +56,7 @@ const Archive = () => {
 
     const headerRef = useRef(null);
     const [isOnTop, setIsOnTop] = useState("true");
+    const [hoveredProjectId, setHoveredProjectId] = useState(null);
 
     // Flatten tool items for quick tech filters
     const allTools = useMemo(() => {
@@ -332,11 +333,19 @@ const Archive = () => {
                 <div className={`project-display ${view}`}>
                     {filteredProjects.map((project, index) => (
                         <Link to={`/project/${project.id}`} key={project.id || index}>
-                            <div className="archive-card">
+                            <div 
+                                className="archive-card"
+                                onMouseEnter={() => setHoveredProjectId(project.id)}
+                                onMouseLeave={() => setHoveredProjectId(null)}
+                            >
 
                                 {/* IMAGE */}
                                 <div className="project-image">
-                                    <ProjectThumbnail gallery={project.gallery} title={project.title} />
+                                    <ProjectThumbnail 
+                                        gallery={project.gallery} 
+                                        title={project.title} 
+                                        isHovered={hoveredProjectId === project.id}
+                                    />
                                 </div>
 
                                 {/* TITLE & DESC */}

@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
-const ProjectThumbnail = ({ gallery, title }) => {
-  const [isHovering, setIsHovering] = useState(false);
+const ProjectThumbnail = ({ gallery, title, isHovered }) => {
+  const [internalHovering, setInternalHovering] = useState(false);
+  const isHovering = isHovered !== undefined ? isHovered : internalHovering;
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const videoRef = useRef(null);
 
   const images = gallery ? gallery.filter(item => item.type === 'image') : [];
-
   const primaryAsset = gallery && gallery.length > 0 ? gallery[0] : null;
 
   useEffect(() => {
@@ -18,6 +19,7 @@ const ProjectThumbnail = ({ gallery, title }) => {
     });
   }, [images]);
 
+  // Handle image cycling when card/thumbnail is hovered
   useEffect(() => {
     let interval;
 
@@ -32,6 +34,17 @@ const ProjectThumbnail = ({ gallery, title }) => {
     return () => clearInterval(interval);
   }, [isHovering, images.length, primaryAsset]);
 
+  // Handle video playing/pausing when card/thumbnail is hovered
+  useEffect(() => {
+    if (primaryAsset?.type === 'video' && videoRef.current) {
+      if (isHovering) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+        videoRef.current.currentTime = 1;
+      }
+    }
+  }, [isHovering, primaryAsset]);
 
   if (!primaryAsset) {
     return <div style={{ width: '100%', height: '100%', background: 'rgba(255,255,255,0.1)', borderRadius: '4px' }}></div>;
@@ -40,12 +53,13 @@ const ProjectThumbnail = ({ gallery, title }) => {
   if (primaryAsset.type === 'video') {
     return (
       <video
+        ref={videoRef}
         src={`${primaryAsset.url}#t=1`}
         muted
         playsInline
         loop
-        onMouseOver={e => e.target.play()}
-        onMouseOut={e => { e.target.pause(); e.target.currentTime = 1; }}
+        onMouseEnter={() => setInternalHovering(true)}
+        onMouseLeave={() => setInternalHovering(false)}
         style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '4px' }}
       />
     );
@@ -54,11 +68,11 @@ const ProjectThumbnail = ({ gallery, title }) => {
   return (
     <div
       style={{ width: '100%', height: '100%' }}
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
+      onMouseEnter={() => setInternalHovering(true)}
+      onMouseLeave={() => setInternalHovering(false)}
     >
       <img
-        src={isHovering ? images[currentImageIndex].url : images[0].url}
+        src={isHovering && images.length > 0 ? images[currentImageIndex]?.url || primaryAsset.url : images[0]?.url || primaryAsset.url}
         alt={title}
         style={{
           width: '100%',

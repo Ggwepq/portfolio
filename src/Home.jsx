@@ -21,6 +21,7 @@ function Home() {
     const [audioVolume, setAudioVolume] = useState('null');
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [hoveredProjectId, setHoveredProjectId] = useState(null);
 
     // Create lookup for tool brand icons and colors
     const toolIconMap = useMemo(() => {
@@ -440,9 +441,17 @@ function Home() {
                     <div className="group">
                         {featuredProject.map((project, index) => (
                             <Link to={`/project/${project.id}`} key={project.id || index} className="project-card-link">
-                                <div className="card cute-home-card project-card">
+                                <div 
+                                    className="card cute-home-card project-card"
+                                    onMouseEnter={() => setHoveredProjectId(project.id)}
+                                    onMouseLeave={() => setHoveredProjectId(null)}
+                                >
                                     <div className="project-image cute-project-thumbnail">
-                                        <ProjectThumbnail gallery={project.gallery} title={project.title} />
+                                        <ProjectThumbnail 
+                                            gallery={project.gallery} 
+                                            title={project.title} 
+                                            isHovered={hoveredProjectId === project.id}
+                                        />
                                     </div>
 
                                     <div className="card-content">
