@@ -870,6 +870,70 @@ export const projects = [
     },
 
     {
+        id: "trakit",
+        title: "CIT Week TrakIt",
+        tagline:
+            "A cross-platform QR-based attendance tracking mobile app built for college intramurals with dynamic multi-day event scheduling.",
+        year: "2025",
+
+        gallery: [
+            {
+                type: "image",
+                url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1788076405/portfolio/trakit/trakit-3_iebcr8.png",
+            },
+            {
+                type: "image",
+                url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1788076405/portfolio/trakit/trakit-4_q4fbsj.png",
+            },
+            {
+                type: "image",
+                url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1788076405/portfolio/trakit/trakit-3_iebcr8.png",
+            },
+            {
+                type: "image",
+                url: "https://res.cloudinary.com/dxau89gcg/image/upload/v1788076404/portfolio/trakit/trakit-2_flc41d.png",
+            },
+        ],
+
+        tech: [
+            ".NET MAUI",
+            "C#",
+            "XAML",
+            "Firebase Firestore",
+            "ZXing.Net",
+            "MVVM",
+        ],
+        role: ["Frontend Developer"],
+
+        links: {
+            repo: "https://github.com/iamnon3/cit-weektrakit",
+        },
+        demoButton: "Repo Link",
+
+        sections: [
+            {
+                heading: "Overview",
+                content:
+                    "TrakIt is a cross-platform mobile attendance management application built with .NET MAUI for college intramural and sports festival events (CIT Week). Designed to streamline event operations, the app allows sports facilitators to quickly verify student attendance by scanning paper-distributed QR code badges with real-time dynamic check-in and check-out tracking across a week-long multi-event tournament schedule.",
+            },
+            {
+                heading: "Key Features",
+                type: "list",
+                items: [
+                    "High-Speed QR Code Scanning via ZXing.Net.Maui for Paper-Distributed Student Badges",
+                    "Dynamic Time In and Time Out Windows for a Multi-Day (One-Week) Intramurals Schedule",
+                    "Real-Time Student Identity Verification (Student Number, Full Name, Section, and Program)",
+                    "Event & Sports Selection (Facilitator Assignment to Specific Matches and Venues)",
+                    "Live Attendance Roster with Real-Time Filtering by Year Level, Event, and Scan Status",
+                    "Duplicate Scan Detection & Instant Visual Toast Feedback for Facilitators",
+                    "Cloud Synchronization Powered by Google Cloud Firestore and REST APIs",
+                    "MVVM Architecture with CommunityToolkit.Mvvm and Custom XAML UI Components",
+                ],
+            },
+        ],
+    },
+
+    {
         id: "watchlist",
         title: "Watchlist API and UI",
         tagline: "RESTful movie watchlist API and streaming interface with TMDB catalog integration.",
