@@ -348,7 +348,7 @@ function Home() {
                         I've built <span className="highlight-text">Laravel</span> web apps, <span className="highlight-text">Flutter</span> mobile apps, <span className="highlight-text">Unity</span> games, and <span className="highlight-text">machine learning</span>-powered projects — some through freelance work, some through school, and a few just because I was curious if I could. I care a lot about making things that actually work for the people using them, not just things that look good in a demo.
                     </p>
                     <p>
-                        When I'm not coding, you'll probably find me editing videos, messing around with 3D animation, reading books and manga, taking long walks to clear my head, or tinkering endlessly with my <a style={{ textDecoration: 'underline' }} className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a>🏵️ (fedora btw).
+                        When I'm not coding, you'll probably find me editing videos, messing around with 3D animation, browsing to <a href="https://letterboxd.com/cedjuani" target="blank" className="highlight-text">letterbox</a> to find good movies to watch, taking long walks to clear my head, or tinkering endlessly with my <a style={{ textDecoration: 'underline' }} className="highlight-accent" href="https://github.com/Ggwepq/dotfiles">setup</a>🏵️ (fedora btw).
                     </p>
                 </section>
 
@@ -441,15 +441,15 @@ function Home() {
                     <div className="group">
                         {featuredProject.map((project, index) => (
                             <Link to={`/project/${project.id}`} key={project.id || index} className="project-card-link">
-                                <div 
+                                <div
                                     className="card cute-home-card project-card"
                                     onMouseEnter={() => setHoveredProjectId(project.id)}
                                     onMouseLeave={() => setHoveredProjectId(null)}
                                 >
                                     <div className="project-image cute-project-thumbnail">
-                                        <ProjectThumbnail 
-                                            gallery={project.gallery} 
-                                            title={project.title} 
+                                        <ProjectThumbnail
+                                            gallery={project.gallery}
+                                            title={project.title}
                                             isHovered={hoveredProjectId === project.id}
                                         />
                                     </div>
@@ -463,7 +463,7 @@ function Home() {
                                         </div>
 
                                         <p className="card-description-cute project-tagline-text">{project.tagline}</p>
-                                        
+
                                         <div className="cute-tags-grid">
                                             {project.tech.map(tag => {
                                                 const toolInfo = getToolInfo(tag);
