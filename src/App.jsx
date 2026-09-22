@@ -3,6 +3,7 @@ import Home from './Home';
 import Archive from './Archive';
 import ProjectDetail from './components/ProjectDetails';
 import ResumeViewer from './components/ResumeViewer';
+import ChatCompanion from './components/ChatCompanion';
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Route path="/resume" element={<ResumeViewer />} />
         <Route path="/project/:id" element={<ProjectDetail />} />
       </Routes>
+      <ChatCompanion />
     </Router>
   );
 }
