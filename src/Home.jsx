@@ -106,6 +106,19 @@ function Home() {
     }, []);
 
     useEffect(() => {
+        if (isOddsHovered) {
+            document.body.classList.add('odds-cyberpunk-mode');
+            window.dispatchEvent(new CustomEvent('portfolio:odds-hover', { detail: { isHovered: true } }));
+        } else {
+            document.body.classList.remove('odds-cyberpunk-mode');
+            window.dispatchEvent(new CustomEvent('portfolio:odds-hover', { detail: { isHovered: false } }));
+        }
+        return () => {
+            document.body.classList.remove('odds-cyberpunk-mode');
+        };
+    }, [isOddsHovered]);
+
+    useEffect(() => {
         const fetchMusic = async () => {
             const API_KEY = import.meta.env.VITE_LASTFM_API_KEY;
             const USER = import.meta.env.VITE_LASTFM_USERNAME;

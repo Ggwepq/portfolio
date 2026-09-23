@@ -1336,3 +1336,30 @@
     max-height: 120px;
   }
 }
+
+/* --- SIMPLE WOW / O-MOUTH FACE (WHEN ODDS IS HOVERED) --- */
+.companion-trigger-bubble.odds-amazed {
+  border-color: rgba(255, 42, 112, 0.5) !important;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(255, 42, 112, 0.35) !important;
+}
+
+.pixel-glyph-face.amazed {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: var(--text-main);
+}
+
+.pixel-glyph-face.amazed .wow-mouth {
+  font-size: 0.82em;
+  font-weight: 800;
+  color: #ff5f9e;
+  line-height: 1;
+  display: inline-block;
+  transform: scaleY(1.05);
+}
+
+

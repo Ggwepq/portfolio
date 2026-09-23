@@ -89,7 +89,7 @@
     user-select: none;
 }
 
-/* Balanced, focused glow on hover (toned down from blinding flare) */
+/* Balanced, focused glow on hover with electric cyberpunk blink */
 .odds-card:hover .odds-ascii-art {
     color: #ffffff;
     text-shadow:
@@ -98,6 +98,53 @@
         0 -3px 26px rgba(255, 42, 112, 0.8),
         0 -8px 44px rgba(255, 42, 112, 0.5);
     transform: translateY(-2px);
+    animation: oddsAsciiBlinky 3.2s infinite ease-in-out;
+}
+
+@keyframes oddsAsciiBlinky {
+    0%, 100% {
+        opacity: 1;
+        text-shadow:
+            0 0 8px #ff2a70,
+            0 0 18px #ff2a70,
+            0 -3px 26px rgba(255, 42, 112, 0.8),
+            0 -8px 44px rgba(255, 42, 112, 0.5);
+    }
+    24% { opacity: 1; }
+    25% {
+        opacity: 0.85;
+        text-shadow: 0 0 4px #ff2a70, 0 0 10px #ff2a70;
+    }
+    27% {
+        opacity: 1;
+        text-shadow:
+            0 0 10px #ff2a70,
+            0 0 22px #ff2a70,
+            0 -4px 30px rgba(255, 42, 112, 0.95),
+            0 -10px 52px rgba(255, 42, 112, 0.65);
+    }
+    54% { opacity: 1; }
+    55% {
+        opacity: 0.88;
+        text-shadow: 0 0 5px #ff2a70, 0 0 12px #ff2a70;
+    }
+    57% {
+        opacity: 1;
+        text-shadow:
+            0 0 10px #ff2a70,
+            0 0 20px #ff2a70,
+            0 -3px 28px rgba(255, 42, 112, 0.9),
+            0 -8px 46px rgba(255, 42, 112, 0.6);
+    }
+    87% { opacity: 0.82; }
+    89% {
+        opacity: 1;
+        text-shadow:
+            0 0 12px #ff2a70,
+            0 0 26px #ff2a70,
+            0 -5px 34px rgba(255, 42, 112, 1),
+            0 -12px 58px rgba(255, 42, 112, 0.75);
+    }
 }
 
 /* --------------------------------------------------------------------------

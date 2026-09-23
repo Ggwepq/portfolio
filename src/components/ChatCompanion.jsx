@@ -144,6 +144,7 @@ function AnimatedPixelFace({
     pupilOffset = { x: 0, y: 0 },
     isHovered = false,
     isPillHovered = false,
+    isOddsHovered = false,
     mood = 'idle',
     size = 'normal',
     isMusicPlaying = false,
@@ -176,7 +177,7 @@ function AnimatedPixelFace({
         <div
             className={`pixel-face-wrapper ${size} ${mood} ${isVibing ? 'vibing' : ''} ${
                 isRelaxing ? `relaxing ${idleMood}` : ''
-            } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''}`}
+            } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''} ${isOddsHovered ? 'odds-amazed' : ''}`}
         >
             {isCold ? (
                 /* Cold deadpan: ≖_≖ */
@@ -184,6 +185,21 @@ function AnimatedPixelFace({
             ) : isThinking ? (
                 /* Thinking: •_• */
                 <span className="pixel-glyph-face thinking">•_•</span>
+            ) : isOddsHovered ? (
+                /* Simple wow / O mouth face when ODDS card is hovered: ◕ o ◕ */
+                <span className="pixel-glyph-face amazed">
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
+                    <span className="pixel-mouth-glyph wow-mouth">o</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
+                </span>
             ) : isVibing ? (
                 /* Music vibing: ♪ ˆᗜˆ ♫ */
                 <span className="pixel-glyph-face vibing">
@@ -279,6 +295,7 @@ const ChatCompanion = () => {
     const [idleEffect, setIdleEffect] = useState('happy');
     const [idleKey, setIdleKey] = useState(0);
     const [isPillHovered, setIsPillHovered] = useState(false);
+    const [isOddsHovered, setIsOddsHovered] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [hintIndex, setHintIndex] = useState(0);
     const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
@@ -286,6 +303,15 @@ const ChatCompanion = () => {
     const [isLoading, setIsLoading] = useState(false);
     const lastActivityRef = useRef(Date.now());
     const seqRef = useRef({ seqIdx: 0, stepIdx: 0 });
+
+    // Listen for ODDS card hover event
+    useEffect(() => {
+        const handleOddsHover = (e) => {
+            setIsOddsHovered(!!e.detail?.isHovered);
+        };
+        window.addEventListener('portfolio:odds-hover', handleOddsHover);
+        return () => window.removeEventListener('portfolio:odds-hover', handleOddsHover);
+    }, []);
 
     // 10-second idle relaxation detector
     useEffect(() => {
@@ -614,7 +640,7 @@ const ChatCompanion = () => {
                     onMouseEnter={() => setIsTriggerHovered(true)}
                     onMouseLeave={() => setIsTriggerHovered(false)}
                 >
-                    {/* DIALOGUE BUBBLE: ONLY SHOWN WHEN HOVERED */}
+                    {/* DIALOGUE BUBBLE: ONLY SHOWN WHEN TRIGGER IS HOVERED */}
                     {isTriggerHovered && (
                         <div className="companion-hover-dialogue" onClick={handleOpen}>
                             <span className="dialogue-sparkle">
@@ -635,7 +661,7 @@ const ChatCompanion = () => {
                         type="button"
                         className={`companion-trigger-bubble ${isMusicPlaying ? 'vibing' : ''} ${
                             isRelaxing ? `relaxing ${idleMood}` : ''
-                        } ${isTriggerHovered ? 'blushing' : ''}`}
+                        } ${isTriggerHovered ? 'blushing' : ''} ${isOddsHovered ? 'odds-amazed' : ''}`}
                         onClick={handleOpen}
                         aria-label="Open Chat Companion"
                     >
@@ -651,6 +677,7 @@ const ChatCompanion = () => {
                             pupilOffset={pupilOffset}
                             isHovered={isTriggerHovered}
                             isPillHovered={isPillHovered}
+                            isOddsHovered={isOddsHovered}
                             mood={mood}
                             size="normal"
                             isMusicPlaying={isMusicPlaying}
@@ -679,6 +706,7 @@ const ChatCompanion = () => {
                                     pupilOffset={{ x: 0, y: 0 }}
                                     isHovered={false}
                                     isPillHovered={isPillHovered}
+                                    isOddsHovered={isOddsHovered}
                                     mood={mood}
                                     size="small"
                                     isMusicPlaying={isMusicPlaying}
