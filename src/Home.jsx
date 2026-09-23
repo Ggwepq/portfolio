@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import CursorGradient from './components/CursorGradient';
 import Starfield from './components/Starfield';
 import Contact from './components/Contact';
+import OddsGroupCard from './components/OddsGroupCard';
 import ProjectThumbnail from './components/ProjectThumbnail';
 import ResumeModal from './components/ResumeModal';
 import './App.css';
@@ -24,6 +25,7 @@ function Home() {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
     const [hoveredProjectId, setHoveredProjectId] = useState(null);
+    const [isOddsHovered, setIsOddsHovered] = useState(false);
 
     // Create lookup for tool brand icons and colors
     const toolIconMap = useMemo(() => {
@@ -291,7 +293,7 @@ function Home() {
 
             <CursorGradient />
 
-            <Starfield isPlaying={isPlaying} isHovering={isHovering} isContactActive={isContactActive} />
+            <Starfield isPlaying={isPlaying} isHovering={isHovering} isContactActive={isContactActive} isOddsHovered={isOddsHovered} />
 
             {/* --- LEFT SIDE  --- */}
             <header className="left-section">
@@ -546,6 +548,8 @@ function Home() {
                 </section>
 
                 <Contact />
+
+                <OddsGroupCard onHoverChange={setIsOddsHovered} />
 
                 {/* <footer style={{ fontSize: '0.8rem', color: '#64748b' }}> */}
                 {/*   <p> */}

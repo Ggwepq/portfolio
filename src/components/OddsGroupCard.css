@@ -1,0 +1,187 @@
+/* ==========================================================================
+   ODDS Studio — Left-Aligned Wide Linking Card
+   Balanced Glow on ODDS & Tuned Pink Matrix Rain Visibility
+   ========================================================================== */
+
+.odds-card-section {
+    width: 100%;
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    box-sizing: border-box;
+}
+
+.odds-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 100%;
+    padding: 28px 34px 24px;
+    box-sizing: border-box;
+    background: rgba(8, 12, 24, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6);
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Card container remains dark and grounded */
+.odds-card:hover,
+.odds-card.hovered {
+    border-color: rgba(255, 42, 112, 0.35);
+    box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.75);
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Matrix Rain Canvas — Clearly Visible on Hover, Subtle Idle
+   -------------------------------------------------------------------------- */
+.matrix-rain-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.2; /* Subtle ambient rain when idle */
+    z-index: 1;
+    transition: opacity 0.35s ease;
+}
+
+.odds-card:hover .matrix-rain-canvas,
+.odds-card.hovered .matrix-rain-canvas {
+    opacity: 0.72; /* Crisp and clearly visible on hover */
+}
+
+/* --------------------------------------------------------------------------
+   ASCII Typography — Balanced Neon Pink Glow (Idle + Hover)
+   -------------------------------------------------------------------------- */
+.odds-ascii-art {
+    position: relative;
+    z-index: 2;
+    margin: 0;
+    font-family: 'Courier New', 'Fira Code', 'Lucida Console', monospace;
+    font-size: 0.76rem;
+    line-height: 1.14;
+    font-weight: 800;
+    text-align: left;
+    white-space: pre;
+    color: #ff2a70;
+    /* Added tasteful idle glow */
+    text-shadow:
+        0 0 10px rgba(255, 42, 112, 0.75),
+        0 -2px 18px rgba(255, 42, 112, 0.5),
+        0 -6px 26px rgba(255, 42, 112, 0.28);
+    transition:
+        color 0.3s ease,
+        text-shadow 0.35s ease,
+        transform 0.3s ease;
+    user-select: none;
+}
+
+/* Balanced, focused glow on hover (toned down from blinding flare) */
+.odds-card:hover .odds-ascii-art {
+    color: #ffffff;
+    text-shadow:
+        0 0 8px #ff2a70,
+        0 0 18px #ff2a70,
+        0 -3px 26px rgba(255, 42, 112, 0.8),
+        0 -8px 44px rgba(255, 42, 112, 0.5);
+    transform: translateY(-2px);
+}
+
+/* --------------------------------------------------------------------------
+   Tagline & Label (Interactive Hover Swap)
+   -------------------------------------------------------------------------- */
+.odds-ascii-tagline {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 14px;
+    font-family: 'Fira Code', 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    justify-content: flex-start;
+    text-align: left;
+    transition: color 0.25s ease;
+}
+
+.odds-tagline-prompt {
+    color: #ff2a70;
+    font-weight: 800;
+    transition: color 0.25s ease;
+}
+
+.odds-card:hover .odds-tagline-prompt {
+    color: #ff4785;
+}
+
+.odds-tagline-text {
+    letter-spacing: 0.02em;
+    animation: taglineSwapIn 0.22s ease forwards;
+}
+
+.odds-card:hover .odds-tagline-text {
+    color: #cbd5e1;
+}
+
+@keyframes taglineSwapIn {
+    from {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Mobile Scaling
+   -------------------------------------------------------------------------- */
+@media (max-width: 540px) {
+    .odds-card {
+        padding: 22px 20px 18px;
+    }
+
+    .odds-ascii-art {
+        font-size: 0.58rem;
+    }
+
+    .odds-ascii-tagline {
+        font-size: 0.74rem;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 420px) {
+    .odds-card {
+        padding: 18px 16px 16px;
+    }
+
+    .odds-ascii-art {
+        font-size: 0.46rem;
+    }
+
+    .odds-ascii-tagline {
+        font-size: 0.7rem;
+    }
+}
+
+@media (max-width: 350px) {
+    .odds-ascii-art {
+        font-size: 0.38rem;
+    }
+}
