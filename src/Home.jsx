@@ -61,6 +61,10 @@ function Home() {
     };
 
     useEffect(() => {
+        document.title = "John Cedric Abaloyan | Software Developer & Full Stack Portfolio";
+    }, []);
+
+    useEffect(() => {
         let ticking = false;
         const handleScroll = () => {
             if (!ticking) {
@@ -329,8 +333,8 @@ function Home() {
 
                     <div className="profile-img-container">
 
-                        <img src="/cedjuani.jpg" alt="Profile" className="profile-img default" />
-                        <img src="/cedjuani-singing.png" alt="Singing" className="profile-img hover-img" />
+                        <img src="/cedjuani.jpg" alt="John Cedric Abaloyan - Software Developer" className="profile-img default" />
+                        <img src="/cedjuani-singing.png" alt="John Cedric Abaloyan (Cedjuani)" className="profile-img hover-img" />
                     </div>
 
                     <audio

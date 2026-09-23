@@ -58,6 +58,10 @@ const Archive = () => {
     const [isOnTop, setIsOnTop] = useState("true");
     const [hoveredProjectId, setHoveredProjectId] = useState(null);
 
+    useEffect(() => {
+        document.title = "Project Archive | John Cedric Abaloyan";
+    }, []);
+
     // Flatten tool items for quick tech filters
     const allTools = useMemo(() => {
         const list = [];

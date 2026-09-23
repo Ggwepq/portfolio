@@ -69,7 +69,7 @@ On top of the database work, he overhauled their office network cabling to elimi
 - Location: Caloocan / Metro Manila, Philippines
 - Email: johncedricabaloyan28@gmail.com / cedjuani@gmail.com
 - Phone: +63 977 424 9790
-- Portfolio: https://cedjuani.vercel.app
+- Portfolio: https://cedjuani.dev
 - GitHub: https://github.com/Ggwepq
 - LinkedIn: https://www.linkedin.com/in/john-cedric-abaloyan/
 - Personal Interests: When not coding, Cedric enjoys video editing, 3D animation, reading books and manga, taking long walks to clear his head, and tinkering with his custom dotfiles on Fedora Linux ("Fedora btw! 🐧").

@@ -23,6 +23,7 @@ function ResumeViewer() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    document.title = "Resume & Credentials | John Cedric Abaloyan";
   }, [selectedId]);
 
   const activeResume = resumes.find(r => r.id === selectedId) || resumes[0];

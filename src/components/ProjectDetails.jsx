@@ -89,6 +89,12 @@ const ProjectDetail = () => {
   }, [project, currentSlide]);
 
   useEffect(() => {
+    if (project?.title) {
+      document.title = `${project.title} | John Cedric Abaloyan`;
+    }
+  }, [project]);
+
+  useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
       setIsOnTop(entry.isIntersecting);
     });
