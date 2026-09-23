@@ -47,7 +47,7 @@
 .companion-hover-dialogue .dialogue-tail {
   position: absolute;
   bottom: -6px;
-  right: 18px;
+  right: 25px;
   width: 10px;
   height: 10px;
   background: rgba(15, 23, 42, 0.95);
@@ -67,39 +67,165 @@
   }
 }
 
-/* --- THE TRIGGER BUBBLE (COMPACT FLOATING MASCOT) --- */
+/* --- THE TRIGGER BUBBLE (SOFT SQUIRCLE MASCOT) --- */
 .companion-trigger-bubble {
-  display: inline-flex;
+  width: 60px;
+  height: 60px;
+  min-width: 60px;
+  min-height: 60px;
+  border-radius: 22px; /* Soft squircle - cute and friendly, not a harsh rigid circle! */
+  display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(15, 23, 42, 0.94);
-  border: 1.5px solid rgba(94, 234, 212, 0.4);
-  padding: 6px 10px;
-  border-radius: 9999px;
+  background: rgba(13, 20, 36, 0.94);
+  border: 1.5px solid rgba(94, 234, 212, 0.38);
+  padding: 0;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 16px rgba(94, 234, 212, 0.15);
+  position: relative;
+  overflow: visible;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55), 0 0 16px rgba(94, 234, 212, 0.15);
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
               box-shadow 0.25s ease,
-              border-color 0.25s ease;
+              border-color 0.25s ease,
+              background 0.25s ease;
   outline: none;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
 }
 
-.companion-trigger-bubble:hover {
-  transform: translateY(-3px) scale(1.08);
-  border-color: var(--accent);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 24px rgba(94, 234, 212, 0.4);
+/* Remove inner green pill background inside the trigger bubble */
+.companion-trigger-bubble .pixel-face-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Face size with comfortable 14px margin to the circumference */
+.companion-trigger-bubble .pixel-glyph-face {
+  font-size: 1.15rem;
+  font-weight: 700;
+  gap: 3px;
+  line-height: 1;
+}
+
+.companion-trigger-bubble .pixel-eye-glyph {
+  font-size: 1.05rem;
+}
+
+.companion-trigger-bubble .pixel-mouth-glyph {
+  font-size: 0.95rem;
+  position: relative;
+  top: -1.5px;
+}
+
+/* Hover Blushing: gentle scale and glowing pastel pink */
+.companion-trigger-bubble:hover,
+.companion-trigger-bubble.blushing {
+  transform: translateY(-3px) scale(1.05);
+  border-color: #f472b6;
+  background: rgba(22, 26, 48, 0.96);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65), 0 0 22px rgba(244, 114, 182, 0.45);
 }
 
 /* Vibing state when background music plays */
 .companion-trigger-bubble.vibing {
   border-color: #38bdf8;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 20px rgba(56, 189, 248, 0.45);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.4);
   animation: vibingBob 1.3s infinite ease-in-out;
 }
 
 .companion-trigger-bubble.vibing:hover {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 30px rgba(56, 189, 248, 0.65);
+  border-color: #f472b6;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.65), 0 0 28px rgba(244, 114, 182, 0.55);
+}
+
+/* Relaxing state when idle for 10 seconds */
+.companion-trigger-bubble.relaxing {
+  border-color: #818cf8;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(129, 140, 248, 0.35);
+  animation: relaxingFloat 3s infinite ease-in-out;
+}
+
+.companion-trigger-bubble.relaxing.love {
+  border-color: #f472b6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(244, 114, 182, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.happy,
+.companion-trigger-bubble.relaxing.excited {
+  border-color: #5eead4;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(94, 234, 212, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.winking {
+  border-color: #fde047;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(253, 224, 71, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.hugging {
+  border-color: #34d399;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(52, 211, 153, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.sleepy {
+  border-color: #818cf8;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(129, 140, 248, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.hiding {
+  border-color: #f472b6;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(244, 114, 182, 0.45);
+}
+
+.companion-trigger-bubble.relaxing.thinking,
+.companion-trigger-bubble.relaxing.neutral {
+  border-color: #94a3b8;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 18px rgba(148, 163, 184, 0.35);
+}
+
+@keyframes relaxingFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Mascot Rosy Cheeks when Hovered */
+.mascot-rosy-cheek {
+  position: absolute;
+  width: 8px;
+  height: 4px;
+  background: rgba(244, 114, 182, 0.75);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(1px);
+  animation: rosyCheekPulse 1.8s infinite ease-in-out;
+}
+
+.mascot-rosy-cheek.left {
+  left: 12px;
+  bottom: 18px;
+}
+
+.mascot-rosy-cheek.right {
+  right: 12px;
+  bottom: 18px;
+}
+
+@keyframes rosyCheekPulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
 }
 
 @keyframes vibingBob {
@@ -118,7 +244,7 @@
 }
 
 /* ==============================================================================
-   PIXELATED KAOMOJI FACE WITH MOUSE TRACKING & HOVER GLOW
+   PIXELATED KAOMOJI FACE SYSTEM
    ============================================================================== */
 
 .pixel-face-wrapper {
@@ -131,65 +257,41 @@
   padding: 2px 6px;
   transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
   user-select: none;
+  position: relative;
 }
 
 .pixel-face-wrapper.normal {
   height: 28px;
-  padding: 3px 8px;
-}
-
-.pixel-face-wrapper.small {
-  height: 24px;
   padding: 2px 6px;
 }
 
+.pixel-face-wrapper.small {
+  height: 22px;
+  padding: 2px 5px;
+}
+
 .pixel-face-wrapper.micro {
-  height: 19px;
+  height: 18px;
   padding: 1px 4px;
-}
-
-/* Glow when hovered */
-.pixel-face-wrapper.hovered,
-.companion-trigger-bubble:hover .pixel-face-wrapper {
-  border-color: var(--accent);
-  background: rgba(94, 234, 212, 0.22);
-  box-shadow: 0 0 14px rgba(94, 234, 212, 0.5), inset 0 0 6px rgba(94, 234, 212, 0.3);
-  transform: scale(1.04);
-}
-
-.pixel-face-wrapper.vibing {
-  border-color: #38bdf8;
-  background: rgba(56, 189, 248, 0.16);
-  box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
-}
-
-.pixel-face-wrapper.cold {
-  border-color: #f87171;
-  background: rgba(248, 113, 113, 0.15);
-  box-shadow: 0 0 12px rgba(248, 113, 113, 0.4);
-}
-
-.pixel-face-wrapper.happy {
-  border-color: #f472b6;
-  background: rgba(244, 114, 182, 0.15);
-  box-shadow: 0 0 14px rgba(244, 114, 182, 0.4);
 }
 
 /* The Glyph Face Text */
 .pixel-glyph-face {
   font-family: monospace, 'Courier New', Courier, sans-serif;
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 0.95rem;
   color: var(--accent);
   display: inline-flex;
   align-items: center;
-  letter-spacing: -0.02em;
+  justify-content: center;
+  letter-spacing: -0.01em;
   white-space: nowrap;
+  line-height: 1;
   transition: all 0.2s ease;
 }
 
 .pixel-face-wrapper.small .pixel-glyph-face {
-  font-size: 0.78rem;
+  font-size: 0.82rem;
 }
 
 .pixel-face-wrapper.micro .pixel-glyph-face {
@@ -204,9 +306,338 @@
   color: #f472b6;
 }
 
+/* --- BUBBLE HOVERED: (⌒ω⌒) WITHOUT PARENTHESES -> ⌒ω⌒ --- */
+.pixel-glyph-face.bubble-hovered {
+  color: #f472b6;
+  font-size: 1.15rem;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.85);
+  animation: bubbleHoverGlow 1.8s infinite ease-in-out;
+}
+
+.pixel-glyph-face.bubble-hovered .kaomoji-eye {
+  color: #f472b6;
+  font-size: 1.1rem;
+}
+
+.pixel-glyph-face.bubble-hovered .cat-mouth {
+  color: #f472b6;
+  font-size: 1.05rem;
+  top: 0px;
+}
+
+@keyframes bubbleHoverGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 3px rgba(244, 114, 182, 0.6));
+  }
+  50% {
+    filter: drop-shadow(0 0 8px rgba(244, 114, 182, 0.95));
+  }
+}
+
+/* --- PILL HOVERED: ( ◕▿◕ ) WITHOUT PARENTHESES -> ◕▿◕ --- */
+.pixel-glyph-face.pill-hovered {
+  color: #5eead4;
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(94, 234, 212, 0.75);
+}
+
+.pixel-mouth-glyph.pill-mouth {
+  font-size: 0.85rem;
+  color: #38bdf8;
+  top: -1.5px;
+  margin: 0 1px;
+}
+
+/* --- IDLE KAOMOJI PLAYER & SMOOTH TRANSITIONS --- */
+.pixel-glyph-face.idle-playing {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: kaomojiCrossFade 0.42s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  will-change: transform, opacity;
+  line-height: 1;
+}
+
+@keyframes kaomojiCrossFade {
+  0% {
+    opacity: 0;
+    transform: scale(0.78);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+  }
+}
+
+.pixel-glyph-face.idle-playing.short-glyph {
+  font-size: 1.05rem;
+  letter-spacing: 0.5px;
+}
+
+.pixel-glyph-face.idle-playing.mid-glyph {
+  font-size: 0.88rem;
+  letter-spacing: -0.01em;
+}
+
+.pixel-glyph-face.idle-playing.long-glyph {
+  font-size: 0.74rem;
+  letter-spacing: -0.02em;
+}
+
+.pixel-glyph-face.idle-playing .kaomoji-face-text {
+  display: inline-block;
+  line-height: 1;
+}
+
+/* --- ROLEPLAY SEQUENCE MICRO-ANIMATIONS (HAPPY TO NEUTRAL ONLY) --- */
+
+/* 1. LOVE & KISS */
+.pixel-face-wrapper.relaxing.love {
+  animation: lovePulse 1.6s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.love {
+  color: #f472b6;
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.85);
+}
+
+.anim-heart {
+  position: absolute;
+  color: #f472b6;
+  font-size: 0.72rem;
+  pointer-events: none;
+  text-shadow: 0 0 8px #f472b6;
+  animation: heartFloat 2.2s infinite ease-out;
+}
+
+.anim-heart.h1 {
+  left: 10px;
+  top: -4px;
+  animation-delay: 0s;
+}
+
+.anim-heart.h2 {
+  right: 10px;
+  top: -8px;
+  animation-delay: 1.1s;
+}
+
+@keyframes heartFloat {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) scale(0.5) rotate(-10deg);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(2px, -8px) scale(1) rotate(5deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-3px, -20px) scale(1.2) rotate(15deg);
+  }
+}
+
+@keyframes lovePulse {
+  0%, 100% { transform: scale(1); }
+  25% { transform: scale(1.06); }
+  40% { transform: scale(1); }
+  60% { transform: scale(1.04); }
+}
+
+.anim-kiss-heart {
+  position: absolute;
+  top: -4px;
+  right: 4px;
+  color: #f472b6;
+  font-size: 0.8rem;
+  text-shadow: 0 0 8px #f472b6;
+  animation: kissHeartFloat 1.8s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes kissHeartFloat {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  35% { opacity: 1; transform: translate(3px, -6px) scale(1.1); }
+  100% { opacity: 0; transform: translate(6px, -18px) scale(1.3); }
+}
+
+/* 2. WINKING & SPARKLE */
+.pixel-face-wrapper.relaxing.winking {
+  animation: winkBob 1.6s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.winking,
+.pixel-glyph-face.idle-playing.sparkle {
+  color: #fde047;
+  text-shadow: 0 0 10px rgba(253, 224, 71, 0.75);
+}
+
+.anim-wink-star {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  color: #fde047;
+  font-size: 0.82rem;
+  animation: winkSparkle 1.2s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes winkSparkle {
+  0%, 100% { opacity: 0; transform: scale(0.3) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+}
+
+@keyframes winkBob {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(5deg) translateY(-2px); }
+}
+
+/* 3. COZY SLEEPY & REST */
+.pixel-face-wrapper.relaxing.sleepy {
+  animation: sleepyBreathe 2.8s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.sleepy {
+  color: #818cf8;
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.7);
+}
+
+.anim-sleep-z {
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  color: #38bdf8;
+  font-size: 0.75rem;
+  font-weight: 800;
+  font-family: monospace;
+  text-shadow: 0 0 6px #38bdf8;
+  animation: gentleZFloat 2.2s infinite ease-out;
+  pointer-events: none;
+}
+
+@keyframes gentleZFloat {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.6); }
+  40% { opacity: 0.9; transform: translate(3px, -6px) scale(0.95); }
+  100% { opacity: 0; transform: translate(8px, -16px) scale(1.2); }
+}
+
+@keyframes sleepyBreathe {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.04) translateY(-1px); }
+}
+
+/* 4. HUGGING & WARMTH */
+.pixel-face-wrapper.relaxing.hugging {
+  animation: hugPulse 1.5s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.hugging {
+  color: #a7f3d0;
+  text-shadow: 0 0 10px rgba(167, 243, 208, 0.7);
+}
+
+@keyframes hugPulse {
+  0%, 100% { transform: scale(1, 1); }
+  50% { transform: scale(1.08, 0.94); }
+}
+
+/* 5. HIDING & BASHFUL BLUSH */
+.pixel-face-wrapper.relaxing.hiding {
+  animation: shyBob 2s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.hiding {
+  color: #f472b6;
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
+}
+
+@keyframes shyBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(2px) scale(0.96); }
+}
+
+/* 6. HAPPY & EXCITED */
+.pixel-face-wrapper.relaxing.happy,
+.pixel-face-wrapper.relaxing.excited {
+  animation: happyBob 1.6s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.happy,
+.pixel-glyph-face.idle-playing.excited {
+  color: #5eead4;
+  text-shadow: 0 0 10px rgba(94, 234, 212, 0.75);
+}
+
+@keyframes happyBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2.5px) scale(1.03); }
+}
+
+/* 7. THINKING & NEUTRAL */
+.pixel-face-wrapper.relaxing.thinking {
+  animation: thinkingTilt 2.4s infinite ease-in-out;
+}
+
+.pixel-glyph-face.idle-playing.thinking,
+.pixel-glyph-face.idle-playing.neutral {
+  color: #cbd5e1;
+  text-shadow: 0 0 8px rgba(203, 213, 225, 0.6);
+}
+
+@keyframes thinkingTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(4deg) translateY(-1px); }
+}
+
+/* Kaomoji glyph styling */
+.kaomoji-blush {
+  color: #f472b6;
+  font-size: 0.95em;
+  line-height: 1;
+  text-shadow: 0 0 6px rgba(244, 114, 182, 0.85);
+  display: inline-block;
+  user-select: none;
+}
+
+.kaomoji-blush.left {
+  margin-right: 1px;
+}
+
+.kaomoji-blush.right {
+  margin-left: 1px;
+}
+
+.kaomoji-squint {
+  color: #5eead4;
+  font-family: monospace, sans-serif;
+  font-weight: 800;
+  font-size: 0.95em;
+  display: inline-block;
+  line-height: 1;
+}
+
+.kaomoji-relax-eye {
+  color: #818cf8;
+  font-size: 1.05em;
+  line-height: 1;
+}
+
+.kaomoji-happy-eye {
+  color: #5eead4;
+  font-size: 1.05em;
+  line-height: 1;
+}
+
 /* Tracking Eyes (◕) */
 .pixel-eye-glyph {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   line-height: 1;
   font-size: 0.95em;
   color: var(--accent);
@@ -218,17 +649,47 @@
   text-shadow: 0 0 8px var(--accent);
 }
 
-/* Mouth */
-.pixel-mouth-glyph {
+/* Eye pupil & natural blinking */
+.pixel-eye-pupil {
   display: inline-block;
   line-height: 1;
-  margin: 0 1px;
+  transition: transform 0.08s ease;
 }
 
-.pixel-mouth-glyph.smile-more {
-  transform: scale(1.15);
-  font-weight: 800;
+.pixel-eye-pupil.blinking {
+  transform: scaleY(0.12);
+}
+
+/* Mouth with precise vertical positioning */
+.pixel-mouth-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  margin: 0 2px;
+  position: relative;
+  top: -1.5px; /* vertically centers with eyes */
+  font-size: 0.95rem;
+  color: var(--accent);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease, top 0.2s ease;
+}
+
+.pixel-mouth-glyph.happy {
   color: #38bdf8;
+  font-size: 0.9em;
+  top: -1px;
+}
+
+.pixel-mouth-glyph.relax {
+  color: #818cf8;
+  font-size: 0.9em;
+  top: -1px;
+}
+
+.pixel-mouth-glyph.happy-open {
+  color: #38bdf8;
+  font-size: 0.9em;
+  top: 0px;
 }
 
 /* Musical Notes for Vibing State */
@@ -295,28 +756,102 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
-  animation: windowReveal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.companion-window.happy {
-  border-color: rgba(244, 114, 182, 0.35);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(244, 114, 182, 0.15);
+/* Smooth morphing expansion from circle bubble */
+.companion-window.opening {
+  transform-origin: calc(100% - 30px) calc(100% - 30px);
+  animation: windowMorphOpen 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.companion-window.cold {
-  border-color: rgba(248, 113, 113, 0.4);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), 0 0 35px rgba(248, 113, 113, 0.15);
+.companion-window.closing {
+  transform-origin: calc(100% - 30px) calc(100% - 30px);
+  animation: windowMorphClose 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
 }
 
-@keyframes windowReveal {
-  from {
+@keyframes windowMorphOpen {
+  0% {
     opacity: 0;
-    transform: translateY(24px) scale(0.94);
+    transform: scale(0.15);
+    border-radius: 22px;
   }
-  to {
+  60% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 24px;
+  }
+}
+
+@keyframes windowMorphClose {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    border-radius: 24px;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.15);
+    border-radius: 22px;
+  }
+}
+
+/* Header Avatar: compact, perfectly proportioned 36px badge */
+.header-avatar-morph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  background: rgba(94, 234, 212, 0.12);
+  border: 1px solid rgba(94, 234, 212, 0.3);
+  flex-shrink: 0;
+}
+
+.header-avatar-morph .pixel-face-wrapper {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.header-avatar-morph .pixel-glyph-face {
+  font-size: 0.82rem;
+  line-height: 1;
+}
+
+.companion-window.opening .header-avatar-morph {
+  animation: avatarPopIn 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.companion-window.closing .header-avatar-morph {
+  animation: avatarPopOut 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes avatarPopIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes avatarPopOut {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.5);
+    opacity: 0;
   }
 }
 

@@ -10,15 +10,17 @@ import './App.css';
 import { projects } from './data/projects';
 import { toolCategories } from './data/tools';
 
+const FALLBACK_PREVIEW_URL = "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/e2/ac/ea/e2acea3b-fb5e-7e2a-0580-2fe7d9cfaef9/mzaf_15688180098740548172.plus.aac.p.m4a";
+
 function Home() {
     const audioRef = useRef(null);
     const navigate = useNavigate();
     const [activeSelection, setActiveSelection] = useState('about');
     const [isContactActive, setIsContactActive] = useState(false);
     const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
-    const [songData, setSongData] = useState('null');
-    const [audioUrl, setAudioUrl] = useState('null');
-    const [audioVolume, setAudioVolume] = useState('null');
+    const [songData, setSongData] = useState(null);
+    const [audioUrl, setAudioUrl] = useState(null);
+    const [audioVolume, setAudioVolume] = useState(0.3);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
     const [hoveredProjectId, setHoveredProjectId] = useState(null);
@@ -144,17 +146,18 @@ function Home() {
         fetchMusic();
     }, []);
 
-    const fadeIn = (audio, targetVolume = 0.3, duration = 500) => {
-        audio.volume = audioVolume;
-        const steps = 20;
+    const fadeIn = (audio, targetVolume = 0.3, duration = 400) => {
+        if (!audio) return;
+        audio.volume = Math.max(0, Math.min(1, typeof audio.volume === 'number' && !isNaN(audio.volume) ? audio.volume : 0));
+        const steps = 15;
         const increment = targetVolume / steps;
         const stepDuration = duration / steps;
 
         let currentStep = 0;
         const fadeInterval = setInterval(() => {
-            if (currentStep >= steps) {
+            if (!audio || currentStep >= steps) {
                 clearInterval(fadeInterval);
-                audio.volume = targetVolume;
+                if (audio) audio.volume = targetVolume;
                 return;
             }
             audio.volume = Math.min(audio.volume + increment, targetVolume);
@@ -165,17 +168,20 @@ function Home() {
     };
 
     const fadeOut = (audio, duration = 300) => {
-        const startVolume = audio.volume;
-        const steps = 20;
+        if (!audio) return;
+        const startVolume = typeof audio.volume === 'number' && !isNaN(audio.volume) ? audio.volume : 0.3;
+        const steps = 15;
         const decrement = startVolume / steps;
         const stepDuration = duration / steps;
 
         let currentStep = 0;
         const fadeInterval = setInterval(() => {
-            if (currentStep >= steps) {
+            if (!audio || currentStep >= steps) {
                 clearInterval(fadeInterval);
-                audio.pause();
-                audio.volume = 0;
+                if (audio) {
+                    audio.pause();
+                    audio.volume = 0;
+                }
                 return;
             }
             audio.volume = Math.max(audio.volume - decrement, 0);
@@ -185,57 +191,75 @@ function Home() {
         return fadeInterval;
     };
 
-    const toggleAudio = () => {
-        if (!audioRef.current || !audioUrl) return;
+    const toggleAudio = (e) => {
+        if (e) e.stopPropagation();
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const effectiveUrl = audioUrl || FALLBACK_PREVIEW_URL;
+        if (!audio.src || audio.src.endsWith('/null') || audio.src === '') {
+            audio.src = effectiveUrl;
+            audio.load();
+        }
 
         if (isPlaying) {
-            setAudioVolume(0)
-            fadeOut(audioRef.current, 300)
+            fadeOut(audio, 250);
             setIsPlaying(false);
+            window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: false } }));
         } else {
-            setAudioVolume(0.3)
-            audioRef.current.play();
-            fadeIn(audioRef.current, 0.3, 300)
-            setIsPlaying(true);
+            audio.volume = 0.3;
+            audio.play().then(() => {
+                fadeIn(audio, 0.3, 300);
+                setIsPlaying(true);
+                window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: true } }));
+            }).catch((err) => {
+                console.warn("Audio play prevented:", err);
+            });
         }
     };
 
     const handleMouseEnter = () => {
         setIsHovering(true);
-        if (audioRef.current && audioUrl) {
-            if (!isPlaying) {
-                setAudioVolume(0.15);
-                fadeIn(audioRef.current, 0.15, 400);
+        if (isPlaying) return;
+        const audio = audioRef.current;
+        if (audio) {
+            const effectiveUrl = audioUrl || FALLBACK_PREVIEW_URL;
+            if (!audio.src || audio.src.endsWith('/null')) {
+                audio.src = effectiveUrl;
+                audio.load();
             }
-            audioRef.current.play().catch(e => console.log("Play blocked", e));
+            audio.volume = 0.15;
+            audio.play().catch(e => console.log("Hover play blocked", e));
         }
     };
 
     const handleMouseLeave = () => {
         setIsHovering(false);
         if (isPlaying) return;
-        if (audioRef.current) {
-            setAudioVolume(0);
-            audioRef.current.pause();
-            audioRef.current.currentTime = 0;
+        const audio = audioRef.current;
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+            window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: false } }));
         }
     };
 
     const handleAudioEnded = () => {
-        // fadeOut(audioRef.current, 300)
-        // setIsPlaying(false);
-        // fadeOut(audioRef.current, 300)
         replayAudio();
     };
 
     const replayAudio = () => {
-        audioRef.current.pause();
-        audioRef.current.time = 0;
-        audioRef.current.play();
-        setAudioVolume(0.3)
-        fadeIn(audioRef.current, 0.3, 300)
-        setIsPlaying(true);
-    }
+        const audio = audioRef.current;
+        if (!audio) return;
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play().then(() => {
+            audio.volume = 0.3;
+            fadeIn(audio, 0.3, 300);
+            setIsPlaying(true);
+            window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: true } }));
+        }).catch(err => console.warn("Replay error", err));
+    };
 
 
     const experiences = [
@@ -294,13 +318,20 @@ function Home() {
                         <img src="/cedjuani-singing.png" alt="Singing" className="profile-img hover-img" />
                     </div>
 
-                    {audioUrl && (
-                        <audio
-                            ref={audioRef}
-                            src={audioUrl}
-                            onEnded={handleAudioEnded}
-                        />
-                    )}
+                    <audio
+                        ref={audioRef}
+                        src={audioUrl || FALLBACK_PREVIEW_URL}
+                        onPlay={() => {
+                            window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: true } }));
+                        }}
+                        onPause={() => {
+                            if (!isPlaying) {
+                                window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: false } }));
+                            }
+                        }}
+                        onEnded={handleAudioEnded}
+                        preload="auto"
+                    />
                 </div>
 
                 <div>

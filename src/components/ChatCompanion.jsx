@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaPaperPlane, FaTimes, FaRedo } from 'react-icons/fa';
+import { ROLEPLAY_SEQUENCES } from '../data/kaomojiSequences';
 import './ChatCompanion.css';
 
 const SUGGESTIONS = [
@@ -26,6 +27,12 @@ const MUSIC_HINTS = [
     'Love this track! ♫',
     'Jamming right now ✨',
     'Ask me about Cedric\'s music taste 🎧',
+];
+
+const RELAX_HINTS = [
+    'Zzz... Taking a quick breather ☕',
+    'Relaxing in cyber space ✨',
+    'Click me to wake me up! 🌸',
 ];
 
 // Helper to parse links, bold text, and code
@@ -132,8 +139,21 @@ function formatBotMessage(text, onNavigate) {
     return elements;
 }
 
-// The pixelated kaomoji face: eyes and mouth only (no parentheses) with cursor-tracking eyes
-function AnimatedPixelFace({ pupilOffset = { x: 0, y: 0 }, isHovered = false, mood = 'idle', size = 'normal', isMusicPlaying = false }) {
+// The expressive kaomoji face system
+function AnimatedPixelFace({
+    pupilOffset = { x: 0, y: 0 },
+    isHovered = false,
+    isPillHovered = false,
+    mood = 'idle',
+    size = 'normal',
+    isMusicPlaying = false,
+    isBlinking = false,
+    isRelaxing = false,
+    idleFace = null,
+    idleMood = 'happy',
+    idleEffect = 'happy',
+    idleKey = 0,
+}) {
     const isCold = mood === 'cold';
     const isThinking = mood === 'thinking';
     const isHappy = mood === 'happy';
@@ -141,44 +161,105 @@ function AnimatedPixelFace({ pupilOffset = { x: 0, y: 0 }, isHovered = false, mo
 
     // Eye shift amount clamped for kaomoji
     const eyeStyle = {
-        display: 'inline-block',
-        transform: `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transform: isRelaxing || isBlinking ? 'none' : `translate(${pupilOffset.x}px, ${pupilOffset.y}px)`,
         transition: 'transform 0.08s ease-out',
     };
 
+    // Calculate font size class depending on idleFace length for optimal fitting inside bubble
+    const faceLen = idleFace ? idleFace.length : 0;
+    const lenClass = faceLen > 7 ? 'long-glyph' : faceLen > 4 ? 'mid-glyph' : 'short-glyph';
+
     return (
-        <div className={`pixel-face-wrapper ${size} ${mood} ${isVibing ? 'vibing' : ''} ${isHovered ? 'hovered' : ''}`}>
+        <div
+            className={`pixel-face-wrapper ${size} ${mood} ${isVibing ? 'vibing' : ''} ${
+                isRelaxing ? `relaxing ${idleMood}` : ''
+            } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''}`}
+        >
             {isCold ? (
+                /* Cold deadpan: ≖_≖ */
                 <span className="pixel-glyph-face cold">≖_≖</span>
             ) : isThinking ? (
+                /* Thinking: •_• */
                 <span className="pixel-glyph-face thinking">•_•</span>
             ) : isVibing ? (
+                /* Music vibing: ♪ ˆᗜˆ ♫ */
                 <span className="pixel-glyph-face vibing">
                     <span className="vibing-note left">♪</span>
-                    {isHovered ? (
-                        <>
-                            <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
-                            <span className="pixel-mouth-glyph smile-more">◡</span>
-                            <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
-                        </>
-                    ) : (
-                        <span className="vibing-face-text">ˆᗜˆ</span>
-                    )}
+                    <span className="vibing-face-text">{isHovered ? '⌒ω⌒' : 'ˆᗜˆ'}</span>
                     <span className="vibing-note right">♫</span>
                 </span>
-            ) : isHappy ? (
-                <span className="pixel-glyph-face happy">ˆᗜˆ</span>
             ) : isHovered ? (
-                <span className="pixel-glyph-face hovered">
-                    <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
-                    <span className="pixel-mouth-glyph smile-more">◡</span>
-                    <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
+                /* Mascot bubble hovered: (⌒ω⌒) without parentheses -> ⌒ω⌒ */
+                <span className="pixel-glyph-face bubble-hovered">
+                    <span className="kaomoji-eye">⌒</span>
+                    <span className="pixel-mouth-glyph cat-mouth">ω</span>
+                    <span className="kaomoji-eye">⌒</span>
+                </span>
+            ) : isPillHovered ? (
+                /* Pill hovered: ( ◕▿◕ ) without parentheses -> ◕▿◕ */
+                <span className="pixel-glyph-face pill-hovered">
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
+                    <span className="pixel-mouth-glyph pill-mouth">▿</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
+                </span>
+            ) : isHappy ? (
+                /* Happy kaomoji: ˶ˆ ᗜ ˆ˵ */
+                <span className="pixel-glyph-face happy">
+                    <span className="kaomoji-blush left">˶</span>
+                    <span className="kaomoji-happy-eye">ˆ</span>
+                    <span className="pixel-mouth-glyph happy-open">ᗜ</span>
+                    <span className="kaomoji-happy-eye">ˆ</span>
+                    <span className="kaomoji-blush right">˵</span>
+                </span>
+            ) : isRelaxing && idleFace ? (
+                /* Idle Roleplay Kaomoji player with micro-animations & smooth transitions */
+                <span
+                    key={idleKey}
+                    className={`pixel-glyph-face idle-playing ${idleMood} ${idleEffect} ${lenClass}`}
+                >
+                    {/* Micro-animations based on current roleplay story step effect */}
+                    {idleEffect === 'love' && (
+                        <>
+                            <span className="anim-heart h1">♥</span>
+                            <span className="anim-heart h2">♥</span>
+                        </>
+                    )}
+                    {idleEffect === 'kiss' && (
+                        <span className="anim-kiss-heart">♥</span>
+                    )}
+                    {(idleEffect === 'wink' || idleEffect === 'sparkle') && (
+                        <span className="anim-wink-star">✧</span>
+                    )}
+                    {idleEffect === 'sleep' && (
+                        <span className="anim-sleep-z">z</span>
+                    )}
+                    <span className="kaomoji-face-text">{idleFace}</span>
                 </span>
             ) : (
+                /* Default Active Idle: ◕ ‿ ◕ with eye tracking and blinking */
                 <span className="pixel-glyph-face idle">
-                    <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
                     <span className="pixel-mouth-glyph">‿</span>
-                    <span className="pixel-eye-glyph" style={eyeStyle}>◕</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '◕'}
+                        </span>
+                    </span>
                 </span>
             )}
         </div>
@@ -191,10 +272,138 @@ const ChatCompanion = () => {
     const [mood, setMood] = useState('idle'); // 'idle' | 'happy' | 'thinking' | 'cold'
     const [isTriggerHovered, setIsTriggerHovered] = useState(false);
     const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+    const [isBlinking, setIsBlinking] = useState(false);
+    const [isRelaxing, setIsRelaxing] = useState(false);
+    const [idleFace, setIdleFace] = useState('◕‿◕');
+    const [idleMood, setIdleMood] = useState('happy');
+    const [idleEffect, setIdleEffect] = useState('happy');
+    const [idleKey, setIdleKey] = useState(0);
+    const [isPillHovered, setIsPillHovered] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
     const [hintIndex, setHintIndex] = useState(0);
     const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const lastActivityRef = useRef(Date.now());
+    const seqRef = useRef({ seqIdx: 0, stepIdx: 0 });
+
+    // 10-second idle relaxation detector
+    useEffect(() => {
+        const handleActivity = () => {
+            lastActivityRef.current = Date.now();
+            if (isRelaxing) {
+                setIsRelaxing(false);
+            }
+        };
+
+        const events = ['mousemove', 'mousedown', 'keydown', 'scroll', 'touchstart'];
+        events.forEach((ev) => window.addEventListener(ev, handleActivity, { passive: true }));
+
+        const checkInterval = setInterval(() => {
+            if (!isOpen && !isMusicPlaying && Date.now() - lastActivityRef.current >= 10000) {
+                setIsRelaxing(true);
+            }
+        }, 1000);
+
+        return () => {
+            events.forEach((ev) => window.removeEventListener(ev, handleActivity));
+            clearInterval(checkInterval);
+        };
+    }, [isOpen, isMusicPlaying, isRelaxing]);
+
+    // Idle Roleplay Sequencer: Plays structured emotional story arcs
+    // (Happy to neutral only, strictly zero sad/angry kaomojis, no parentheses)
+    useEffect(() => {
+        if (!isRelaxing) return;
+
+        // Pick a random starting sequence
+        const startSeqIdx = Math.floor(Math.random() * ROLEPLAY_SEQUENCES.length);
+        seqRef.current = { seqIdx: startSeqIdx, stepIdx: 0 };
+
+        const initialStep = ROLEPLAY_SEQUENCES[startSeqIdx].steps[0];
+        setIdleFace(initialStep.face);
+        setIdleMood(initialStep.mood);
+        setIdleEffect(initialStep.effect);
+        setIdleKey((k) => k + 1);
+
+        const cycleInterval = setInterval(() => {
+            const { seqIdx, stepIdx } = seqRef.current;
+            const currentSeq = ROLEPLAY_SEQUENCES[seqIdx];
+            let nextSeqIdx = seqIdx;
+            let nextStepIdx = stepIdx + 1;
+
+            if (nextStepIdx >= currentSeq.steps.length) {
+                // Current story arc completed! Transition smoothly to next roleplay sequence
+                let pickSeq = Math.floor(Math.random() * ROLEPLAY_SEQUENCES.length);
+                if (pickSeq === seqIdx && ROLEPLAY_SEQUENCES.length > 1) {
+                    pickSeq = (seqIdx + 1) % ROLEPLAY_SEQUENCES.length;
+                }
+                nextSeqIdx = pickSeq;
+                nextStepIdx = 0;
+            }
+
+            seqRef.current = { seqIdx: nextSeqIdx, stepIdx: nextStepIdx };
+            const stepData = ROLEPLAY_SEQUENCES[nextSeqIdx].steps[nextStepIdx];
+            setIdleFace(stepData.face);
+            setIdleMood(stepData.mood);
+            setIdleEffect(stepData.effect);
+            setIdleKey((k) => k + 1);
+        }, 3400);
+
+        return () => clearInterval(cycleInterval);
+    }, [isRelaxing]);
+
+    // Pill hovering detector: detects hover on badges/pills across page and chat window
+    useEffect(() => {
+        const handleMouseOver = (e) => {
+            const pillEl = e.target.closest?.(
+                '.cute-tag-pill, .category-pill-btn, .cute-back-pill, .role-pills-wrap, .topic-card-item, .chat-project-badge-link, [class*="pill"]'
+            );
+            if (pillEl) {
+                setIsPillHovered(true);
+            }
+        };
+
+        const handleMouseOut = (e) => {
+            const pillEl = e.target.closest?.(
+                '.cute-tag-pill, .category-pill-btn, .cute-back-pill, .role-pills-wrap, .topic-card-item, .chat-project-badge-link, [class*="pill"]'
+            );
+            if (pillEl) {
+                setIsPillHovered(false);
+            }
+        };
+
+        document.addEventListener('mouseover', handleMouseOver);
+        document.addEventListener('mouseout', handleMouseOut);
+
+        return () => {
+            document.removeEventListener('mouseover', handleMouseOver);
+            document.removeEventListener('mouseout', handleMouseOut);
+        };
+    }, []);
+
+    // Natural eye blinking timer (every 3.2s to 6.4s for 160ms)
+    useEffect(() => {
+        let blinkTimer;
+        let timeoutBlink;
+
+        const scheduleBlink = () => {
+            const delay = 3200 + Math.random() * 3200;
+            blinkTimer = setTimeout(() => {
+                setIsBlinking(true);
+                timeoutBlink = setTimeout(() => {
+                    setIsBlinking(false);
+                    scheduleBlink();
+                }, 160);
+            }, delay);
+        };
+
+        scheduleBlink();
+        return () => {
+            clearTimeout(blinkTimer);
+            clearTimeout(timeoutBlink);
+        };
+    }, []);
 
     // Audio detector: listens for HTMLMediaElement play/pause across the entire page
     useEffect(() => {
@@ -202,36 +411,38 @@ const ChatCompanion = () => {
             const audios = document.querySelectorAll('audio');
             let playing = false;
             audios.forEach((audio) => {
-                if (!audio.paused && !audio.ended && audio.currentTime > 0) {
+                if (!audio.paused && !audio.ended) {
                     playing = true;
                 }
             });
-            setIsMusicPlaying(playing);
+            setIsMusicPlaying((prev) => (prev !== playing ? playing : prev));
         };
 
-        const handlePlay = (e) => {
-            if (e.target && e.target.tagName === 'AUDIO') {
-                setIsMusicPlaying(true);
-            }
-        };
-
-        const handlePause = (e) => {
-            if (e.target && e.target.tagName === 'AUDIO') {
+        const handlePlay = () => setIsMusicPlaying(true);
+        const handlePause = () => setTimeout(checkAudioStatus, 80);
+        const handleCustomMusic = (e) => {
+            if (e.detail && typeof e.detail.isPlaying === 'boolean') {
+                setIsMusicPlaying(e.detail.isPlaying);
+            } else {
                 checkAudioStatus();
             }
         };
 
         window.addEventListener('play', handlePlay, true);
+        window.addEventListener('playing', handlePlay, true);
         window.addEventListener('pause', handlePause, true);
         window.addEventListener('ended', handlePause, true);
+        window.addEventListener('portfolio:music-state', handleCustomMusic);
 
         checkAudioStatus();
-        const interval = setInterval(checkAudioStatus, 800);
+        const interval = setInterval(checkAudioStatus, 400);
 
         return () => {
             window.removeEventListener('play', handlePlay, true);
+            window.removeEventListener('playing', handlePlay, true);
             window.removeEventListener('pause', handlePause, true);
             window.removeEventListener('ended', handlePause, true);
+            window.removeEventListener('portfolio:music-state', handleCustomMusic);
             clearInterval(interval);
         };
     }, []);
@@ -288,15 +499,20 @@ const ChatCompanion = () => {
         return () => clearInterval(interval);
     }, [isTriggerHovered]);
 
-    // Clean open & close handlers (guarantees hover state is never stuck)
+    // Clean open & close handlers with smooth transition animations
     const handleOpen = () => {
         setIsTriggerHovered(false);
+        setIsClosing(false);
         setIsOpen(true);
     };
 
     const handleClose = () => {
         setIsTriggerHovered(false);
-        setIsOpen(false);
+        setIsClosing(true);
+        setTimeout(() => {
+            setIsOpen(false);
+            setIsClosing(false);
+        }, 280);
     };
 
     // Auto-scroll chat to bottom
@@ -401,10 +617,14 @@ const ChatCompanion = () => {
                     {/* DIALOGUE BUBBLE: ONLY SHOWN WHEN HOVERED */}
                     {isTriggerHovered && (
                         <div className="companion-hover-dialogue" onClick={handleOpen}>
-                            <span className="dialogue-sparkle">{isMusicPlaying ? '🎵' : '🌸'}</span>
+                            <span className="dialogue-sparkle">
+                                {isMusicPlaying ? '🎵' : isRelaxing ? '☕' : '🌸'}
+                            </span>
                             <span className="dialogue-text">
                                 {isMusicPlaying
                                     ? MUSIC_HINTS[hintIndex % MUSIC_HINTS.length]
+                                    : isRelaxing
+                                    ? RELAX_HINTS[hintIndex % RELAX_HINTS.length]
                                     : PROMPT_HINTS[hintIndex % PROMPT_HINTS.length]}
                             </span>
                             <div className="dialogue-tail" />
@@ -413,16 +633,33 @@ const ChatCompanion = () => {
 
                     <button
                         type="button"
-                        className={`companion-trigger-bubble ${isMusicPlaying ? 'vibing' : ''}`}
+                        className={`companion-trigger-bubble ${isMusicPlaying ? 'vibing' : ''} ${
+                            isRelaxing ? `relaxing ${idleMood}` : ''
+                        } ${isTriggerHovered ? 'blushing' : ''}`}
                         onClick={handleOpen}
                         aria-label="Open Chat Companion"
                     >
+                        {/* Rosy blush cheeks on hover */}
+                        {isTriggerHovered && (
+                            <>
+                                <span className="mascot-rosy-cheek left" />
+                                <span className="mascot-rosy-cheek right" />
+                            </>
+                        )}
+
                         <AnimatedPixelFace
                             pupilOffset={pupilOffset}
                             isHovered={isTriggerHovered}
+                            isPillHovered={isPillHovered}
                             mood={mood}
                             size="normal"
                             isMusicPlaying={isMusicPlaying}
+                            isBlinking={isBlinking}
+                            isRelaxing={isRelaxing}
+                            idleFace={idleFace}
+                            idleMood={idleMood}
+                            idleEffect={idleEffect}
+                            idleKey={idleKey}
                         />
                     </button>
                 </div>
@@ -430,20 +667,25 @@ const ChatCompanion = () => {
 
             {/* 2. REDESIGNED CHAT DIALOGUE WINDOW */}
             {isOpen && (
-                <div className={`companion-window ${mood}`}>
+                <div className={`companion-window ${mood} ${isClosing ? 'closing' : 'opening'}`}>
                     {/* Ambient Window Glow */}
                     <div className="window-ambient-glow" />
 
                     {/* Window Header */}
                     <header className="window-header">
                         <div className="header-identity">
-                            <AnimatedPixelFace
-                                pupilOffset={{ x: 0, y: 0 }}
-                                isHovered={false}
-                                mood={mood}
-                                size="small"
-                                isMusicPlaying={isMusicPlaying}
-                            />
+                            <div className="header-avatar-morph">
+                                <AnimatedPixelFace
+                                    pupilOffset={{ x: 0, y: 0 }}
+                                    isHovered={false}
+                                    isPillHovered={isPillHovered}
+                                    mood={mood}
+                                    size="small"
+                                    isMusicPlaying={isMusicPlaying}
+                                    isBlinking={isBlinking}
+                                    isRelaxing={false}
+                                />
+                            </div>
                             <div className="identity-text">
                                 <div className="name-row">
                                     <h3>Cedjuani</h3>
@@ -498,6 +740,7 @@ const ChatCompanion = () => {
                                             mood={idx === messages.length - 1 ? mood : 'idle'}
                                             size="micro"
                                             isMusicPlaying={isMusicPlaying && idx === messages.length - 1}
+                                            isBlinking={isBlinking}
                                         />
                                     </div>
                                 )}
@@ -544,6 +787,8 @@ const ChatCompanion = () => {
                                         type="button"
                                         className="topic-card-item"
                                         onClick={() => handleSend(item.query)}
+                                        onMouseEnter={() => setIsPillHovered(true)}
+                                        onMouseLeave={() => setIsPillHovered(false)}
                                     >
                                         <span className="topic-icon">{item.icon}</span>
                                         <div className="topic-info">
