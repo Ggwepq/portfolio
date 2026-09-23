@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FaPaperPlane, FaTimes, FaRedo } from 'react-icons/fa';
 import { ROLEPLAY_SEQUENCES } from '../data/kaomojiSequences';
+import { projects } from '../data/projects';
 import './ChatCompanion.css';
 
 const SUGGESTIONS = [
@@ -145,6 +146,10 @@ function AnimatedPixelFace({
     isHovered = false,
     isPillHovered = false,
     isOddsHovered = false,
+    isButtonHovered = false,
+    isLinkHovered = false,
+    isFormActive = false,
+    isProjectPage = false,
     mood = 'idle',
     size = 'normal',
     isMusicPlaying = false,
@@ -177,7 +182,11 @@ function AnimatedPixelFace({
         <div
             className={`pixel-face-wrapper ${size} ${mood} ${isVibing ? 'vibing' : ''} ${
                 isRelaxing ? `relaxing ${idleMood}` : ''
-            } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''} ${isOddsHovered ? 'odds-amazed' : ''}`}
+            } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''} ${
+                isOddsHovered ? 'odds-amazed' : ''
+            } ${isFormActive ? 'form-active' : ''} ${isButtonHovered ? 'button-hovered' : ''} ${
+                isLinkHovered ? 'link-hovered' : ''
+            } ${isProjectPage ? 'project-page-active' : ''}`}
         >
             {isCold ? (
                 /* Cold deadpan: ≖_≖ */
@@ -200,19 +209,34 @@ function AnimatedPixelFace({
                         </span>
                     </span>
                 </span>
-            ) : isVibing ? (
-                /* Music vibing: ♪ ˆᗜˆ ♫ */
-                <span className="pixel-glyph-face vibing">
-                    <span className="vibing-note left">♪</span>
-                    <span className="vibing-face-text">{isHovered ? '⌒ω⌒' : 'ˆᗜˆ'}</span>
-                    <span className="vibing-note right">♫</span>
-                </span>
             ) : isHovered ? (
-                /* Mascot bubble hovered: (⌒ω⌒) without parentheses -> ⌒ω⌒ */
+                /* Mascot bubble hovered directly: (⌒ω⌒) without parentheses -> ⌒ω⌒ */
                 <span className="pixel-glyph-face bubble-hovered">
                     <span className="kaomoji-eye">⌒</span>
                     <span className="pixel-mouth-glyph cat-mouth">ω</span>
                     <span className="kaomoji-eye">⌒</span>
+                </span>
+            ) : isFormActive ? (
+                /* Form typing / focus: focused attentive face: • ◡ • */
+                <span className="pixel-glyph-face form-typing">
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '•'}
+                        </span>
+                    </span>
+                    <span className="pixel-mouth-glyph form-mouth">◡</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '•'}
+                        </span>
+                    </span>
+                </span>
+            ) : isButtonHovered ? (
+                /* Button hovered: eager smiling anticipation: ˆ ᴗ ˆ */
+                <span className="pixel-glyph-face button-hovered">
+                    <span className="kaomoji-eye">ˆ</span>
+                    <span className="pixel-mouth-glyph button-mouth">ᴗ</span>
+                    <span className="kaomoji-eye">ˆ</span>
                 </span>
             ) : isPillHovered ? (
                 /* Pill hovered: ( ◕▿◕ ) without parentheses -> ◕▿◕ */
@@ -228,6 +252,35 @@ function AnimatedPixelFace({
                             {isBlinking ? '—' : '◕'}
                         </span>
                     </span>
+                </span>
+            ) : isLinkHovered ? (
+                /* Link hovered: curious glance with pupil tracking: ・‿・ */
+                <span className="pixel-glyph-face link-hovered">
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '・'}
+                        </span>
+                    </span>
+                    <span className="pixel-mouth-glyph link-mouth">‿</span>
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className={`pixel-eye-pupil ${isBlinking ? 'blinking' : ''}`}>
+                            {isBlinking ? '—' : '・'}
+                        </span>
+                    </span>
+                </span>
+            ) : isVibing ? (
+                /* Music vibing: ♪ ˆᗜˆ ♫ */
+                <span className="pixel-glyph-face vibing">
+                    <span className="vibing-note left">♪</span>
+                    <span className="vibing-face-text">{isHovered ? '⌒ω⌒' : 'ˆᗜˆ'}</span>
+                    <span className="vibing-note right">♫</span>
+                </span>
+            ) : isProjectPage ? (
+                /* Specific project page: admiring sparkle face: ✧ ‿ ✧ */
+                <span className="pixel-glyph-face project-page">
+                    <span className="project-sparkle-eye left">✧</span>
+                    <span className="pixel-mouth-glyph project-mouth">‿</span>
+                    <span className="project-sparkle-eye right">✧</span>
                 </span>
             ) : isHappy ? (
                 /* Happy kaomoji: ˶ˆ ᗜ ˆ˵ */
@@ -284,6 +337,7 @@ function AnimatedPixelFace({
 
 const ChatCompanion = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const [mood, setMood] = useState('idle'); // 'idle' | 'happy' | 'thinking' | 'cold'
     const [isTriggerHovered, setIsTriggerHovered] = useState(false);
@@ -295,6 +349,9 @@ const ChatCompanion = () => {
     const [idleEffect, setIdleEffect] = useState('happy');
     const [idleKey, setIdleKey] = useState(0);
     const [isPillHovered, setIsPillHovered] = useState(false);
+    const [isButtonHovered, setIsButtonHovered] = useState(false);
+    const [isLinkHovered, setIsLinkHovered] = useState(false);
+    const [isFormActive, setIsFormActive] = useState(false);
     const [isOddsHovered, setIsOddsHovered] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [hintIndex, setHintIndex] = useState(0);
@@ -303,11 +360,103 @@ const ChatCompanion = () => {
     const [isLoading, setIsLoading] = useState(false);
     const lastActivityRef = useRef(Date.now());
     const seqRef = useRef({ seqIdx: 0, stepIdx: 0 });
+    const recentInteractionRef = useRef({ type: null, detail: null, href: null, time: 0 });
+
+    const isProjectPage = location.pathname.startsWith('/project/');
+
+    // Generate context-aware conversation opener based on user page and recent interactions
+    const getContextGreeting = () => {
+        const now = Date.now();
+        const recent = recentInteractionRef.current;
+        const isRecent = recent.type && (now - recent.time < 35000);
+
+        // 1. Currently on a specific project page (/project/:id)
+        if (location.pathname.startsWith('/project/')) {
+            const projectId = location.pathname.split('/project/')[1]?.split('?')[0]?.replace(/\/$/, '');
+            const currentProject = projects.find((p) => p.id === projectId);
+            if (currentProject) {
+                const topTech = (currentProject.tech || []).slice(0, 3).join(', ');
+                return `Hey there! I see you're looking into **${currentProject.title}**! ${currentProject.tagline ? currentProject.tagline + ' ' : ''}Ask me anything about its architecture, tech stack (${topTech}), or Cedric's role in building it! ✦`;
+            }
+            return `Hey there! I see you're exploring one of Cedric's project deep-dives! Ask me anything about the architecture, challenges, or tech stack behind it! ✦`;
+        }
+
+        // 2. Currently on the Archive page (/archive)
+        if (location.pathname === '/archive') {
+            const searchParams = new URLSearchParams(location.search);
+            const techParam = searchParams.get('tech');
+            if (techParam) {
+                return `Hey there! I see you're filtering the project archive for **${techParam}**! Cedric has built multiple systems with it. Want to know which project highlights it best? ✦`;
+            }
+            return `Hey! Exploring Cedric's project archive? There are works here spanning AI, mobile engineering, web systems, and game dev. Looking for something specific, or want a curated recommendation? ✦`;
+        }
+
+        // 3. Currently on the Resume page (/resume)
+        if (location.pathname === '/resume') {
+            return `Welcome! Looking over Cedric's resume and qualifications? I can give you a quick TL;DR of his experience, top achievements, or technical competencies. What would you like to know? ✦`;
+        }
+
+        // 4. Recent user interactions on current page
+        if (isRecent) {
+            if (recent.type === 'form') {
+                return `Hey! I noticed you were writing a message in the contact form! Need any help drafting your inquiry, checking Cedric's availability, or prefer his direct email or LinkedIn? ✦`;
+            }
+
+            if (recent.type === 'odds') {
+                return `Hey! Did that pink cyberpunk **ODDS Studio** card catch your attention? ODDS is Cedric's collaborative tech and design group. Want to hear more about what they build together or their creative projects? ✦`;
+            }
+
+            if (recent.type === 'pill' && recent.detail) {
+                const cleanTag = recent.detail.replace(/\s+/g, ' ').trim();
+                if (cleanTag.length > 0 && cleanTag.length < 35) {
+                    return `Hey! I see you were checking out **${cleanTag}**! Cedric has hands-on production experience with it. Ask me how he uses it or which projects showcase it best! ✦`;
+                }
+            }
+
+            if (recent.type === 'project_link' && recent.detail) {
+                const cleanTitle = recent.detail.replace(/\s+/g, ' ').trim();
+                return `Hey! Interested in **${cleanTitle}**? I can tell you all about how Cedric built it, key architecture choices, and the technical challenges he solved! ✦`;
+            }
+        }
+
+        // 5. Music currently playing
+        if (isMusicPlaying) {
+            return `Hey! Jamming to the music with Cedric? 🎵 While we vibe, ask me anything about his projects, coding stack, or work experience! ✦`;
+        }
+
+        // 6. Default clean greeting
+        return `Hey there! I’m **Cedjuani**, Cedric’s companion. Ask me anything about his projects, technical stack, internship work, or background! ✦`;
+    };
+
+    // Context-sensitive topic suggestion cards
+    const getContextSuggestions = () => {
+        if (location.pathname.startsWith('/project/')) {
+            const projectId = location.pathname.split('/project/')[1]?.split('?')[0]?.replace(/\/$/, '');
+            const currentProject = projects.find((p) => p.id === projectId);
+            if (currentProject) {
+                return [
+                    { icon: '🧠', title: 'Architecture', desc: `How ${currentProject.title} was built`, query: `Tell me about the architecture and technology behind ${currentProject.title}` },
+                    { icon: '🛠️', title: "Cedric's Role", desc: 'Key contributions & design', query: `What was Cedric's specific role in ${currentProject.title}?` },
+                    { icon: '⚡', title: 'Challenges', desc: 'Problems & solutions', query: `What were the biggest engineering challenges in ${currentProject.title}?` },
+                    { icon: '💼', title: 'Tech Stack', desc: (currentProject.tech || []).slice(0, 3).join(', '), query: `What technologies and frameworks were used in ${currentProject.title}?` },
+                ];
+            }
+        }
+        return SUGGESTIONS;
+    };
 
     // Listen for ODDS card hover event
     useEffect(() => {
         const handleOddsHover = (e) => {
-            setIsOddsHovered(!!e.detail?.isHovered);
+            const isHovered = !!e.detail?.isHovered;
+            setIsOddsHovered(isHovered);
+            if (isHovered) {
+                recentInteractionRef.current = {
+                    type: 'odds',
+                    detail: 'ODDS Studio',
+                    time: Date.now(),
+                };
+            }
         };
         window.addEventListener('portfolio:odds-hover', handleOddsHover);
         return () => window.removeEventListener('portfolio:odds-hover', handleOddsHover);
@@ -379,32 +528,135 @@ const ChatCompanion = () => {
         return () => clearInterval(cycleInterval);
     }, [isRelaxing]);
 
-    // Pill hovering detector: detects hover on badges/pills across page and chat window
+    // Comprehensive Interaction Detector: Tracks Pills, Buttons, Links, and Forms across the site
     useEffect(() => {
         const handleMouseOver = (e) => {
+            if (!e.target || e.target.closest?.('.companion-wrapper')) {
+                setIsPillHovered(false);
+                setIsButtonHovered(false);
+                setIsLinkHovered(false);
+                return;
+            }
+
+            // 1. Tech tags / badges / pills (highest specificity for chips)
             const pillEl = e.target.closest?.(
-                '.cute-tag-pill, .category-pill-btn, .cute-back-pill, .role-pills-wrap, .topic-card-item, .chat-project-badge-link, [class*="pill"]'
+                '.cute-tag-pill, .category-pill-btn, .cute-back-pill, .role-pills-wrap, .cute-role-badge, .archive-role-tag, .tag, .tool-sticker, .filter-chip, [class*="pill"]'
             );
             if (pillEl) {
                 setIsPillHovered(true);
+                setIsButtonHovered(false);
+                setIsLinkHovered(false);
+                recentInteractionRef.current = {
+                    type: 'pill',
+                    detail: pillEl.innerText?.trim() || '',
+                    time: Date.now(),
+                };
+                return;
             }
+
+            // 2. Buttons across the site
+            const buttonEl = e.target.closest?.(
+                'button, [role="button"], .submit-btn, .btn, .btn-primary, [class*="-btn"], input[type="submit"], input[type="button"]'
+            );
+            if (buttonEl) {
+                setIsButtonHovered(true);
+                setIsPillHovered(false);
+                setIsLinkHovered(false);
+                recentInteractionRef.current = {
+                    type: 'button',
+                    detail: buttonEl.innerText?.trim() || buttonEl.getAttribute('aria-label') || '',
+                    time: Date.now(),
+                };
+                return;
+            }
+
+            // 3. Links across the site
+            const linkEl = e.target.closest?.('a');
+            if (linkEl) {
+                setIsLinkHovered(true);
+                setIsPillHovered(false);
+                setIsButtonHovered(false);
+                const href = linkEl.getAttribute('href') || '';
+                if (href.includes('/project/')) {
+                    const projId = href.split('/project/')[1]?.split(/[?#]/)[0];
+                    const matchProj = projects.find((p) => p.id === projId);
+                    recentInteractionRef.current = {
+                        type: 'project_link',
+                        detail: matchProj ? matchProj.title : linkEl.innerText?.trim() || '',
+                        href,
+                        time: Date.now(),
+                    };
+                } else {
+                    recentInteractionRef.current = {
+                        type: 'link',
+                        detail: linkEl.innerText?.trim() || '',
+                        href,
+                        time: Date.now(),
+                    };
+                }
+                return;
+            }
+
+            // Default: hovering regular layout or background elements
+            setIsPillHovered(false);
+            setIsButtonHovered(false);
+            setIsLinkHovered(false);
         };
 
         const handleMouseOut = (e) => {
-            const pillEl = e.target.closest?.(
-                '.cute-tag-pill, .category-pill-btn, .cute-back-pill, .role-pills-wrap, .topic-card-item, .chat-project-badge-link, [class*="pill"]'
-            );
-            if (pillEl) {
+            if (!e.relatedTarget) {
                 setIsPillHovered(false);
+                setIsButtonHovered(false);
+                setIsLinkHovered(false);
             }
         };
 
-        document.addEventListener('mouseover', handleMouseOver);
-        document.addEventListener('mouseout', handleMouseOut);
+        const handleFocusIn = (e) => {
+            if (e.target?.closest?.('.companion-wrapper')) return;
+            const formEl = e.target?.closest?.('input, textarea, select');
+            if (formEl) {
+                setIsFormActive(true);
+                recentInteractionRef.current = {
+                    type: 'form',
+                    detail: formEl.name || formEl.placeholder || 'contact form',
+                    time: Date.now(),
+                };
+            }
+        };
+
+        const handleFocusOut = (e) => {
+            if (e.target?.closest?.('.companion-wrapper')) return;
+            const formEl = e.target?.closest?.('input, textarea, select');
+            if (formEl) {
+                setIsFormActive(false);
+            }
+        };
+
+        const handleInput = (e) => {
+            if (e.target?.closest?.('.companion-wrapper')) return;
+            const formEl = e.target?.closest?.('input, textarea, select');
+            if (formEl) {
+                setIsFormActive(true);
+                recentInteractionRef.current = {
+                    type: 'form',
+                    detail: formEl.name || formEl.placeholder || 'contact form',
+                    time: Date.now(),
+                };
+            }
+        };
+
+        document.addEventListener('mouseover', handleMouseOver, { passive: true });
+        document.addEventListener('mouseout', handleMouseOut, { passive: true });
+        document.addEventListener('focusin', handleFocusIn, { passive: true });
+        document.addEventListener('focusout', handleFocusOut, { passive: true });
+        document.addEventListener('input', handleInput, { passive: true });
 
         return () => {
             document.removeEventListener('mouseover', handleMouseOver);
             document.removeEventListener('mouseout', handleMouseOut);
+            document.removeEventListener('focusin', handleFocusIn);
+            document.removeEventListener('focusout', handleFocusOut);
+            document.removeEventListener('input', handleInput);
         };
     }, []);
 
@@ -530,6 +782,17 @@ const ChatCompanion = () => {
         setIsTriggerHovered(false);
         setIsClosing(false);
         setIsOpen(true);
+
+        // If chat is fresh (no user messages yet), provide context-aware opening greeting
+        if (messages.length <= 1) {
+            const contextGreeting = getContextGreeting();
+            setMessages([
+                {
+                    role: 'assistant',
+                    content: contextGreeting,
+                },
+            ]);
+        }
     };
 
     const handleClose = () => {
@@ -621,10 +884,11 @@ const ChatCompanion = () => {
     };
 
     const handleResetChat = () => {
+        const contextGreeting = getContextGreeting();
         setMessages([
             {
                 role: 'assistant',
-                content: "Chat reset! What else would you like to know about Cedric?",
+                content: `Chat reset! ${contextGreeting}`,
             },
         ]);
         setMood('idle');
@@ -661,7 +925,11 @@ const ChatCompanion = () => {
                         type="button"
                         className={`companion-trigger-bubble ${isMusicPlaying ? 'vibing' : ''} ${
                             isRelaxing ? `relaxing ${idleMood}` : ''
-                        } ${isTriggerHovered ? 'blushing' : ''} ${isOddsHovered ? 'odds-amazed' : ''}`}
+                        } ${isTriggerHovered ? 'blushing' : ''} ${isOddsHovered ? 'odds-amazed' : ''} ${
+                            isFormActive ? 'form-active' : ''
+                        } ${isButtonHovered ? 'btn-active' : ''} ${isLinkHovered ? 'link-active' : ''} ${
+                            isProjectPage ? 'project-active' : ''
+                        }`}
                         onClick={handleOpen}
                         aria-label="Open Chat Companion"
                     >
@@ -678,6 +946,10 @@ const ChatCompanion = () => {
                             isHovered={isTriggerHovered}
                             isPillHovered={isPillHovered}
                             isOddsHovered={isOddsHovered}
+                            isButtonHovered={isButtonHovered}
+                            isLinkHovered={isLinkHovered}
+                            isFormActive={isFormActive}
+                            isProjectPage={isProjectPage}
                             mood={mood}
                             size="normal"
                             isMusicPlaying={isMusicPlaying}
@@ -707,6 +979,10 @@ const ChatCompanion = () => {
                                     isHovered={false}
                                     isPillHovered={isPillHovered}
                                     isOddsHovered={isOddsHovered}
+                                    isButtonHovered={isButtonHovered}
+                                    isLinkHovered={isLinkHovered}
+                                    isFormActive={isFormActive}
+                                    isProjectPage={isProjectPage}
                                     mood={mood}
                                     size="small"
                                     isMusicPlaying={isMusicPlaying}
@@ -809,7 +1085,7 @@ const ChatCompanion = () => {
                                 <span className="topic-arrow">↓</span>
                             </div>
                             <div className="topic-cards-grid">
-                                {SUGGESTIONS.map((item, idx) => (
+                                {getContextSuggestions().map((item, idx) => (
                                     <button
                                         key={idx}
                                         type="button"

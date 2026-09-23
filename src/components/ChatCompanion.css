@@ -1362,4 +1362,142 @@
   transform: scaleY(1.05);
 }
 
+/* --- FORM TYPING / FOCUS STATE: • ◡ • --- */
+.companion-trigger-bubble.form-active {
+  border-color: rgba(56, 189, 248, 0.7) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(56, 189, 248, 0.45) !important;
+}
+
+.pixel-face-wrapper.form-active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.45);
+}
+
+.pixel-glyph-face.form-typing {
+  color: #38bdf8;
+  font-size: 1.02rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+}
+
+.pixel-glyph-face.form-typing .form-mouth {
+  color: #5eead4;
+  font-size: 0.88rem;
+  top: -1px;
+}
+
+/* --- BUTTON HOVERED STATE: ˆ ᴗ ˆ --- */
+.companion-trigger-bubble.btn-active {
+  border-color: rgba(251, 191, 36, 0.7) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(251, 191, 36, 0.45) !important;
+}
+
+.pixel-face-wrapper.button-hovered {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+.pixel-glyph-face.button-hovered {
+  color: #fbbf24;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.7);
+  animation: buttonHappyNod 1.2s infinite ease-in-out;
+}
+
+.pixel-glyph-face.button-hovered .button-mouth {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  top: -0.5px;
+}
+
+@keyframes buttonHappyNod {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1.5px);
+  }
+}
+
+/* --- LINK HOVERED STATE: ・‿・ --- */
+.companion-trigger-bubble.link-active {
+  border-color: rgba(94, 234, 212, 0.7) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(94, 234, 212, 0.4) !important;
+}
+
+.pixel-face-wrapper.link-hovered {
+  background: rgba(94, 234, 212, 0.12);
+  border-color: rgba(94, 234, 212, 0.45);
+}
+
+.pixel-glyph-face.link-hovered {
+  color: #5eead4;
+  font-size: 1.02rem;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 8px rgba(94, 234, 212, 0.65);
+}
+
+.pixel-glyph-face.link-hovered .link-mouth {
+  color: #38bdf8;
+  font-size: 0.9rem;
+  top: -1.5px;
+}
+
+/* --- PROJECT PAGE ACTIVE STATE: ✧ ‿ ✧ --- */
+.companion-trigger-bubble.project-active {
+  border-color: rgba(244, 114, 182, 0.6) !important;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 16px rgba(244, 114, 182, 0.4) !important;
+}
+
+.pixel-face-wrapper.project-page-active {
+  background: rgba(244, 114, 182, 0.12);
+  border-color: rgba(244, 114, 182, 0.45);
+}
+
+.pixel-glyph-face.project-page {
+  color: #f472b6;
+  font-size: 0.98rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.75);
+}
+
+.pixel-glyph-face.project-page .project-sparkle-eye {
+  color: #fbbf24;
+  display: inline-block;
+  line-height: 1;
+  font-size: 0.95em;
+  animation: projectSparkleGlow 2.2s infinite ease-in-out;
+}
+
+.pixel-glyph-face.project-page .project-sparkle-eye.right {
+  animation-delay: 1.1s;
+}
+
+.pixel-glyph-face.project-page .project-mouth {
+  color: #f472b6;
+  font-size: 0.9rem;
+  top: -1.5px;
+}
+
+@keyframes projectSparkleGlow {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 2px rgba(251, 191, 36, 0.6));
+  }
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(251, 191, 36, 0.95));
+  }
+}
+
+
 
