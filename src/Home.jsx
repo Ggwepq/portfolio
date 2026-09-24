@@ -339,6 +339,7 @@ function Home() {
 
                     <audio
                         ref={audioRef}
+                        data-lastfm-track="true"
                         src={audioUrl || FALLBACK_PREVIEW_URL}
                         onPlay={() => {
                             window.dispatchEvent(new CustomEvent('portfolio:music-state', { detail: { isPlaying: true } }));

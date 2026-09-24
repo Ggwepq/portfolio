@@ -702,10 +702,10 @@ const ChatCompanion = () => {
         };
     }, []);
 
-    // Audio detector: listens for HTMLMediaElement play/pause across the entire page
+    // Audio detector: only the Last.fm-backed audio should control the vibing face.
     useEffect(() => {
         const checkAudioStatus = () => {
-            const audios = document.querySelectorAll('audio');
+            const audios = document.querySelectorAll('audio[data-lastfm-track]');
             let playing = false;
             audios.forEach((audio) => {
                 if (!audio.paused && !audio.ended) {
@@ -715,7 +715,11 @@ const ChatCompanion = () => {
             setIsMusicPlaying((prev) => (prev !== playing ? playing : prev));
         };
 
-        const handlePlay = () => setIsMusicPlaying(true);
+        const handlePlay = (event) => {
+            if (event.target?.matches?.('audio[data-lastfm-track]')) {
+                setIsMusicPlaying(true);
+            }
+        };
         const handlePause = () => setTimeout(checkAudioStatus, 80);
         const handleCustomMusic = (e) => {
             if (e.detail && typeof e.detail.isPlaying === 'boolean') {
