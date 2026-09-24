@@ -2502,6 +2502,18 @@ body.odds-cyberpunk-mode .highlight-accent {
   color: #ff2a70 !important;
 }
 
+body.odds-cyberpunk-mode .btn-contact {
+  background-color: #ff2a70 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 18px rgba(255, 42, 112, 0.55) !important;
+}
+
+body.odds-cyberpunk-mode .btn-contact:hover {
+  background-color: #ff0055 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 24px rgba(255, 0, 85, 0.8) !important;
+}
+
 /* 5. Cyberpunk "Blinky Blinky" Neon Electric Glow Keyframes */
 @keyframes cyberpunkBlinky {
   0%, 100% {

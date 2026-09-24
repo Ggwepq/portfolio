@@ -800,17 +800,22 @@
   }
 }
 
-/* Header Avatar: compact, perfectly proportioned 36px badge */
+/* Header Avatar: compact, locked 38px badge that never shifts surrounding layout */
 .header-avatar-morph {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  max-width: 38px;
+  min-height: 38px;
+  max-height: 38px;
   border-radius: 12px;
   background: rgba(94, 234, 212, 0.12);
   border: 1px solid rgba(94, 234, 212, 0.3);
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .header-avatar-morph .pixel-face-wrapper {
@@ -869,6 +874,15 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.identity-text {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
 }
 
 .identity-text .name-row {
@@ -991,30 +1005,23 @@
 
 .message-row {
   display: flex;
-  gap: 10px;
-  max-width: 90%;
+  max-width: 88%;
 }
 
 .message-row.user {
   align-self: flex-end;
-  flex-direction: row-reverse;
 }
 
 .message-row.assistant {
   align-self: flex-start;
 }
 
-.message-avatar-container {
-  flex-shrink: 0;
-  margin-top: 3px;
-}
-
 /* Message Bubbles */
 .message-bubble {
-  padding: 11px 16px;
-  border-radius: 18px;
-  font-size: 0.88rem;
-  line-height: 1.6;
+  padding: 9px 14px;
+  border-radius: 16px;
+  font-size: 0.81rem;
+  line-height: 1.5;
   word-break: break-word;
 }
 
@@ -1035,7 +1042,7 @@
 }
 
 .message-bubble.assistant p {
-  margin: 0 0 8px 0;
+  margin: 0 0 6px 0;
 }
 
 .message-bubble.assistant p:last-child {
@@ -1043,8 +1050,9 @@
 }
 
 .message-bubble.assistant li {
-  margin-left: 18px;
-  margin-bottom: 5px;
+  margin-left: 16px;
+  margin-bottom: 4px;
+  font-size: 0.81rem;
 }
 
 .message-bubble.assistant strong {
@@ -1063,16 +1071,17 @@
 }
 
 .chat-spacer {
-  height: 8px;
+  height: 6px;
 }
 
 /* Formatted Lists & Project Link Buttons */
 .chat-message-list {
-  margin: 6px 0;
-  padding-left: 20px;
+  margin: 4px 0;
+  padding-left: 18px;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 3px;
+  font-size: 0.81rem;
 }
 
 .chat-message-list li {
@@ -1338,11 +1347,34 @@
 }
 
 /* --- SIMPLE WOW / O-MOUTH FACE (WHEN ODDS IS HOVERED) --- */
-.companion-trigger-bubble.odds-amazed {
-  border-color: rgba(255, 42, 112, 0.5) !important;
+.companion-trigger-bubble.odds-amazed,
+body.odds-cyberpunk-mode .companion-trigger-bubble {
+  border-color: #ff2a70 !important;
   box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.35),
-    0 0 12px rgba(255, 42, 112, 0.35) !important;
+    0 8px 25px rgba(0, 0, 0, 0.6),
+    0 0 22px rgba(255, 42, 112, 0.65) !important;
+}
+
+/* --- WINKING ON TRIGGER CLICK: ◕ ‿ < --- */
+.companion-trigger-bubble.winking {
+  border-color: #f472b6 !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.65),
+    0 0 25px rgba(244, 114, 182, 0.6) !important;
+  transform: translateY(-2px) scale(1.08) !important;
+}
+
+.pixel-glyph-face.winking {
+  color: #f472b6;
+  font-size: 1.15rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(244, 114, 182, 0.85);
+}
+
+.pixel-glyph-face.winking .wink-eye {
+  color: #f472b6;
+  font-weight: 800;
+  display: inline-block;
 }
 
 .pixel-glyph-face.amazed {

@@ -355,7 +355,7 @@ function Home() {
 
                 <div>
                     <h1 className="name">John Cedric<br />Abaloyan</h1>
-                    <h2 className="title">IT Student</h2>
+                    <h2 className="title">IT Graduate</h2>
 
                     <button
                         type="button"

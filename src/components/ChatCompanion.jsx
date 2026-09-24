@@ -150,6 +150,7 @@ function AnimatedPixelFace({
     isLinkHovered = false,
     isFormActive = false,
     isProjectPage = false,
+    isWinking = false,
     mood = 'idle',
     size = 'normal',
     isMusicPlaying = false,
@@ -184,7 +185,7 @@ function AnimatedPixelFace({
                 isRelaxing ? `relaxing ${idleMood}` : ''
             } ${isHovered ? 'hovered' : ''} ${isPillHovered ? 'pill-hovered' : ''} ${
                 isOddsHovered ? 'odds-amazed' : ''
-            } ${isFormActive ? 'form-active' : ''} ${isButtonHovered ? 'button-hovered' : ''} ${
+            } ${isWinking ? 'winking' : ''} ${isFormActive ? 'form-active' : ''} ${isButtonHovered ? 'button-hovered' : ''} ${
                 isLinkHovered ? 'link-hovered' : ''
             } ${isProjectPage ? 'project-page-active' : ''}`}
         >
@@ -194,6 +195,15 @@ function AnimatedPixelFace({
             ) : isThinking ? (
                 /* Thinking: •_• */
                 <span className="pixel-glyph-face thinking">•_•</span>
+            ) : isWinking ? (
+                /* Winking on click: ◕ ‿ < */
+                <span className="pixel-glyph-face winking">
+                    <span className="pixel-eye-glyph" style={eyeStyle}>
+                        <span className="pixel-eye-pupil">◕</span>
+                    </span>
+                    <span className="pixel-mouth-glyph">‿</span>
+                    <span className="pixel-eye-glyph wink-eye">&lt;</span>
+                </span>
             ) : isOddsHovered ? (
                 /* Simple wow / O mouth face when ODDS card is hovered: ◕ o ◕ */
                 <span className="pixel-glyph-face amazed">
@@ -353,6 +363,7 @@ const ChatCompanion = () => {
     const [isLinkHovered, setIsLinkHovered] = useState(false);
     const [isFormActive, setIsFormActive] = useState(false);
     const [isOddsHovered, setIsOddsHovered] = useState(false);
+    const [isWinking, setIsWinking] = useState(false);
     const [isClosing, setIsClosing] = useState(false);
     const [hintIndex, setHintIndex] = useState(0);
     const [pupilOffset, setPupilOffset] = useState({ x: 0, y: 0 });
@@ -532,6 +543,14 @@ const ChatCompanion = () => {
     useEffect(() => {
         const handleMouseOver = (e) => {
             if (!e.target || e.target.closest?.('.companion-wrapper')) {
+                setIsPillHovered(false);
+                setIsButtonHovered(false);
+                setIsLinkHovered(false);
+                return;
+            }
+
+            // Guard against ODDS card hover: ODDS hover should not trigger link/pill/button hover on companion
+            if (e.target.closest?.('.odds-group-card-wrapper, .odds-group-card, [class*="odds"]')) {
                 setIsPillHovered(false);
                 setIsButtonHovered(false);
                 setIsLinkHovered(false);
@@ -780,19 +799,23 @@ const ChatCompanion = () => {
     // Clean open & close handlers with smooth transition animations
     const handleOpen = () => {
         setIsTriggerHovered(false);
-        setIsClosing(false);
-        setIsOpen(true);
+        setIsWinking(true);
+        setTimeout(() => {
+            setIsClosing(false);
+            setIsOpen(true);
+            setIsWinking(false);
 
-        // If chat is fresh (no user messages yet), provide context-aware opening greeting
-        if (messages.length <= 1) {
-            const contextGreeting = getContextGreeting();
-            setMessages([
-                {
-                    role: 'assistant',
-                    content: contextGreeting,
-                },
-            ]);
-        }
+            // If chat is fresh (no user messages yet), provide context-aware opening greeting
+            if (messages.length <= 1) {
+                const contextGreeting = getContextGreeting();
+                setMessages([
+                    {
+                        role: 'assistant',
+                        content: contextGreeting,
+                    },
+                ]);
+            }
+        }, 280);
     };
 
     const handleClose = () => {
@@ -925,16 +948,18 @@ const ChatCompanion = () => {
                         type="button"
                         className={`companion-trigger-bubble ${isMusicPlaying ? 'vibing' : ''} ${
                             isRelaxing ? `relaxing ${idleMood}` : ''
-                        } ${isTriggerHovered ? 'blushing' : ''} ${isOddsHovered ? 'odds-amazed' : ''} ${
-                            isFormActive ? 'form-active' : ''
-                        } ${isButtonHovered ? 'btn-active' : ''} ${isLinkHovered ? 'link-active' : ''} ${
+                        } ${isTriggerHovered || isWinking ? 'blushing' : ''} ${isWinking ? 'winking' : ''} ${
+                            isOddsHovered ? 'odds-amazed' : ''
+                        } ${!isOddsHovered && isFormActive ? 'form-active' : ''} ${
+                            !isOddsHovered && isButtonHovered ? 'btn-active' : ''
+                        } ${!isOddsHovered && isLinkHovered ? 'link-active' : ''} ${
                             isProjectPage ? 'project-active' : ''
                         }`}
                         onClick={handleOpen}
                         aria-label="Open Chat Companion"
                     >
-                        {/* Rosy blush cheeks on hover */}
-                        {isTriggerHovered && (
+                        {/* Rosy blush cheeks on hover or when winking */}
+                        {(isTriggerHovered || isWinking) && (
                             <>
                                 <span className="mascot-rosy-cheek left" />
                                 <span className="mascot-rosy-cheek right" />
@@ -950,6 +975,7 @@ const ChatCompanion = () => {
                             isLinkHovered={isLinkHovered}
                             isFormActive={isFormActive}
                             isProjectPage={isProjectPage}
+                            isWinking={isWinking}
                             mood={mood}
                             size="normal"
                             isMusicPlaying={isMusicPlaying}
@@ -1036,18 +1062,6 @@ const ChatCompanion = () => {
                     <div className="window-message-list">
                         {messages.map((m, idx) => (
                             <div key={idx} className={`message-row ${m.role}`}>
-                                {m.role === 'assistant' && (
-                                    <div className="message-avatar-container">
-                                        <AnimatedPixelFace
-                                            pupilOffset={{ x: 0, y: 0 }}
-                                            isHovered={false}
-                                            mood={idx === messages.length - 1 ? mood : 'idle'}
-                                            size="micro"
-                                            isMusicPlaying={isMusicPlaying && idx === messages.length - 1}
-                                            isBlinking={isBlinking}
-                                        />
-                                    </div>
-                                )}
                                 <div className={`message-bubble ${m.role}`}>
                                     {m.role === 'assistant' ? formatBotMessage(m.content, handleNavigate) : m.content}
                                 </div>
@@ -1056,14 +1070,6 @@ const ChatCompanion = () => {
 
                         {isLoading && (
                             <div className="message-row assistant">
-                                <div className="message-avatar-container">
-                                    <AnimatedPixelFace
-                                        pupilOffset={{ x: 0, y: 0 }}
-                                        isHovered={false}
-                                        mood="thinking"
-                                        size="micro"
-                                    />
-                                </div>
                                 <div className="message-bubble assistant thinking">
                                     <div className="bouncing-dots">
                                         <span />
