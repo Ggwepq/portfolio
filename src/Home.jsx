@@ -363,7 +363,7 @@ function Home() {
                         className="btn-resume"
                         disabled
                     >
-                        View Resume
+                        View Resumé
                     </button>
 
                     <nav>
