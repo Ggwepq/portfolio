@@ -361,7 +361,7 @@ function Home() {
                     <button
                         type="button"
                         className="btn-resume"
-                        onClick={() => setIsResumeModalOpen(true)}
+                        disabled
                     >
                         View Resume
                     </button>
